@@ -1,0 +1,82 @@
+generated: '2026-08-04'
+method: searched
+source: openapi/ncino-evault-openapi.json, openapi/ncino-mortgage-openapi.yml, openapi/ncino-mortgage-webhooks-openapi.json
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - clientCredentials
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: 'JWT access token used to authorize every API request. Send it as `Authorization:
+    Bearer <access_token>`. Tokens are issued by the token endpoint (POST https://evault.ncino.com/oauth/auth_token)
+    and expire after the `expires_in` seconds returned there (default 3600); request a new token
+    or exchange the refresh token once it expires.'
+  sources:
+  - openapi/ncino-evault-openapi.json
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: 'HTTP Basic credentials used only by the token endpoint (POST /oauth/auth_token).
+    The username is your API client_id and the password is your client_secret, sent as `Authorization:
+    Basic base64(client_id:client_secret)`.'
+  sources:
+  - openapi/ncino-evault-openapi.json
+- name: OAuth2
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: /oauth/token
+    scopes: 0
+  description: OAuth 2.0 Access Token (Default)
+  sources:
+  - openapi/ncino-mortgage-openapi.yml
+  - openapi/ncino-mortgage-webhooks-openapi.json
+docs:
+  mortgage: https://developer.ncinomortgage.com/mortgage/docs/authentication-1
+  mortgage_authorizing_endpoints: https://developer.ncinomortgage.com/mortgage/docs/authorizing-endpoints
+  mortgage_credentials: https://developer.ncinomortgage.com/mortgage/docs/obtaining-an-api-key
+  evault: https://developer.ncino.com/e-vault/docs/authentication
+  evault_credentials: https://developer.ncino.com/e-vault/docs/obtaining-api-credentials
+  mcp: https://developer.ncinomortgage.com/mortgage/docs/mcp-connectors
+searched_detail:
+  mortgage:
+    grant_type: client_credentials
+    token_endpoint: https://api.ncinomortgage.com/oauth/token
+    client_id: API Key issued in API Settings
+    client_secret: API Secret issued in API Settings
+    expires_in: 900
+    documented_as: five minutes
+    scope: external
+    header: 'Authorization: Bearer <access_token>'
+    note: The spec declares tokenUrl as the relative path /oauth/token with an empty scopes map;
+      the absolute endpoint and the external scope come from the docs and from RFC 8414 metadata.
+  evault:
+    token_endpoint: https://evault.ncino.com/oauth/auth_token
+    client_auth: HTTP Basic base64(client_id:client_secret)
+    expires_in: 3600
+    refresh_token: true
+    header: 'Authorization: Bearer <access_token>'
+  mcp:
+    model: OAuth 2.1 authorization code + PKCE (S256)
+    dynamic_client_registration: true
+    registration_endpoint: https://ncinomortgage.com/mcp/register
+    authorization_endpoint: https://ncinomortgage.com/zuul/oauth/authorize
+    token_endpoint: https://api.ncinomortgage.com/oauth/token
+    authorization_server_metadata: https://ncinomortgage.com/.well-known/oauth-authorization-server
+    protected_resource_metadata:
+    - https://ncinomortgage.com/.well-known/oauth-protected-resource
+    - https://ncinomortgage.com/mcp/lo/.well-known/oauth-protected-resource
+    - https://ncinomortgage.com/mcp/admin/.well-known/oauth-protected-resource
+    token_binding: user-scoped
+  openid_connect:
+    present: false
+    note: No /.well-known/openid-configuration is served on any nCino host probed.
+see_also:
+- scopes/ncino-scopes.yml
+- conventions/ncino-conventions.yml
+- well-known/ncino-well-known.yml

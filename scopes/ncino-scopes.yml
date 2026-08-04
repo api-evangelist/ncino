@@ -1,0 +1,64 @@
+generated: '2026-08-04'
+method: searched
+source: openapi/ncino-mortgage-openapi.yml, well-known/ncino-oauth-authorization-server.json
+docs: https://developer.ncinomortgage.com/mortgage/docs/authentication-1
+note: 'The OpenAPI declares an OAuth2 clientCredentials flow with an EMPTY scopes map
+  and a relative tokenUrl, so no scope is discoverable from the spec alone. The single
+  real scope was recovered from two searched sources: the authentication documentation
+  ("the API grants an external scope for authenticated requests") and the RFC 8414
+  authorization-server metadata at https://ncinomortgage.com/.well-known/oauth-authorization-server,
+  which publishes scopes_supported: [external]. Fine-grained authorization in nCino
+  Mortgage is not carried by OAuth scopes at all — it is enforced per API credential
+  by resource toggles in API Settings, and per user by the RBAC roles/permissions surface
+  (permissions-index, roles-index, user_permissions-index). A credential without the
+  resource toggle receives 403 even with a valid, correctly-scoped token.'
+schemes:
+- name: OAuth2
+  source: openapi/ncino-mortgage-openapi.yml
+  description: OAuth 2.0 Access Token (Default) — nCino Mortgage REST API
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://api.ncinomortgage.com/oauth/token
+    tokenUrl_in_spec: /oauth/token
+    scopes:
+    - external
+- name: MCP OAuth
+  source: well-known/ncino-oauth-authorization-server.json
+  description: OAuth 2.1 authorization server fronting the nCino Mortgage MCP servers
+  issuer: https://ncinomortgage.com
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://ncinomortgage.com/zuul/oauth/authorize
+    tokenUrl: https://api.ncinomortgage.com/oauth/token
+    registrationUrl: https://ncinomortgage.com/mcp/register
+    pkce: S256
+    grant_types:
+    - authorization_code
+    - refresh_token
+    scopes:
+    - external
+scopes:
+- scope: external
+  description: The single scope granted to external API credentials and to MCP clients.
+    It is a coarse "this is an external integration" marker, not a permission grant
+    — it does not narrow which resources or verbs the caller may use.
+  flows:
+  - clientCredentials
+  - authorizationCode
+  sources:
+  - https://ncinomortgage.com/.well-known/oauth-authorization-server
+  - https://developer.ncinomortgage.com/mortgage/docs/authentication-1
+authorization_model:
+  scope_granularity: coarse
+  real_enforcement:
+  - layer: API credential resource toggles
+    where: API Settings in the nCino Mortgage web application
+    signal: 403 "The client does not have access to the requested resource"
+    docs: https://developer.ncinomortgage.com/mortgage/docs/authorizing-endpoints
+  - layer: RBAC roles and permissions
+    where: roles-index, role_permissions-index, permissions-index, user_permissions-index,
+      user_roles-index
+    note: Marked beta in the published spec.
+  - layer: MCP user-scoped tokens
+    note: MCP tokens are bound to the authenticated individual, so tool results respect
+      the same role-based permissions as the web application.

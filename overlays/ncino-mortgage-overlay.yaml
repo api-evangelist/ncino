@@ -1,0 +1,68 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the nCino Mortgage API
+  version: 1.0.0
+extends: openapi/ncino-mortgage-openapi.yml
+x-generated: '2026-08-04'
+x-method: generated
+x-source: https://api.ncinomortgage.com/developer_info/openapi/1.0
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/providers/ncino
+    x-apievangelist-harvested-from: https://api.ncinomortgage.com/developer_info/openapi/1.0
+    x-apievangelist-harvested-on: '2026-08-04'
+    x-apievangelist-operations: 251
+    x-apievangelist-schemas: 422
+    x-apievangelist-beta-operations: 93
+    x-apievangelist-notes: Consolidated public download of the eight per-service definitions
+      the ReadMe portal renders separately (foundation, loan-applications, loans, organizations,
+      rbac, services, user-management, webhooks).
+- target: $.info
+  update:
+    x-apievangelist-artifacts:
+      authentication: authentication/ncino-authentication.yml
+      scopes: scopes/ncino-scopes.yml
+      conventions: conventions/ncino-conventions.yml
+      errors: errors/ncino-problem-types.yml
+      lifecycle: lifecycle/ncino-lifecycle.yml
+      data_model: data-model/ncino-data-model.yml
+      sandbox: sandbox/ncino-sandbox.yml
+      webhooks: asyncapi/ncino-mortgage-webhooks.yml
+      mcp: mcp/ncino-mcp.yml
+      tool_crosswalk: mcp/ncino-tool-crosswalk.yml
+      skills: skills/_index.yml
+- target: $.info
+  update:
+    x-apievangelist-gaps:
+    - No Idempotency-Key, ETag or If-Match contract; write retries are not safe and
+      duplicates surface as 409 after the fact.
+    - No rate-limit, quota or Retry-After signaling is declared anywhere in the spec
+      or the docs.
+    - Errors use a JSON:API-style errors[] envelope rather than RFC 9457 application/problem+json,
+      and carry no stable per-problem type URI.
+    - No operation carries deprecated:true and no Sunset/Deprecation header support
+      is declared, so consumers have no machine-readable retirement signal.
+    - 'Beta status is carried in prose inside the description rather than in a machine-readable
+      extension; 93 of 251 operations are beta, and several beta descriptions ship
+      an internal note reading "TODO: Remove the line below when endpoint is ready
+      to go live for customers".'
+    - The OAuth2 clientCredentials flow declares a relative tokenUrl (/oauth/token)
+      and an empty scopes map, so the sole documented scope (external) is not discoverable
+      from the spec.
+    - AUS schemas (AusOrderBody, AusOrderResult, AusFinding, AusFindingList) are defined
+      but referenced by no path, while the LO MCP server exposes run_aus and fetch_aus_history
+      — the REST contract does not describe a capability the agent surface offers.
+- target: $.servers
+  update:
+  - url: https://api.ncinomortgage.com
+    description: Production server
+    x-apievangelist-tls: TLSv1.3
+    x-apievangelist-hsts: false
+- target: $.components.securitySchemes.OAuth2
+  update:
+    x-apievangelist-token-url: https://api.ncinomortgage.com/oauth/token
+    x-apievangelist-scopes-documented:
+    - external
+    x-apievangelist-token-lifetime-seconds: 900
+    x-apievangelist-docs: https://developer.ncinomortgage.com/mortgage/docs/authentication-1

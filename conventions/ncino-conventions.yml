@@ -1,0 +1,126 @@
+generated: '2026-08-04'
+method: searched
+source: openapi/ncino-mortgage-openapi.yml, openapi/ncino-evault-openapi.json
+docs:
+  authentication: https://developer.ncinomortgage.com/mortgage/docs/authentication-1
+  authorizing_endpoints: https://developer.ncinomortgage.com/mortgage/docs/authorizing-endpoints
+  errors: https://developer.ncinomortgage.com/mortgage/docs/common-error-messages
+  webhooks: https://developer.ncinomortgage.com/mortgage/docs/webhooks
+  retry: https://developer.ncinomortgage.com/mortgage/docs/retry-and-resend
+authentication:
+  style: OAuth 2.0 client credentials, bearer token
+  token_endpoint: https://api.ncinomortgage.com/oauth/token
+  grant_type: client_credentials
+  credentials: API Key (client_id) + API Secret (client_secret)
+  token_lifetime_seconds: 900
+  documented_lifetime_note: The docs state tokens expire after five minutes while the
+    sample response returns expires_in 900; treat 900 as the contract and re-request
+    per batch.
+  scope: external
+  header: 'Authorization: Bearer <access_token>'
+  per_credential_authorization: Each API credential is toggled on per resource in API
+    Settings; a credential without the resource toggle returns 403.
+  evault:
+    style: HTTP Basic on the token endpoint, bearer JWT thereafter
+    token_endpoint: https://evault.ncino.com/oauth/auth_token
+    token_lifetime_seconds: 3600
+    refresh_token: true
+  see_also: authentication/ncino-authentication.yml
+idempotency:
+  supported: false
+  idempotency_key_header: null
+  note: No Idempotency-Key header, request-id replay key, If-Match/ETag conditional
+    request, or documented safe-retry contract exists in the nCino Mortgage or eVault
+    OpenAPI. Two RBAC beta operations (role_permissions-create, role_permissions-destroy)
+    are described as semantically idempotent in prose, but that is set semantics on
+    those two operations, not a provider-wide idempotency contract. Retrying a POST
+    such as loans-create or loan_officer_partners-create is not safe; nCino signals
+    duplicates after the fact with 409 Conflict.
+  conflict_signal: HTTP 409 with a duplicate-state message (see errors/ncino-problem-types.yml)
+pagination:
+  style: page-number
+  parameters:
+  - name: page
+    in: query
+    description: The page to retrieve.
+  - name: page_size
+    in: query
+    description: The number of records returned in each page.
+  filters_alongside:
+  - created_after
+  - created_before
+  - updated_after
+  - updated_before
+  cursor: false
+  link_header: false
+versioning:
+  scheme: header
+  request_header: X-Api-Version
+  request_header_description: Specify API version, for example '1.0'. By default, the
+    version configured in the API credential is used.
+  response_headers:
+  - X-Api-Version
+  - X-Api-Supported-Versions
+  response_header_coverage: 337 responses across the mortgage spec advertise both headers
+  current_version: '1.0'
+  uri_versioning: false
+  spec_download_is_versioned: https://api.ncinomortgage.com/developer_info/openapi/1.0
+async_operations:
+  model: job
+  pattern: Long-running operations return a job; poll jobs-show (GET /jobs/{job_id})
+    or subscribe to the job_status_changed webhook event.
+  conflict_guard: 409 "Action cannot be performed due to an ongoing asynchronous job"
+    and 423 "Action cannot be performed due to an ongoing loan officer operation"
+polymorphic_actions:
+  pattern: State transitions are modelled as POST /<resource>/{id}/actions with the
+    action named in the request body, rather than as distinct verbs or sub-resources.
+  operations:
+  - loans-actions
+  - loan_applications-actions
+  - loan_officers-actions
+  - team_members-actions
+  - borrowers-actions
+  - companies-actions
+  - roles-actions
+  - webhooks-actions
+  - loan_officer_partners-actions
+  - loan_borrowers-actions
+  - loan_application_borrowers-actions
+  - loan_doc_tasks-actions
+  - loan_app_doc_tasks-actions
+  - loan_milestones-actions
+  - verifications-actions
+  - authentication-actions
+  consequence: The MCP tool surface unrolls these into named tools (promote_loan_officer,
+    disable_partner, send_partner_invite …) — see mcp/ncino-tool-crosswalk.yml.
+error_envelope:
+  media_type: application/json
+  shape: '{"errors": [{"id", "status", "title", "detail", "_links"}]}'
+  rfc9457: false
+  see_also: errors/ncino-problem-types.yml
+request_tracing:
+  request_id_header: null
+  error_correlation: Each error object carries an `id` intended as the reference when
+    debugging with support.
+  observed_response_header: x-request-id (observed on ncinomortgage.com MCP responses;
+    not declared in the OpenAPI)
+rate_limiting:
+  documented: false
+  headers: []
+  note: No rate limits, quota headers or Retry-After semantics are published for the
+    nCino Mortgage or eVault APIs.
+webhooks:
+  signature_header: x-api-signature
+  signature_algorithm: HMAC-SHA256 over the raw JSON body using the webhook secret
+  expected_response: 'Listeners must return 2xx; nCino resends when a success status
+    is not received. The docs say to respond 201 in one place and 200 in another —
+    return 200 or 201.'
+  retry: https://developer.ncinomortgage.com/mortgage/docs/retry-and-resend
+  test_tooling: webhooks-test_events (POST /webhooks/{webhook_id}/test_events)
+  see_also: asyncapi/ncino-mortgage-webhooks.yml
+media_types:
+  request: application/json
+  response:
+  - application/json
+  - application/octet-stream
+  - application/xml

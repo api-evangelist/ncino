@@ -1,0 +1,543 @@
+generated: '2026-08-04'
+method: derived
+source: mcp/ncino-mcp.yml + openapi/ncino-mortgage-openapi.yml
+note: 'Derived by binding each documented nCino Mortgage MCP tool to the OpenAPI operationId(s)
+  that back it. The live tools/list endpoint is OAuth-gated (401), so tools are mapped
+  by published name and description rather than by an observed inputSchema; each tool''s
+  real input contract is the parameters + requestBody of the bound operation in openapi/ncino-mortgage-openapi.yml.
+  Every operationId below was verified verbatim against that spec. nCino models most
+  state transitions (promote, demote, enable, disable, welcome email, invite) as a
+  polymorphic POST .../actions operation with the action named in the request body,
+  so several distinct tools bind to the same operationId — those rows are marked accordingly.'
+surfaces:
+  openapi:
+    file: openapi/ncino-mortgage-openapi.yml
+    title: nCino Mortgage API
+    version: '1.0'
+    operations: 251
+    gated: false
+    source: https://api.ncinomortgage.com/developer_info/openapi/1.0
+  mcp:
+    servers:
+    - https://ncinomortgage.com/mcp/lo
+    - https://ncinomortgage.com/mcp/admin
+    gated: true
+    gate: OAuth 2.1 PKCE bearer; tools/list returns 401 anonymously
+  graphql:
+    present: false
+coverage:
+  tools_named: 65
+  tools_named_unique: 58
+  tools_bound: 56
+  mcp_only: 2
+  rest_operations_total: 251
+  rest_operations_with_a_tool: 33
+crosswalk:
+- tool: list_loans
+  category: loans
+  rest:
+  - loans-index
+  binding: rest
+  confidence: high
+- tool: get_loan
+  category: loans
+  rest:
+  - loans-show
+  binding: rest
+  confidence: high
+- tool: create_loan
+  category: loans
+  rest:
+  - loans-create
+  binding: rest
+  confidence: high
+- tool: update_loan
+  category: loans
+  rest:
+  - loans-update
+  binding: rest
+  confidence: high
+- tool: list_loan_borrowers
+  category: loan-borrowers
+  rest:
+  - loan_borrowers-index
+  binding: rest
+  confidence: high
+- tool: get_loan_borrower
+  category: loan-borrowers
+  rest:
+  - loan_borrowers-show
+  binding: rest
+  confidence: high
+- tool: create_loan_borrower
+  category: loan-borrowers
+  rest:
+  - loan_borrowers-create
+  binding: rest
+  confidence: high
+- tool: update_loan_borrower
+  category: loan-borrowers
+  rest:
+  - loan_borrowers-update
+  binding: rest
+  confidence: high
+- tool: list_loan_applications
+  category: loan-applications
+  rest:
+  - loan_applications-index
+  binding: rest
+  confidence: high
+- tool: get_loan_application
+  category: loan-applications
+  rest:
+  - loan_applications-show
+  binding: rest
+  confidence: high
+- tool: create_loan_application
+  category: loan-applications
+  rest:
+  - loan_applications-create
+  binding: rest
+  confidence: high
+- tool: update_loan_application
+  category: loan-applications
+  rest:
+  - loan_applications-update
+  binding: rest
+  confidence: high
+- tool: send_borrower_welcome_email
+  category: borrowers
+  rest:
+  - borrowers-actions
+  binding: rest
+  confidence: medium
+  note: Bound to the polymorphic POST /users/borrowers/{user_borrower_id}/actions operation;
+    the welcome-email action is selected in the request body.
+- tool: list_partners
+  category: partners
+  rest:
+  - loan_officer_partners-index
+  binding: rest
+  confidence: high
+  note: Exposed on both the LO and Admin servers against the same REST operation.
+- tool: get_partner
+  category: partners
+  rest:
+  - loan_officer_partners-show
+  binding: rest
+  confidence: high
+- tool: create_partner
+  category: partners
+  rest:
+  - loan_officer_partners-create
+  binding: rest
+  confidence: high
+- tool: update_partner
+  category: partners
+  rest:
+  - loan_officer_partners-update
+  binding: rest
+  confidence: high
+- tool: enable_partner
+  category: partners
+  rest:
+  - loan_officer_partners-actions
+  binding: rest
+  confidence: medium
+  note: Polymorphic actions operation; enable is one action value.
+- tool: disable_partner
+  category: partners
+  rest:
+  - loan_officer_partners-actions
+  binding: rest
+  confidence: medium
+  note: Polymorphic actions operation; disable is one action value.
+- tool: send_partner_invite
+  category: partners
+  rest:
+  - loan_officer_partners-actions
+  binding: rest
+  confidence: medium
+  note: Polymorphic actions operation; invite is one action value.
+- tool: list_loan_officers
+  category: loan-officers
+  rest:
+  - loan_officers-index
+  binding: rest
+  confidence: high
+- tool: get_loan_officer
+  category: loan-officers
+  rest:
+  - loan_officers-show
+  binding: rest
+  confidence: high
+- tool: create_loan_officer
+  category: loan-officers
+  rest:
+  - loan_officers-create
+  binding: rest
+  confidence: high
+- tool: update_loan_officer
+  category: loan-officers
+  rest:
+  - loan_officers-update
+  binding: rest
+  confidence: high
+- tool: promote_loan_officer
+  category: loan-officers
+  rest:
+  - loan_officers-actions
+  binding: rest
+  confidence: medium
+  note: Polymorphic actions operation; corresponds to the loan_officer_promoted event
+    in the webhook catalog.
+- tool: demote_loan_officer
+  category: loan-officers
+  rest:
+  - loan_officers-actions
+  binding: rest
+  confidence: medium
+  note: Polymorphic actions operation; corresponds to the loan_officer_demoted event.
+- tool: disable_loan_officer
+  category: loan-officers
+  rest:
+  - loan_officers-actions
+  binding: rest
+  confidence: medium
+- tool: enable_loan_officer
+  category: loan-officers
+  rest:
+  - loan_officers-actions
+  binding: rest
+  confidence: medium
+- tool: change_loan_officer_org
+  category: loan-officers
+  rest:
+  - loan_officers-actions
+  binding: rest
+  confidence: low
+  note: No dedicated REST operation is documented for an organization transfer; most
+    plausibly an action value on POST /users/loan_officers/{loan_officer_id}/actions.
+- tool: send_loan_officer_welcome_email
+  category: loan-officers
+  rest:
+  - loan_officers-actions
+  binding: rest
+  confidence: medium
+- tool: list_team_members
+  category: team-members
+  rest:
+  - team_members-index
+  binding: rest
+  confidence: high
+- tool: get_team_member
+  category: team-members
+  rest:
+  - team_members-show
+  binding: rest
+  confidence: high
+- tool: create_team_member
+  category: team-members
+  rest:
+  - team_members-create
+  binding: rest
+  confidence: high
+- tool: update_team_member
+  category: team-members
+  rest:
+  - team_members-update
+  binding: rest
+  confidence: high
+- tool: disable_team_member
+  category: team-members
+  rest:
+  - team_members-actions
+  binding: rest
+  confidence: medium
+- tool: enable_team_member
+  category: team-members
+  rest:
+  - team_members-actions
+  binding: rest
+  confidence: medium
+- tool: change_team_member_org
+  category: team-members
+  rest:
+  - team_members-actions
+  binding: rest
+  confidence: low
+- tool: send_team_member_welcome_email
+  category: team-members
+  rest:
+  - team_members-actions
+  binding: rest
+  confidence: medium
+- tool: get_my_company
+  category: organizations
+  rest:
+  - companies-index
+  - companies-show
+  binding: rest
+  confidence: medium
+  note: The REST surface has no /companies/me route; the tool resolves the caller's
+    company from the token and then reads it.
+- tool: list_organizations
+  category: organizations
+  rest:
+  - company_regions-index
+  - region_branches-index
+  binding: rest
+  confidence: medium
+  note: Fans out — "organization" in the MCP surface covers both regions and branches,
+    which are separate REST collections.
+- tool: get_organization
+  category: organizations
+  rest:
+  - company_regions-show
+  - region_branches-show
+  binding: rest
+  confidence: medium
+- tool: create_organization
+  category: organizations
+  rest:
+  - company_regions-create
+  - region_branches-create
+  binding: rest
+  confidence: medium
+- tool: update_organization
+  category: organizations
+  rest:
+  - company_regions-update
+  - region_branches-update
+  binding: rest
+  confidence: medium
+- tool: list_loan_officer_state_licenses
+  category: state-licenses
+  rest:
+  - loan_officer_state_licenses-index
+  binding: rest
+  confidence: high
+- tool: get_loan_officer_state_license
+  category: state-licenses
+  rest:
+  - loan_officer_state_licenses-show
+  binding: rest
+  confidence: high
+- tool: create_loan_officer_state_license
+  category: state-licenses
+  rest:
+  - loan_officer_state_licenses-create
+  binding: rest
+  confidence: high
+- tool: update_loan_officer_state_license
+  category: state-licenses
+  rest:
+  - loan_officer_state_licenses-update
+  binding: rest
+  confidence: high
+- tool: list_organization_state_licenses
+  category: state-licenses
+  rest:
+  - company_state_licenses-index
+  - region_state_licenses-index
+  - branch_state_licenses-index
+  binding: rest
+  confidence: medium
+  note: Fans out across the three organization levels the REST API models separately.
+- tool: get_organization_state_license
+  category: state-licenses
+  rest:
+  - company_state_licenses-show
+  - region_state_licenses-show
+  - branch_state_licenses-show
+  binding: rest
+  confidence: medium
+- tool: create_organization_state_license
+  category: state-licenses
+  rest:
+  - company_state_licenses-create
+  - region_state_licenses-create
+  - branch_state_licenses-create
+  binding: rest
+  confidence: medium
+- tool: update_organization_state_license
+  category: state-licenses
+  rest:
+  - company_state_licenses-update
+  - region_state_licenses-update
+  - branch_state_licenses-update
+  binding: rest
+  confidence: medium
+- tool: get_job
+  category: jobs
+  rest:
+  - jobs-show
+  binding: rest
+  confidence: high
+mcp_only:
+- tool: run_aus
+  reason: 'No public REST operation submits a loan application to Desktop Underwriter
+    or Loan Product Advisor. The published OpenAPI does define the AUS schemas — AusOrderBody,
+    AusOrderResult, AusFinding and AusFindingList in components.schemas — but no path
+    object in the document references any of them, so the AUS capability is reachable
+    through the LO MCP server and not through the public REST contract. Verified by
+    searching every path object in openapi/ncino-mortgage-openapi.yml for those schema
+    references.'
+- tool: fetch_aus_history
+  reason: No public REST operation returns the AUS order log, for the same reason as
+    run_aus — AusFindingList is defined but unreferenced by any path. The nearest but
+    non-equivalent REST surface is services verifications (verifications-index / verifications-show),
+    which covers verification reports rather than AUS findings.
+rest_only:
+- capability: loan documents and doc tasks
+  operations:
+  - loan_documents-index
+  - loan_documents-show
+  - loan_documents-download
+  - loan_doc_tasks-index
+  - loan_doc_tasks-show
+  - loan_doc_tasks-create
+  - loan_doc_tasks-update
+  - loan_doc_tasks-destroy
+  - loan_doc_tasks-actions
+  - loan_app_doc_tasks-index
+  - loan_app_doc_tasks-show
+  - loan_app_doc_tasks-create
+  - loan_app_doc_tasks-update
+  - loan_app_doc_tasks-destroy
+  - loan_app_doc_tasks-actions
+  - loan_officer_loan_doc_tasks-index
+  - doc_package_orders-index
+  - doc_package_orders-show
+  - doc_package_orders-create
+  - doc_package_orders-update
+- capability: webhooks and subscriptions
+  operations:
+  - webhooks-index
+  - webhooks-show
+  - webhooks-create
+  - webhooks-update
+  - webhooks-destroy
+  - webhooks-actions
+  - webhooks-test_events
+  - subscriptions-index
+  - subscriptions-show
+  - subscriptions-create
+  - subscriptions-update
+  - subscriptions-destroy
+- capability: roles, permissions and RBAC
+  operations:
+  - roles-index
+  - roles-show
+  - roles-create
+  - roles-update
+  - roles-destroy
+  - roles-actions
+  - role_permissions-index
+  - role_permissions-create
+  - role_permissions-update
+  - role_permissions-destroy
+  - role_users-index
+  - role_users-create
+  - role_users-destroy
+  - permissions-index
+  - permissions-show
+  - user_permissions-index
+  - user_permissions-show
+  - user_roles-index
+- capability: nested loan application data (assets, incomes, expenses, liabilities)
+  operations:
+  - loan_application_(nested)-show
+  - loan_application_(nested)_assets-index
+  - loan_application_(nested)_assets-create
+  - loan_application_(nested)_assets-update
+  - loan_application_(nested)_borrower_incomes-index
+  - loan_application_(nested)_borrower_incomes-create
+  - loan_application_(nested)_co-borrower_incomes-index
+  - loan_application_(nested)_expenses-index
+  - loan_application_(nested)_liabilities-index
+- capability: loan milestones and company milestones
+  operations:
+  - loan_milestones-index
+  - loan_milestones-show
+  - loan_milestones-update
+  - loan_milestones-actions
+  - company_milestones-index
+  - company_milestones-show
+  - company_milestones-create
+  - company_milestones-update
+  - company_milestones-destroy
+- capability: reports
+  operations:
+  - company_reports-generate
+  - company_reports-download
+  - region_reports-generate
+  - region_reports-download
+  - branch_reports-generate
+  - branch_reports-download
+- capability: images and links (branding surfaces)
+  operations:
+  - company_images-update
+  - company_images-destroy
+  - region_images-update
+  - region_images-destroy
+  - branch_images-update
+  - branch_images-destroy
+  - loan_officer_images-update
+  - loan_officer_images-destroy
+  - team_member_images-update
+  - team_member_images-destroy
+  - partner_images-update
+  - partner_images-destroy
+  - links-index
+  - company_links-index
+  - region_links-index
+  - branch_links-index
+  - loan_officer_links-index
+  - partner_links-index
+- capability: verifications and services
+  operations:
+  - verifications-index
+  - verifications-show
+  - verifications-actions
+  - verifications-download
+  - loan_borrower_verifications-index
+- capability: assignments, aliases, prospects and app shares
+  operations:
+  - loan_officer_assignments-index
+  - loan_officer_assignments-show
+  - loan_officer_assignments-create
+  - loan_officer_assignments-destroy
+  - loan_officer_assignments-index_available
+  - team_member_assignments-index
+  - team_member_assignments-show
+  - team_member_assignments-create
+  - team_member_assignments-destroy
+  - team_member_assignments-index_available
+  - loan_officer_aliases-index
+  - loan_officer_aliases-show
+  - loan_officer_aliases-create
+  - loan_officer_aliases-destroy
+  - loan_officer_prospects-index
+  - loan_officer_prospects-show
+  - loan_officer_prospects-create
+  - loan_officer_app_shares-create
+- capability: borrower tasks, inquiry tasks and custom forms
+  operations:
+  - borrower_task_reminders-create
+  - loan_app_borrower_task_reminders-create
+  - inquiry_tasks-create
+  - loan_app_inquiry_tasks-create
+  - custom_form_requests-create
+  - loan_app_custom_form_requests-create
+- capability: authentication and eligibility
+  operations:
+  - authentication-create
+  - authentication-show
+  - authentication-actions
+  - loans-check_ron_eligibility
+  - state_licenses-index
+  - company_state_license_templates-index
+  - company_state_license_templates-show
+  - company_state_license_templates-create
+  - company_state_license_templates-update

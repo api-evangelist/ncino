@@ -1,0 +1,143 @@
+generated: '2026-08-04'
+method: derived
+source: openapi/ncino-mortgage-openapi.yml, openapi/ncino-evault-openapi.json
+docs: https://developer.ncinomortgage.com/mortgage/docs/common-error-messages
+format: custom
+envelope:
+  media_type: application/json
+  schema: ErrorSet
+  shape: '{"errors": [{"id": "...", "status": 400, "title": "...", "detail": "...",
+    "_links": {"resource": "..."}}]}'
+  fields:
+  - name: id
+    description: A unique ID, useful as a reference when debugging an error with support
+  - name: status
+    description: The HTTP status code
+  - name: title
+    description: A generic title
+  - name: detail
+    description: A detailed message
+  - name: _links
+    description: A link to the contextual resource when applicable
+  rfc9457: false
+  note: nCino Mortgage returns a JSON:API-style errors[] array rather than RFC 9457
+    application/problem+json. There is no `type` URI per problem, so error identity
+    is carried by HTTP status plus the human-readable title/detail.
+oauth_envelope:
+  schema: OAuthError
+  shape: '{"error": "invalid_client", "error_description": "..."}'
+  error_values:
+  - invalid_request
+  - invalid_client
+  - invalid_grant
+  - invalid_scope
+  - unauthorized_client
+  - unsupported_grant_type
+problems:
+- status: 400
+  title: Bad request
+  occurrences: 251
+  source: openapi/ncino-mortgage-openapi.yml#/components/responses/BadRequestError
+  variants:
+  - Invalid request body
+  - Unrecognized permission key
+  - No eligible borrower pairs found
+- status: 401
+  title: Unauthorized
+  occurrences: 251
+  source: openapi/ncino-mortgage-openapi.yml#/components/responses/UnauthorizedError
+  documented_message: Invalid or expired token
+  cause: Access tokens expire after five minutes, or the token does not match the one
+    issued.
+  remediation: 'Request a fresh token at the start of each batch of operations and
+    send it as `Authorization: Bearer <token>`.'
+- status: 403
+  title: Forbidden
+  occurrences: 249
+  source: openapi/ncino-mortgage-openapi.yml#/components/responses/ForbiddenError
+  documented_messages:
+  - message: The client does not have access to the requested resource
+    cause: The endpoint is not enabled on the API credential.
+    remediation: In API Settings, open the credential and enable the toggle for the
+      required resource.
+  - message: The client is not authorized to perform this action
+    cause: The underlying workflow is disabled in system configuration.
+    remediation: Contact customer support.
+  - message: This feature requires additional enablement. Please contact your CSM.
+    cause: The functionality requires special configuration or approval.
+    remediation: Work with your Customer Success Manager.
+- status: 404
+  title: Not found
+  occurrences: 222
+  source: openapi/ncino-mortgage-openapi.yml#/components/responses/NotFoundError
+  variants:
+  - Role not found
+  - Loan not found
+  - Asset record not found
+  - Category not found
+  - No doc package orders found for the given order_group_id
+- status: 409
+  title: Conflict
+  occurrences: 29
+  source: openapi/ncino-mortgage-openapi.yml (inline per-operation)
+  meaning: A uniqueness or duplicate-state constraint was violated.
+  variants:
+  - Webhook already exists for the given URL
+  - Webhook is already subscribed to event
+  - Borrower account already exists for the given email
+  - Loan officer already exists for the given email
+  - Team member already exists for the given email or los_username
+  - Partner already exists for the given email
+  - Role with this name already exists for this company
+  - Loan application already exists for borrower
+  - URL already taken for a branch, company, region, loan officer or partner link
+  - Orders already in progress for this loan
+  - Assignment already exists or super resource already grants access
+  - Action cannot be performed due to an ongoing asynchronous job
+- status: 410
+  title: Gone
+  occurrences: 3
+  source: openapi/ncino-mortgage-openapi.yml (report download operations)
+  meaning: Report has been archived.
+- status: 412
+  title: Precondition failed
+  occurrences: 21
+  source: openapi/ncino-mortgage-openapi.yml (inline per-operation)
+  meaning: The resource is in a state that does not permit the requested action. nCino
+    uses 412 as a domain-state guard, not as an HTTP conditional-request failure —
+    there is no If-Match/ETag contract in the spec.
+  variants:
+  - Resource is in an invalid state
+  - Loan doc task is already complete
+  - Unable to send reminder
+  - No default loan officer set for organization
+  - Milestone cascade failed
+  - Role limit reached
+  - Role assignment limit exceeded for one or more users
+- status: 423
+  title: Locked
+  occurrences: 1
+  source: openapi/ncino-mortgage-openapi.yml (loan officer operations)
+  meaning: Action cannot be performed due to an ongoing loan officer operation.
+- status: 500
+  title: Internal server error
+  occurrences: 251
+  source: openapi/ncino-mortgage-openapi.yml#/components/responses/InternalServerError
+- status: 501
+  title: Not implemented
+  source: openapi/ncino-mortgage-openapi.yml#/components/responses/NotImplementedError
+evault:
+  source: openapi/ncino-evault-openapi.json
+  docs: https://developer.ncino.com/e-vault/docs/common-error-messages
+  problems:
+  - status: 400
+    occurrences: 5
+  - status: 401
+    occurrences: 24
+    documented_message: Token is invalid or expired
+  - status: 403
+    documented_messages:
+    - The client does not have access to the requested resource
+    - The client is not authorized to perform this action
+  - status: 500
+    occurrences: 22

@@ -1,23 +1,201 @@
 aid: ncino
 name: nCino
-description: 'nCino is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'nCino is a cloud banking software company whose platform runs commercial,
+  small business, consumer and mortgage lending, deposit account opening, and portfolio
+  analytics for banks and credit unions. Its public developer surface is split across
+  two portals: the nCino Mortgage API (formerly SimpleNexus) at developer.ncinomortgage.com,
+  an OAuth 2.0 client-credentials REST API of 251 operations across foundation, loans,
+  loan applications, organizations, user management, RBAC, services and webhooks —
+  plus 35 OpenAPI 3.1 webhook events and two OAuth-protected remote MCP servers for
+  loan officers and administrators — and the nCino eVault API at developer.ncino.com,
+  a 24-operation eNote registry, transfer and audit-log API. Platform, AI and Consumer
+  Banking API reference sections on the developer portal are behind customer login.'
 url: https://raw.githubusercontent.com/api-evangelist/ncino/refs/heads/main/apis.yml
+image: https://files.readme.io/38d104d-nCino_Logo-Full_color-Dark_bgWEB.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-04'
 modified: '2026-08-04'
 tags:
 - Company
-apis: []
+- Banking
+- Financial Services
+- Lending
+- Mortgage
+- Loan Origination
+- Deposits
+- Credit Unions
+- Salesforce
+- eVault
+- eNote
+- Webhooks
+- MCP
+apis:
+- aid: ncino:mortgage
+  name: nCino Mortgage API
+  description: 'REST API for the nCino Mortgage platform (formerly SimpleNexus) covering
+    loans, loan applications, borrowers, loan officers, team members, partners, organizations
+    (companies, regions, branches), state licenses, roles and permissions, documents,
+    milestones, verifications and webhook subscriptions. OAuth 2.0 client-credentials
+    with a five-minute access token; versioned by the X-Api-Version request/response
+    header; page/page_size pagination; JSON error envelope with an errors[] array.'
+  humanURL: https://developer.ncinomortgage.com/mortgage
+  baseURL: https://api.ncinomortgage.com
+  tags:
+  - Mortgage
+  - Lending
+  - Loan Origination
+  - Banking
+  properties:
+  - type: OpenAPI
+    url: openapi/ncino-mortgage-openapi.yml
+  - type: Documentation
+    url: https://developer.ncinomortgage.com/mortgage/docs/getting-started
+  - type: APIReference
+    url: https://developer.ncinomortgage.com/mortgage/reference
+  - type: Authentication
+    url: https://developer.ncinomortgage.com/mortgage/docs/authentication-1
+  - type: Postman
+    url: https://api.ncinomortgage.com/developer_info/postman_collection/1.0
+- aid: ncino:mortgage-webhooks
+  name: nCino Mortgage Webhooks
+  description: 'OpenAPI 3.1 description of the nCino Mortgage webhook surface: webhook
+    and subscription management operations plus 35 published event definitions covering
+    loans, loan applications, milestones, documents, users, loan officers, organizations,
+    state licenses, account assignments, jobs and verifications. Deliveries carry an
+    x-api-signature HMAC-SHA256 header computed over the raw JSON body.'
+  humanURL: https://developer.ncinomortgage.com/mortgage/docs/webhooks
+  baseURL: https://api.ncinomortgage.com
+  tags:
+  - Webhooks
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/ncino-mortgage-webhooks-openapi.json
+  - type: Webhooks
+    url: asyncapi/ncino-mortgage-webhooks.yml
+  - type: Documentation
+    url: https://developer.ncinomortgage.com/mortgage/docs/webhooks
+- aid: ncino:evault
+  name: nCino eVault API
+  description: 'OpenAPI 3.1 REST API for the nCino eVault platform: register, retrieve,
+    modify, transfer and deliver eNotes, download SMART Doc XML and PDF renditions,
+    read enote and transaction audit logs, run connectivity checks, and manage webhooks.
+    Bearer JWT auth issued from the eVault token endpoint; stage and production environments
+    selected by a path parameter.'
+  humanURL: https://developer.ncino.com/e-vault
+  baseURL: https://evault.ncino.com/api
+  tags:
+  - eVault
+  - eNote
+  - Mortgage
+  - Digital Closing
+  properties:
+  - type: OpenAPI
+    url: openapi/ncino-evault-openapi.json
+  - type: Documentation
+    url: https://developer.ncino.com/e-vault/docs/getting-started
+  - type: APIReference
+    url: https://developer.ncino.com/e-vault/reference
+  - type: Authentication
+    url: https://developer.ncino.com/e-vault/docs/authentication
+- aid: ncino:mortgage-mcp
+  name: nCino Mortgage MCP Servers
+  description: 'Two hosted, remote Model Context Protocol servers for the nCino Mortgage
+    platform — an LO server for loan officers and an Admin server for organization
+    administrators. Both use OAuth 2.1 authorization-code with PKCE (S256) and dynamic
+    client registration, advertise RFC 9728 protected-resource metadata, and expose
+    tools prefixed ncino_mortgage_ that map onto nCino Mortgage REST operations.'
+  humanURL: https://developer.ncinomortgage.com/mortgage/docs/mcp-connectors
+  baseURL: https://ncinomortgage.com/mcp
+  tags:
+  - MCP
+  - Agents
+  - Mortgage
+  properties:
+  - type: MCPServer
+    url: mcp/ncino-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/ncino-tool-crosswalk.yml
+  - type: Documentation
+    url: https://developer.ncinomortgage.com/mortgage/docs/mcp-connectors
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: TrustCenter
+  url: security/ncino-trust-center.yml
+- type: DomainSecurity
+  url: security/ncino-domain-security.yml
 - type: Website
   url: https://www.ncino.com/
+- type: DeveloperPortal
+  url: https://developer.ncino.com/
+- type: Documentation
+  url: https://developer.ncinomortgage.com/mortgage/docs/getting-started
+- type: APIReference
+  url: https://developer.ncinomortgage.com/mortgage/reference
+- type: GettingStarted
+  url: https://developer.ncinomortgage.com/mortgage/docs/getting-started
+- type: Support
+  url: https://www.ncino.com/customer-support
+- type: Blog
+  url: https://www.ncino.com/blog
+- type: GitHubOrganization
+  url: https://github.com/ncino
+- type: SignUp
+  url: https://developer.ncinomortgage.com/mortgage/docs/obtaining-an-api-key
+- type: TermsOfService
+  url: https://www.ncino.com/terms-of-use-may-2024
+- type: PrivacyPolicy
+  url: https://www.ncino.com/privacy-statement
+- type: Postman
+  url: https://api.ncinomortgage.com/developer_info/postman_collection/1.0
+- type: StatusPage
+  url: https://status.ncino.com/
+- type: Compliance
+  url: https://www.ncino.com/compliance
+- type: Trust
+  url: https://www.ncino.com/ncino-trust
+- type: LLMsTxt
+  url: llms/ncino-llms.txt
+- type: WellKnown
+  url: well-known/ncino-well-known.yml
+- type: APICatalog
+  url: well-known/ncino-api-catalog.json
+- type: Packages
+  url: packages/ncino-packages.yml
+- type: Authentication
+  url: authentication/ncino-authentication.yml
+- type: OAuthScopes
+  url: scopes/ncino-scopes.yml
+- type: Conventions
+  url: conventions/ncino-conventions.yml
+- type: ErrorCatalog
+  url: errors/ncino-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/ncino-lifecycle.yml
+- type: Conformance
+  url: conformance/ncino-conformance.yml
+- type: DataModel
+  url: data-model/ncino-data-model.yml
+- type: Sandbox
+  url: sandbox/ncino-sandbox.yml
+- type: Webhooks
+  url: asyncapi/ncino-mortgage-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Overlay
+  url: overlays/ncino-mortgage-overlay.yaml
+- type: MCPServer
+  url: mcp/ncino-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/ncino-tool-crosswalk.yml
+x-enrichment:
+  date: '2026-08-04'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v1

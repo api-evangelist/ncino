@@ -1,0 +1,101 @@
+generated: '2026-08-04'
+method: searched
+source: live probes of every apis.yml and OpenAPI servers[] host
+note: 'Probed /.well-known/security.txt, /openid-configuration, /oauth-authorization-server,
+  /oauth-protected-resource, /api-catalog and /ai-plugin.json on every host. The ReadMe-hosted
+  documentation hosts (developer.ncino.com, developer.ncinomortgage.com) answer 200
+  with the single-page-app HTML shell for unknown /.well-known/* paths, so only bodies
+  that actually parsed as the expected media type are recorded as hits below.'
+hosts:
+- host: https://ncinomortgage.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: ncino-oauth-authorization-server.json
+    spec: RFC 8414
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    file: ncino-oauth-protected-resource.json
+    spec: RFC 9728
+  - path: /mcp/admin/.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    spec: RFC 9728
+  - path: /mcp/lo/.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    spec: RFC 9728
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://developer.ncino.com
+  documents:
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: application/linkset+json
+    file: ncino-api-catalog.json
+    spec: RFC 9727
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    hit: false
+    note: SPA shell, not a security.txt
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    hit: false
+    note: SPA shell, not an agent card
+- host: https://developer.ncinomortgage.com
+  documents:
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: application/linkset+json
+    file: ncino-mortgage-api-catalog.json
+    spec: RFC 9727
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    hit: false
+    note: SPA shell, not a security.txt
+- host: https://api.ncinomortgage.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 401
+  - path: /.well-known/openid-configuration
+    status: 401
+  - path: /.well-known/oauth-authorization-server
+    status: 401
+  - path: /.well-known/api-catalog
+    status: 401
+  - path: /.well-known/agent-card.json
+    status: 401
+  note: The API host requires a bearer token on every path, including /.well-known/*.
+- host: https://evault.ncino.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 500
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    hit: false
+    note: SPA shell, not OIDC discovery
+  - path: /.well-known/agent-card.json
+    status: 500
+- host: https://www.ncino.com
+  documents:
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain
+    file: ../llms/ncino-llms.txt
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+security_txt:
+  present: false
+  note: No RFC 9116 security.txt was served on any nCino host probed.

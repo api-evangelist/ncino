@@ -1,0 +1,242 @@
+generated: '2026-08-04'
+method: searched
+source: https://developer.ncinomortgage.com/mortgage/docs/mcp-connectors
+status: published
+docs:
+  overview: https://developer.ncinomortgage.com/mortgage/docs/mcp-connectors
+  admin: https://developer.ncinomortgage.com/mortgage/docs/admin-mcp-server
+  loan_officer: https://developer.ncinomortgage.com/mortgage/docs/lo-mcp-server
+tool_prefix: ncino_mortgage_
+servers:
+- name: ncino-mortgage-lo
+  label: nCino Mortgage LO MCP Server
+  audience: loan officers
+  transport: http
+  url: https://ncinomortgage.com/mcp/lo
+  protected_resource_metadata: https://ncinomortgage.com/mcp/lo/.well-known/oauth-protected-resource
+  enablement: must be enabled for the company by nCino
+- name: ncino-mortgage-admin
+  label: nCino Mortgage Admin MCP Server
+  audience: organization administrators
+  transport: http
+  url: https://ncinomortgage.com/mcp/admin
+  protected_resource_metadata: https://ncinomortgage.com/mcp/admin/.well-known/oauth-protected-resource
+  enablement: must be enabled for the company by nCino
+authorization:
+  model: OAuth 2.1 authorization code with PKCE (S256)
+  dynamic_client_registration: true
+  registration_endpoint: https://ncinomortgage.com/mcp/register
+  authorization_endpoint: https://ncinomortgage.com/zuul/oauth/authorize
+  token_endpoint: https://api.ncinomortgage.com/oauth/token
+  scopes_supported:
+  - external
+  bearer_methods_supported:
+  - header
+  token_binding: user-scoped (tied to the authenticated individual, not a shared service
+    account)
+  authorization_server_metadata: https://ncinomortgage.com/.well-known/oauth-authorization-server
+introspection:
+  tools_list_probed: true
+  http_status: 401
+  response: '{"jsonrpc":"2.0","error":{"code":-32000,"message":"Unauthorized"},"id":null}'
+  www_authenticate: Bearer resource_metadata="https://ncinomortgage.com/mcp/<server>/.well-known/oauth-protected-resource"
+  note: Live tools/list is auth-gated, so per-tool inputSchema requires an authenticated
+    session. The tool names and descriptions below are taken verbatim from the published
+    connector documentation; their real input contracts are the parameters and request
+    bodies of the backing REST operations recorded in mcp/ncino-tool-crosswalk.yml.
+access_controls:
+  role_based: results respect the same role-based permissions as the web application
+  data_isolation: company-scoped
+  audit_logging: true
+tools:
+- server: ncino-mortgage-lo
+  name: run_aus
+  description: Submit a loan application to Desktop Underwriter or Loan Product Advisor;
+    returns finding status asynchronously
+- server: ncino-mortgage-lo
+  name: fetch_aus_history
+  description: Retrieve the AUS order log including status, recommendation, provider
+    and submission details
+- server: ncino-mortgage-lo
+  name: list_loans
+  description: Retrieve paginated loan records with optional filters (org, officer,
+    borrower, type, purpose, active status)
+- server: ncino-mortgage-lo
+  name: get_loan
+  description: Fetch a single loan by ID
+- server: ncino-mortgage-lo
+  name: create_loan
+  description: Establish a new loan record with officer, number, type, purpose, amount,
+    dates, rates and property info
+- server: ncino-mortgage-lo
+  name: update_loan
+  description: Modify loan details including terms, rates, occupancy, buyer status,
+    comments and property data
+- server: ncino-mortgage-lo
+  name: list_loan_borrowers
+  description: Display paginated borrowers on a specified loan
+- server: ncino-mortgage-lo
+  name: get_loan_borrower
+  description: Retrieve an individual borrower record
+- server: ncino-mortgage-lo
+  name: create_loan_borrower
+  description: Add a borrower with name, contact, marital status, DOB, SSN and address
+    details
+- server: ncino-mortgage-lo
+  name: update_loan_borrower
+  description: Modify borrower personal and contact information
+- server: ncino-mortgage-lo
+  name: list_loan_applications
+  description: Retrieve paginated loan applications with optional filters
+- server: ncino-mortgage-lo
+  name: get_loan_application
+  description: Fetch a loan application by ID
+- server: ncino-mortgage-lo
+  name: create_loan_application
+  description: Initiate a new loan application with borrower and property data
+- server: ncino-mortgage-lo
+  name: update_loan_application
+  description: Update loan application borrower and property details
+- server: ncino-mortgage-lo
+  name: send_borrower_welcome_email
+  description: Transmit a welcome message to a borrower account
+- server: ncino-mortgage-lo
+  name: list_partners
+  description: Display a loan officer's partners with pagination
+- server: ncino-mortgage-lo
+  name: get_partner
+  description: Retrieve partner details by ID
+- server: ncino-mortgage-lo
+  name: create_partner
+  description: Add a partner with name, email, phone, title and address
+- server: ncino-mortgage-lo
+  name: update_partner
+  description: Modify partner information and branding preferences
+- server: ncino-mortgage-lo
+  name: enable_partner
+  description: Reactivate a disabled partner
+- server: ncino-mortgage-lo
+  name: disable_partner
+  description: Deactivate partner access
+- server: ncino-mortgage-lo
+  name: send_partner_invite
+  description: Dispatch an invitation email to a partner
+- server: ncino-mortgage-admin
+  name: list_loan_officers
+  description: Retrieve paginated loan officers with optional filtering by organization,
+    email, admin status or active status
+- server: ncino-mortgage-admin
+  name: get_loan_officer
+  description: Fetch a single loan officer by ID
+- server: ncino-mortgage-admin
+  name: create_loan_officer
+  description: Add a new loan officer with contact, address and professional details
+- server: ncino-mortgage-admin
+  name: update_loan_officer
+  description: Modify existing loan officer information
+- server: ncino-mortgage-admin
+  name: promote_loan_officer
+  description: Elevate a loan officer to organization admin role
+- server: ncino-mortgage-admin
+  name: demote_loan_officer
+  description: Remove admin privileges from a loan officer
+- server: ncino-mortgage-admin
+  name: disable_loan_officer
+  description: Deactivate a loan officer with optional borrower/partner reassignment
+- server: ncino-mortgage-admin
+  name: enable_loan_officer
+  description: Reactivate a disabled loan officer
+- server: ncino-mortgage-admin
+  name: change_loan_officer_org
+  description: Transfer a loan officer to a different organization (company, region
+    or branch)
+- server: ncino-mortgage-admin
+  name: send_loan_officer_welcome_email
+  description: Dispatch a welcome email to a loan officer
+- server: ncino-mortgage-admin
+  name: list_team_members
+  description: Retrieve paginated team members filtered by role, email or active status
+- server: ncino-mortgage-admin
+  name: get_team_member
+  description: Fetch a single team member by ID
+- server: ncino-mortgage-admin
+  name: create_team_member
+  description: Add a new team member with role assignment
+- server: ncino-mortgage-admin
+  name: update_team_member
+  description: Modify team member details
+- server: ncino-mortgage-admin
+  name: disable_team_member
+  description: Deactivate a team member
+- server: ncino-mortgage-admin
+  name: enable_team_member
+  description: Reactivate a disabled team member
+- server: ncino-mortgage-admin
+  name: change_team_member_org
+  description: Move a team member to another organization level
+- server: ncino-mortgage-admin
+  name: send_team_member_welcome_email
+  description: Send a welcome email to a team member
+- server: ncino-mortgage-admin
+  name: get_my_company
+  description: Retrieve the authenticated user's company
+- server: ncino-mortgage-admin
+  name: list_organizations
+  description: Retrieve paginated regions or branches with optional state filtering
+- server: ncino-mortgage-admin
+  name: get_organization
+  description: Fetch a specific region or branch by ID
+- server: ncino-mortgage-admin
+  name: create_organization
+  description: Establish a new region or branch
+- server: ncino-mortgage-admin
+  name: update_organization
+  description: Modify region or branch details
+- server: ncino-mortgage-admin
+  name: list_loan_officer_state_licenses
+  description: Retrieve paginated licenses for a loan officer
+- server: ncino-mortgage-admin
+  name: get_loan_officer_state_license
+  description: Fetch a specific loan officer license by ID
+- server: ncino-mortgage-admin
+  name: create_loan_officer_state_license
+  description: Add a state license to a loan officer
+- server: ncino-mortgage-admin
+  name: update_loan_officer_state_license
+  description: Modify loan officer license information
+- server: ncino-mortgage-admin
+  name: list_organization_state_licenses
+  description: Retrieve paginated licenses for an organization
+- server: ncino-mortgage-admin
+  name: get_organization_state_license
+  description: Fetch an organization's specific license
+- server: ncino-mortgage-admin
+  name: create_organization_state_license
+  description: Add a state license to an organization
+- server: ncino-mortgage-admin
+  name: update_organization_state_license
+  description: Modify organization license details
+- server: ncino-mortgage-admin
+  name: list_partners
+  description: Retrieve paginated partners for a loan officer with filtering options
+- server: ncino-mortgage-admin
+  name: get_partner
+  description: Fetch a specific partner by ID
+- server: ncino-mortgage-admin
+  name: create_partner
+  description: Add a new partner with contact and branding preferences
+- server: ncino-mortgage-admin
+  name: update_partner
+  description: Modify partner information
+- server: ncino-mortgage-admin
+  name: enable_partner
+  description: Reactivate a disabled partner
+- server: ncino-mortgage-admin
+  name: disable_partner
+  description: Deactivate a partner
+- server: ncino-mortgage-admin
+  name: send_partner_invite
+  description: Send an invitation email to a partner
+- server: ncino-mortgage-admin
+  name: get_job
+  description: Check the status of an asynchronous operation by job ID

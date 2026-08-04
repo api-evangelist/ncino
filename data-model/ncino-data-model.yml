@@ -1,0 +1,278 @@
+generated: '2026-08-04'
+method: derived
+source: openapi/ncino-mortgage-openapi.yml, openapi/ncino-evault-openapi.json
+note: Derived from the 422 component schemas and the path hierarchy of the nCino Mortgage
+  OpenAPI. nCino Mortgage models relationships primarily by nesting resources under
+  parent paths (/companies/{company_id}/regions, /loans/{loan_id}/borrowers) rather
+  than by embedding foreign-key fields, so relationships below are read from the path
+  hierarchy as well as from schema $ref links.
+identifiers:
+  style: opaque string ids per resource, carried in the path
+  prefixes: none published
+  examples:
+  - company_id
+  - region_id
+  - branch_id
+  - loan_id
+  - loan_application_id
+  - loan_officer_id
+  - team_member_id
+  - user_borrower_id
+  - partner_id
+  - state_license_id
+  - webhook_id
+  - job_id
+domains:
+- name: organization
+  entities:
+  - Company
+  - Region
+  - Branch
+  description: A three-level org hierarchy. Companies contain regions; regions contain
+    branches. Images, links, reports and state licenses hang off all three levels.
+- name: users
+  entities:
+  - LoanOfficer
+  - TeamMember
+  - Borrower
+  - Partner
+  - Alias
+  - AccountAssignment
+  - Prospect
+  description: All user types live under /users. Loan officers and team members are
+    assigned to organization nodes through AccountAssignment.
+- name: lending
+  entities:
+  - Loan
+  - LoanApplication
+  - LoanBorrower
+  - Asset
+  - Liability
+  - Expense
+  - BorrowerIncome
+  - BorrowerPair
+  - LoanMilestone
+  - Milestone
+  description: Loans and loan applications are separate top-level resources. The nested
+    loan-application projection (/loan_applications/nested/{id}) exposes the URLA-shaped
+    financial collections.
+- name: documents
+  entities:
+  - LoanDocument
+  - LoanDocTask
+  - DocPackageOrder
+  - DocVendor
+  - CustomFormRequest
+  - InquiryTask
+  description: Document tasks and document package orders attach to both loans and
+    loan applications.
+- name: compliance
+  entities:
+  - StateLicense
+  - StateLicenseTemplate
+  description: State licensing is tracked at company, region, branch and loan-officer
+    level, with company-level templates.
+- name: access-control
+  entities:
+  - Role
+  - Permission
+  - RolePermission
+  - RoleUser
+  description: RBAC layer; roles carry permission keys and are assigned to users.
+- name: eventing
+  entities:
+  - Webhook
+  - WebhookSubscription
+  - Job
+  description: A webhook is a listener URL; subscriptions bind it to events. Jobs represent
+    asynchronous operations.
+- name: services
+  entities:
+  - Verification
+  - AusFinding
+  description: Verification reports; AUS finding schemas exist in the spec but are
+    not referenced by any REST path.
+relationships:
+- from: Company
+  to: Region
+  type: has_many
+  via: path /companies/{company_id}/regions
+  operations:
+  - company_regions-index
+  - company_regions-create
+- from: Region
+  to: Branch
+  type: has_many
+  via: path /regions/{region_id}/branches
+  operations:
+  - region_branches-index
+  - region_branches-create
+- from: Company
+  to: Milestone
+  type: has_many
+  via: path /companies/{company_id}/milestones
+  operations:
+  - company_milestones-index
+- from: Company
+  to: StateLicense
+  type: has_many
+  via: path /companies/{company_id}/state_licenses
+- from: Company
+  to: StateLicenseTemplate
+  type: has_many
+  via: path /companies/{company_id}/state_license_templates
+- from: Region
+  to: StateLicense
+  type: has_many
+  via: path /regions/{region_id}/state_licenses
+- from: Branch
+  to: StateLicense
+  type: has_many
+  via: path /branches/{branch_id}/state_licenses
+- from: LoanOfficer
+  to: StateLicense
+  type: has_many
+  via: path /users/loan_officers/{loan_officer_id}/state_licenses
+- from: LoanOfficer
+  to: Alias
+  type: has_many
+  via: path /users/loan_officers/{loan_officer_id}/aliases
+- from: LoanOfficer
+  to: AccountAssignment
+  type: has_many
+  via: path /users/loan_officers/{loan_officer_id}/assignments
+- from: LoanOfficer
+  to: Partner
+  type: has_many
+  via: path /users/loan_officers/{loan_officer_id}/partners
+- from: LoanOfficer
+  to: Prospect
+  type: has_many
+  via: path /users/loan_officers/{loan_officer_id}/prospects
+- from: TeamMember
+  to: AccountAssignment
+  type: has_many
+  via: path /users/team_members/{team_member_id}/assignments
+- from: Loan
+  to: LoanBorrower
+  type: has_many
+  via: path /loans/{loan_id}/borrowers
+- from: Loan
+  to: LoanDocument
+  type: has_many
+  via: path /loans/{loan_id}/documents
+- from: Loan
+  to: LoanDocTask
+  type: has_many
+  via: path /loans/{loan_id}/loan_doc_tasks
+- from: Loan
+  to: DocPackageOrder
+  type: has_many
+  via: path /loans/{loan_id}/doc_package_orders
+- from: Loan
+  to: LoanMilestone
+  type: has_many
+  via: path /loans/{loan_id}/loan_milestones
+- from: Loan
+  to: InquiryTask
+  type: has_many
+  via: path /loans/{loan_id}/inquiry_tasks
+- from: LoanApplication
+  to: Borrower
+  type: has_many
+  via: path /loan_applications/{loan_application_id}/borrowers
+- from: LoanApplication
+  to: Asset
+  type: has_many
+  via: path /loan_applications/nested/{loan_application_id}/assets
+- from: LoanApplication
+  to: Liability
+  type: has_many
+  via: path /loan_applications/nested/{loan_application_id}/liabilities
+- from: LoanApplication
+  to: Expense
+  type: has_many
+  via: path /loan_applications/nested/{loan_application_id}/expenses
+- from: LoanApplication
+  to: BorrowerIncome
+  type: has_many
+  via: path /loan_applications/nested/{loan_application_id}/borrower_incomes
+- from: LoanApplication
+  to: BorrowerIncome
+  type: has_many
+  via: path /loan_applications/nested/{loan_application_id}/coborrower_incomes
+- from: LoanApplication
+  to: LoanDocTask
+  type: has_many
+  via: path /loan_applications/{loan_application_id}/loan_doc_tasks
+- from: Borrower
+  to: Verification
+  type: has_many
+  via: path /loans/borrowers/{borrower_id}/verifications
+- from: Role
+  to: Permission
+  type: has_many
+  via: path /roles/{role_id}/permissions
+- from: Role
+  to: User
+  type: has_many
+  via: path /roles/{role_id}/users
+- from: Webhook
+  to: WebhookSubscription
+  type: has_many
+  via: path /webhooks/{webhook_id}/subscriptions
+- from: Partner
+  to: Link
+  type: has_many
+  via: path /users/partners/{partner_id}/links
+polymorphic_surfaces:
+- entity: Link
+  attached_to:
+  - Company
+  - Region
+  - Branch
+  - LoanOfficer
+  - Partner
+  note: The same link resource shape is exposed under five parents, plus a top-level
+    /links index.
+- entity: Image
+  attached_to:
+  - Company
+  - Region
+  - Branch
+  - LoanOfficer
+  - TeamMember
+  - Partner
+  key: image_key
+- entity: Report
+  attached_to:
+  - Company
+  - Region
+  - Branch
+  pattern: POST to generate, GET to download, 410 Gone once archived
+evault:
+  source: openapi/ncino-evault-openapi.json
+  entities:
+  - Enote
+  - Transaction
+  - AuditLog
+  - Document
+  - Webhook
+  relationships:
+  - from: Enote
+    to: AuditLog
+    type: has_many
+    via: path /{environment}/enotes/{enote_id}/audit-log
+  - from: Enote
+    to: Document
+    type: has_many
+    via: path /{environment}/enotes/{enote_id}/documents/upload
+  renditions:
+  - smartdoc
+  - pdf
+  lifecycle_actions:
+  - register
+  - change-status
+  - change-data
+  - deliver
+  - transfer

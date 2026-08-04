@@ -1,0 +1,65 @@
+generated: '2026-08-04'
+method: searched
+source: https://developer.ncinomortgage.com/mortgage/docs/postman-collection, https://developer.ncino.com/e-vault/docs/testing-development-tools,
+  openapi/ncino-evault-openapi.json
+summary: 'nCino publishes no self-serve public sandbox or test-mode key prefix. Testing
+  is done against a customer tenant with real API credentials issued from the product
+  UI. Two genuine test surfaces exist: the eVault API''s stage environment, selected
+  by a path parameter, and webhook test-event and connectivity-check operations.'
+self_serve_sandbox: false
+test_vs_live:
+  mortgage:
+    separation: none published
+    key_prefixes: []
+    note: A single set of API credentials (API Key + API Secret) is issued per tenant
+      from API Settings in the nCino Mortgage web application; there is no documented
+      test-mode credential or test-mode key prefix.
+    credential_docs: https://developer.ncinomortgage.com/mortgage/docs/obtaining-an-api-key
+    credential_management:
+    - https://developer.ncinomortgage.com/mortgage/docs/cloning-an-api-credential
+    - https://developer.ncinomortgage.com/mortgage/docs/editing-an-api-credential
+    - https://developer.ncinomortgage.com/mortgage/docs/resetting-an-api-secret
+  evault:
+    separation: path parameter
+    parameter: environment
+    values:
+    - stage
+    - production
+    example: stage
+    note: Every eVault eNote, transaction and audit-log route is prefixed with the
+      environment segment, so the same credentials and the same routes address a stage
+      or a production vault.
+    credential_docs: https://developer.ncino.com/e-vault/docs/obtaining-api-credentials
+test_values:
+  magic_identifiers: []
+  test_cards: []
+  note: nCino publishes no magic test identifiers, test card numbers or fixture data.
+test_tooling:
+- name: Webhook test events
+  operation: webhooks-test_events
+  path: POST /webhooks/{webhook_id}/test_events
+  api: openapi/ncino-mortgage-openapi.yml
+  description: Fire a test delivery at a registered webhook endpoint so a listener
+    can be validated without producing real platform activity.
+- name: eVault connectivity check
+  path: GET /connectivity-check and GET /{environment}/connectivity
+  api: openapi/ncino-evault-openapi.json
+  description: Verify credentials and reachability against a vault environment before
+    running eNote operations.
+- name: eVault webhook test
+  path: POST /webhooks/{webhook_id}/test
+  api: openapi/ncino-evault-openapi.json
+  description: Send a test event to a registered eVault webhook.
+- name: Postman collection
+  url: https://api.ncinomortgage.com/developer_info/postman_collection/1.0
+  official: true
+  description: Public, unauthenticated download of the full nCino Mortgage Postman
+    collection. Set the auth_client_id and auth_client_secret collection variables;
+    a pre-request script mints the OAuth token before every call.
+- name: OpenAPI download
+  url: https://api.ncinomortgage.com/developer_info/openapi/1.0
+  official: true
+  description: Public, unauthenticated download of the consolidated nCino Mortgage
+    OpenAPI 3.0 document (251 operations) for import into API tooling.
+time_simulation:
+  supported: false

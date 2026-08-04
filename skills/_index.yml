@@ -1,0 +1,53 @@
+generated: '2026-08-04'
+method: generated
+source: openapi/ncino-mortgage-openapi.yml + conventions/ncino-conventions.yml + errors/ncino-problem-types.yml
+note: Every operationId referenced in these skills was verified verbatim against openapi/ncino-mortgage-openapi.yml.
+  nCino publishes no AGENTS.md or first-party skill files; these are API Evangelist
+  generated operating instructions, not provider-authored.
+skills:
+- file: ncino-authenticate-and-call.md
+  name: Authenticate against the nCino Mortgage API
+  api: openapi/ncino-mortgage-openapi.yml
+  operations:
+  - authentication-create
+  - authentication-show
+  - authentication-actions
+- file: ncino-originate-a-loan.md
+  name: Create a loan and attach borrowers
+  api: openapi/ncino-mortgage-openapi.yml
+  operations:
+  - loans-create
+  - loans-show
+  - loans-update
+  - loans-index
+  - loan_borrowers-create
+  - loan_borrowers-index
+  - loan_milestones-index
+  - loan_doc_tasks-create
+  - loans-actions
+  - jobs-show
+- file: ncino-manage-users-and-orgs.md
+  name: Manage loan officers, team members and the organization hierarchy
+  api: openapi/ncino-mortgage-openapi.yml
+  operations:
+  - loan_officers-index
+  - loan_officers-create
+  - loan_officers-actions
+  - team_members-index
+  - team_members-actions
+  - companies-show
+  - company_regions-index
+  - region_branches-index
+  - loan_officer_state_licenses-index
+  - loan_officer_partners-index
+  - loan_officer_assignments-create
+- file: ncino-subscribe-to-webhooks.md
+  name: Register and verify nCino Mortgage webhooks
+  api: openapi/ncino-mortgage-openapi.yml
+  operations:
+  - webhooks-create
+  - webhooks-index
+  - subscriptions-create
+  - subscriptions-index
+  - webhooks-test_events
+  - webhooks-destroy

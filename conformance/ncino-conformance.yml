@@ -1,0 +1,91 @@
+generated: '2026-08-04'
+method: derived
+source: openapi/ncino-mortgage-openapi.yml, openapi/ncino-evault-openapi.json, well-known/,
+  https://www.ncino.com/compliance
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: openapi/ncino-mortgage-openapi.yml declares openapi 3.0.0 with 251 operations
+- id: openapi-3.1
+  conforms: true
+  evidence: openapi/ncino-evault-openapi.json and openapi/ncino-mortgage-webhooks-openapi.json
+    declare openapi 3.1.0
+- id: oauth2
+  conforms: true
+  evidence: securitySchemes OAuth2 type oauth2 clientCredentials on the mortgage API;
+    authorization_code + PKCE on the MCP servers
+- id: oauth2-client-credentials
+  conforms: true
+  evidence: RFC 6749 section 4.4 grant on https://api.ncinomortgage.com/oauth/token
+- id: rfc8414-authorization-server-metadata
+  conforms: true
+  evidence: well-known/ncino-oauth-authorization-server.json served from https://ncinomortgage.com/.well-known/oauth-authorization-server
+- id: rfc9728-protected-resource-metadata
+  conforms: true
+  evidence: well-known/ncino-oauth-protected-resource.json plus per-server metadata
+    at /mcp/lo and /mcp/admin; 401 responses carry WWW-Authenticate with resource_metadata
+- id: rfc7636-pkce
+  conforms: true
+  evidence: code_challenge_methods_supported S256 in the authorization server metadata
+- id: rfc7591-dynamic-client-registration
+  conforms: true
+  evidence: registration_endpoint https://ncinomortgage.com/mcp/register advertised
+    in the authorization server metadata
+- id: rfc9727-api-catalog
+  conforms: true
+  evidence: application/linkset+json served at /.well-known/api-catalog on developer.ncino.com
+    and developer.ncinomortgage.com
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: no /.well-known/security.txt on any nCino host probed
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors use a JSON:API-style {"errors":[...]} envelope, not application/problem+json
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: no Sunset or Deprecation headers declared in any spec
+- id: openidconnect
+  conforms: false
+  evidence: no /.well-known/openid-configuration served
+- id: mcp
+  conforms: true
+  evidence: two hosted Model Context Protocol servers at https://ncinomortgage.com/mcp/lo
+    and /mcp/admin with OAuth 2.1 authorization
+- id: a2a
+  conforms: false
+  evidence: no /.well-known/agent-card.json or /.well-known/agent.json on any host
+- id: llms-txt
+  conforms: true
+  evidence: https://www.ncino.com/llms.txt served as text/plain
+- id: asyncapi
+  conforms: false
+  evidence: 35 webhook events are published as OpenAPI 3.1 `webhooks`, not as an AsyncAPI
+    document
+- id: json-schema
+  conforms: true
+  evidence: 422 reusable components.schemas in the mortgage spec
+- id: mismo
+  conforms: partial
+  evidence: eVault serves SMART Doc renditions (getEnoteSmartdoc) and the mortgage
+    domain model follows URLA/MISMO shapes (borrowers, assets, incomes, liabilities,
+    expenses), but no explicit MISMO version conformance is claimed in the specs
+- id: soc2
+  conforms: true
+  evidence: SOC 1 Type I/II and SOC 2 asserted on https://www.ncino.com/compliance
+    and https://www.ncino.com/ncino-trust
+- id: iso27001
+  conforms: true
+  evidence: ISO 27001 asserted on https://www.ncino.com/ncino-trust
+- id: pci-dss
+  conforms: true
+  evidence: PCI DSS controls for funding applications asserted on https://www.ncino.com/ncino-trust
+- id: csa-star
+  conforms: true
+  evidence: Cloud Security Alliance STAR certification asserted on https://www.ncino.com/ncino-trust
+- id: gdpr
+  conforms: true
+  evidence: EU-U.S. Data Privacy Framework, Swiss-U.S. Privacy Framework and GDPR data-subject
+    support asserted on https://www.ncino.com/ncino-trust
+- id: fedramp
+  conforms: false
+  evidence: no FedRAMP authorization named on the trust or compliance pages

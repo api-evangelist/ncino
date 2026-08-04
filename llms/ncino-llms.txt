@@ -1,0 +1,46 @@
+# nCino
+
+> nCino provides cloud-based banking software that transforms how financial
+> institutions operate, from loan origination to deposit account opening.
+
+## Agent access
+
+To retrieve any page as markdown, request it via the dedicated API endpoint:
+
+    GET https://www.ncino.com/api/markdown/:path
+
+Example: `https://www.ncino.com/api/markdown/our-platform`
+
+Paths with file extensions (e.g. `robots.txt`, `sitemap.xml`) are not valid and will return 404.
+
+Alternatively, send any page request with `Accept: text/markdown` and it will be served as markdown automatically.
+
+## Locales
+
+Supported locale prefixes for locale-specific content:
+
+- (no prefix) — English (United States, default)
+- `/en-GB` — English (United Kingdom)
+- `/en-EMEA` — English (EMEA)
+- `/ja-JP` — Japanese
+- `/es-ES` — Spanish
+
+Example: `https://www.ncino.com/api/markdown/en-GB/our-platform`
+
+No other locale prefixes are supported.
+
+- Full sitemap (markdown): [https://www.ncino.com/api/markdown/sitemap](https://www.ncino.com/api/markdown/sitemap)
+
+## Key pages
+
+- [https://www.ncino.com](https://www.ncino.com)
+- [https://www.ncino.com/events](https://www.ncino.com/events)
+- [https://www.ncino.com/resources](https://www.ncino.com/resources)
+
+## Dynamic content
+
+Blog posts, news, solutions, landing pages, and partner pages are listed at:
+- [https://www.ncino.com/server-sitemap-index.xml](https://www.ncino.com/server-sitemap-index.xml)
+
+To retrieve any of these as markdown, prefix the path with `/api/markdown/`.
+Example: `https://www.ncino.com/api/markdown/blog/my-post-slug`
