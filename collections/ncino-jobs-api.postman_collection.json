@@ -1,0 +1,515 @@
+{
+  "item": [
+    {
+      "id": "ab84c96d-94fa-4bbf-bd4e-0b4ca6ec857d",
+      "name": "Jobs",
+      "description": {
+        "content": "Endpoints pertaining to jobs",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bab63ecd-c085-47d5-a647-46ba09b78bee",
+          "name": "Retrieve a job record",
+          "request": {
+            "name": "Retrieve a job record",
+            "description": {
+              "content": "This endpoint will retrieve an <<glossary:asynchronous job>> record.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "jobs",
+                ":job_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "job_id",
+                  "description": "(Required) Job ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b2f00e5f-1ca8-421e-9161-990cfca30b68",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "jobs",
+                    ":job_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "job_id",
+                      "description": "(Required) Job ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_self\": \"string\",\n  \"_type\": \"string\",\n  \"id\": \"5c8be358-c674-27b1-099d-184436046ff3\",\n  \"_links\": {},\n  \"job_type\": \"DELETE_LOAN\",\n  \"job_description\": \"string\",\n  \"status\": \"QUEUED_FOR_RETRY\",\n  \"created_at\": \"2022-08-02T19:58:33.749Z\",\n  \"updated_at\": \"2015-07-20T04:25:32.296Z\",\n  \"started_at\": \"1963-11-02T14:43:45.644Z\",\n  \"finished_at\": null,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66492192-a366-4990-9c34-5f21a4ae73d7",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "jobs",
+                    ":job_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "job_id",
+                      "description": "(Required) Job ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 9297,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 4584,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57e1099c-ec8f-4d67-ba5c-098e926ba83c",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "jobs",
+                    ":job_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "job_id",
+                      "description": "(Required) Job ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 587,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 9317,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fc12a2d-9693-4094-95c7-71ca6bcaab3a",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "jobs",
+                    ":job_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "job_id",
+                      "description": "(Required) Job ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 587,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 9317,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aaf297fc-8a65-49b5-88ec-87ddcd892370",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "jobs",
+                    ":job_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "job_id",
+                      "description": "(Required) Job ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 587,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 9317,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b105f8f-d148-4a2b-a944-784a98c3c949",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "jobs",
+                    ":job_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "job_id",
+                      "description": "(Required) Job ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 587,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 9317,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.ncinomortgage.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "4ea54ef9-9bc2-4424-8f59-e8af46cad3ab",
+    "name": "nCino Mortgage Jobs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community",
+      "type": "text/plain"
+    }
+  }
+}

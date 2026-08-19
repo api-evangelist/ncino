@@ -1,0 +1,589 @@
+{
+  "item": [
+    {
+      "id": "684c415a-8f0a-496c-8f49-5978a75d0501",
+      "name": "User Roles",
+      "description": {
+        "content": "Endpoints for inspecting role assignments on a user.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "11c09d18-ce78-4143-a931-ed67530e9268",
+          "name": "🚧 Retrieve all roles assigned to a user (BETA)",
+          "request": {
+            "name": "🚧 Retrieve all roles assigned to a user (BETA)",
+            "description": {
+              "content": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieve all roles assigned to a user",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                ":user_id",
+                "roles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "The page to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "The number of records returned in each page."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "user_id",
+                  "description": "(Required) User ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3999df13-8640-4aad-88a8-98e266f751a0",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":user_id",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_id",
+                      "description": "(Required) User ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_self\": \"string\",\n  \"_type\": \"string\",\n  \"contents\": [\n    {\n      \"_self\": \"string\",\n      \"_type\": \"string\",\n      \"description\": \"string\",\n      \"id\": \"99699907-11aa-3ed9-0816-cecaa7df50a9\",\n      \"name\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"_self\": \"string\",\n      \"_type\": \"string\",\n      \"description\": \"string\",\n      \"id\": \"b39c950b-f1a3-1190-a4b9-391120f6e907\",\n      \"name\": \"string\",\n      \"_links\": {}\n    }\n  ],\n  \"_links\": {},\n  \"total_pages\": 2239,\n  \"total\": 9374\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90e0ceb4-6cc0-483f-b785-e0de1dbe7c0d",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":user_id",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_id",
+                      "description": "(Required) User ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 7766,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 5083,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7147f598-a4cd-4a88-8d68-e06ccf44073f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":user_id",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_id",
+                      "description": "(Required) User ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 6756,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 5554,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c9ecaa8-6c7b-420a-932e-741b620d1866",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":user_id",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_id",
+                      "description": "(Required) User ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 6756,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 5554,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e33d062-9e2a-4db0-ba34-a25005c5bd74",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":user_id",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_id",
+                      "description": "(Required) User ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 6756,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 5554,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb81d449-d876-4dd8-9a71-12c44f817aac",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":user_id",
+                    "roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_id",
+                      "description": "(Required) User ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 6756,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 5554,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.ncinomortgage.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "37db8a40-3092-48a5-9d2a-35a0296662e9",
+    "name": "nCino Mortgage User Roles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community",
+      "type": "text/plain"
+    }
+  }
+}

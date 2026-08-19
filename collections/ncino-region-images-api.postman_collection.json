@@ -1,0 +1,1172 @@
+{
+  "item": [
+    {
+      "id": "6c39edd9-c243-4b92-89d3-ef8a4fa160ac",
+      "name": "Region Images",
+      "description": {
+        "content": "Endpoints pertaining to region images",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "edc43b7d-f397-42c2-8c52-7f4e82e8cbe0",
+          "name": "Update a region's image",
+          "request": {
+            "name": "Update a region's image",
+            "description": {
+              "content": "Uploads images to a <<glossary:region>>. Available images and their image_keys, along with the supported file types and sizes are in the table below.\n\n> 🙇 Heads up!\n**All image file uploads should be base64 encoded.**\n<table border=1px cellpadding=5px>\n\t<tr>\n\t\t<th>image_key</th>\n\t\t<th>Supported File Types</th>\n\t\t<th>Image Dimensions</th>\n\t</tr>\n\t<tr>\n\t\t<td>logo</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>1000x313</td>\n\t</tr>\n\t<tr>\n\t\t<td>app_icon</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>100x100</td>\n\t</tr>\n\t<tr>\n\t\t<td>app_homepage_logo</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>208x32</td>\n\t</tr>\n</table>",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "regions",
+                ":region_id",
+                "images",
+                ":image_key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "image_key",
+                  "description": "(Required) Image to be updated."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "region_id",
+                  "description": "(Required) Region ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": \"<byte>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dbc27ff6-a79f-4b11-b02e-a82d8fdd03de",
+              "name": "Successfully updated region image",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": \"<byte>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ceaa419-c8eb-4d17-a68d-cf32f873a007",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": \"<byte>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 1764,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 9555,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1203649-b0b5-4410-8749-32cbc9d2cc5a",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": \"<byte>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2891,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 2310,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "00ee79ae-353c-4d96-aa3b-4b0b4ce80819",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": \"<byte>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2891,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 2310,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "24ea584e-85d0-4417-8ceb-88c70839f1a0",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": \"<byte>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2891,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 2310,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "964a3b91-1342-4c0c-8387-f4418ebfc71b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": \"<byte>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2891,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 2310,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "01d38f28-db00-4c43-8cca-24493aa62a80",
+          "name": "Delete a region's image",
+          "request": {
+            "name": "Delete a region's image",
+            "description": {
+              "content": "This endpoint will delete a <<glossary:region>>'s image.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "regions",
+                ":region_id",
+                "images",
+                ":image_key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "image_key",
+                  "description": "(Required) Image to be deleted."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "region_id",
+                  "description": "(Required) Region ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c0bbb850-878d-47d8-b8be-e7da86e1831a",
+              "name": "Successfully deleted region image",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be deleted."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39000e71-2d5f-4678-bc2e-283d31a60d71",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be deleted."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2891,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 2310,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15ba070f-f605-422c-84d2-494f43ecb044",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be deleted."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2891,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 2310,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "33c37351-1292-49fd-98b4-78806e5f5b1a",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be deleted."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2891,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 2310,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05f1381f-ea48-4540-bf36-80f66dbd2bd4",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be deleted."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2891,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 2310,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cd86ac3-34e5-4636-b26e-33f67f868b09",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "regions",
+                    ":region_id",
+                    "images",
+                    ":image_key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "image_key",
+                      "description": "(Required) Image to be deleted."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "region_id",
+                      "description": "(Required) Region ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2891,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 2310,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.ncinomortgage.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1116614a-ddb9-42bf-997c-3ca95d2742df",
+    "name": "nCino Mortgage Region Images API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community",
+      "type": "text/plain"
+    }
+  }
+}

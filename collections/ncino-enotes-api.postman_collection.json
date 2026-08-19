@@ -1,0 +1,1435 @@
+{
+  "item": [
+    {
+      "id": "7e9e0532-ffb8-4d9e-9da3-5faeeb148fdd",
+      "name": "Enotes",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ddb9308f-eff2-48fb-90e7-5282a2afdd89",
+          "name": "Create an eNote",
+          "request": {
+            "name": "Create an eNote",
+            "description": {
+              "content": "Creates a new <Glossary>eNote</Glossary> in eVault from the supplied borrower, property, and loan details along with the eNote document data (the eNote file and its PDF rendering).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":environment",
+                "enotes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "environment",
+                  "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lienType\": \"<string>\",\n  \"borrowerFirstName\": \"<string>\",\n  \"borrowerLastName\": \"<string>\",\n  \"streetAddress\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"zip\": \"<string>\",\n  \"enoteData\": \"<string>\",\n  \"enoteDataFileType\": \"<string>\",\n  \"pdfData\": \"<string>\",\n  \"loanNumber\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6e67dd43-92cd-4f51-b083-388bdf39f6dd",
+              "name": "Created eNote",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lienType\": \"FirstLien\",\n  \"borrowerFirstName\": \"Simple\",\n  \"borrowerLastName\": \"Nexus\",\n  \"streetAddress\": \"123 SimpleNexus Ln\",\n  \"city\": \"Lehi\",\n  \"state\": \"NV\",\n  \"zip\": \"12345\",\n  \"enoteData\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n  \"enoteDataFileType\": \"application/zip\",\n  \"pdfData\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n  \"loanNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"errors\": null,\n  \"warnings\": null,\n  \"data\": {\n    \"id\": \"459f521f-f2fa-4230-a704-46147ac8as7e\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ae56ef8-c605-4149-9ad5-fb8c454ec313",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lienType\": \"FirstLien\",\n  \"borrowerFirstName\": \"Simple\",\n  \"borrowerLastName\": \"Nexus\",\n  \"streetAddress\": \"123 SimpleNexus Ln\",\n  \"city\": \"Lehi\",\n  \"state\": \"NV\",\n  \"zip\": \"12345\",\n  \"enoteData\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n  \"enoteDataFileType\": \"application/zip\",\n  \"pdfData\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n  \"loanNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d28545ce-dae6-4bbd-aa66-c1a209d1021b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lienType\": \"FirstLien\",\n  \"borrowerFirstName\": \"Simple\",\n  \"borrowerLastName\": \"Nexus\",\n  \"streetAddress\": \"123 SimpleNexus Ln\",\n  \"city\": \"Lehi\",\n  \"state\": \"NV\",\n  \"zip\": \"12345\",\n  \"enoteData\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n  \"enoteDataFileType\": \"application/zip\",\n  \"pdfData\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n  \"loanNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f5973458-3a3a-4ec2-bc77-5ada5253f0ef",
+          "name": "Get an eNote",
+          "request": {
+            "name": "Get an eNote",
+            "description": {
+              "content": "Retrieves the full details and current status of an <Glossary>eNote</Glossary> by its guid, including its registration status, named parties, and <Glossary>audit log</Glossary> entries.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":environment",
+                "enotes",
+                ":enote_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "environment",
+                  "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "enote_id",
+                  "description": "(Required) The unique identifier for an eNote"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cabc8611-b783-404a-9817-2cfa88f9cab7",
+              "name": "eNote",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"errors\": null,\n  \"warnings\": null,\n  \"data\": {\n    \"id\": \"459f521f-f2fa-4230-a704-46147ac8as7e\",\n    \"loanNumber\": \"<string>\",\n    \"min\": \"string\",\n    \"isTest\": true,\n    \"smartdocPresented\": null,\n    \"smartdocVersion\": \"string\",\n    \"lienType\": \"FirstLien\",\n    \"borrowerFirstName\": \"Simple\",\n    \"borrowerLastName\": \"Nexus\",\n    \"borrowerAddress1\": \"123 SimpleNexus Ln\",\n    \"borrowerAddress2\": \"Lehi, UT 84043\",\n    \"status\": \"unregistered\",\n    \"registeredAt\": \"2019-02-28T00:00:00Z\",\n    \"tampersealed\": false,\n    \"tampersealLastValidatedAt\": null,\n    \"assumed\": false,\n    \"modified\": false,\n    \"active\": true,\n    \"unregisteredReason\": null,\n    \"createdAt\": \"2019-02-28T00:00:00Z\",\n    \"updatedAt\": \"2019-02-28T00:00:00Z\",\n    \"auditLogs\": [\n      {\n        \"eventType\": \"connectivity\",\n        \"incoming\": false,\n        \"status\": \"success\",\n        \"requestTimestamp\": \"2019-02-28T00:00:00Z\",\n        \"isTest\": false\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "062344be-18e2-4f60-952b-0da48827c33a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "407c4979-aee1-4594-a4e4-f52ab7f8e667",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "00c173bb-5965-434a-b276-904e218db6fe",
+          "name": "Get an eNote smartdoc",
+          "request": {
+            "name": "Get an eNote smartdoc",
+            "description": {
+              "content": "Retrieves the <Glossary>smartdoc</Glossary> (SMART Doc®) representation of an <Glossary>eNote</Glossary> by its guid.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":environment",
+                "enotes",
+                ":enote_id",
+                "smartdoc"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "environment",
+                  "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "enote_id",
+                  "description": "(Required) The unique identifier for an eNote"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9273623a-edac-47be-96fb-dd9052153a9e",
+              "name": "eNote",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "smartdoc"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"errors\": null,\n  \"warnings\": null,\n  \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "310d4c64-d55e-44b5-98d0-c37fe6bae81a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "smartdoc"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ab3a175e-f1d7-4be5-af0f-928f6915166b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "smartdoc"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9c58829d-7f0d-4036-bdf8-443d80962346",
+          "name": "Get an eNote pdf",
+          "request": {
+            "name": "Get an eNote pdf",
+            "description": {
+              "content": "Retrieves the PDF rendering of an <Glossary>eNote</Glossary> by its guid.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":environment",
+                "enotes",
+                ":enote_id",
+                "pdf"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "environment",
+                  "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "enote_id",
+                  "description": "(Required) The unique identifier for an eNote"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7430e889-76c5-4d9c-881f-3141212ddeb5",
+              "name": "eNote",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "pdf"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"errors\": null,\n  \"warnings\": null,\n  \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3bd7a16f-d8f4-4cdf-aa83-399a39eb3b40",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "pdf"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "30850f16-ca47-46d9-ba7a-eb28e59d3644",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "pdf"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aca32c83-c24b-4516-ae6d-2c60149e633a",
+          "name": "Get an eNote audit log",
+          "request": {
+            "name": "Get an eNote audit log",
+            "description": {
+              "content": "Retrieves the <Glossary>audit log</Glossary> for an <Glossary>eNote</Glossary> — the time-ordered record of events (registration, transfers, status changes, and so on) recorded against its <Glossary>electronic record</Glossary>.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":environment",
+                "enotes",
+                ":enote_id",
+                "audit-log"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "environment",
+                  "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "enote_id",
+                  "description": "(Required) The unique identifier for an eNote"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "33c74c30-fd29-45f9-b2ed-b421e7878bf0",
+              "name": "eNote",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "audit-log"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"errors\": null,\n  \"warnings\": null,\n  \"data\": {\n    \"auditLog\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9fb137db-e35c-4ac2-9ac7-86a00c6cd95a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "audit-log"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "423c5c9c-3d82-46a6-9743-1278c4ba5ff0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "audit-log"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4913a801-5a8d-42ce-bbfc-1587ec4dcc02",
+          "name": "Upload a document to an eNote",
+          "request": {
+            "name": "Upload a document to an eNote",
+            "description": {
+              "content": "Uploads one or more supporting documents (such as an appraisal or title policy) and attaches them to an <Glossary>eNote</Glossary>.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":environment",
+                "enotes",
+                ":enote_id",
+                "documents",
+                "upload"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "environment",
+                  "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "enote_id",
+                  "description": "(Required) The unique identifier for an eNote"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"documents\": [\n    {\n      \"documentType\": \"<string>\",\n      \"contentType\": \"<string>\",\n      \"loanNumber\": \"<string>\",\n      \"name\": \"<string>\",\n      \"data\": \"<string>\",\n      \"remoteId\": \"<string>\"\n    },\n    {\n      \"documentType\": \"<string>\",\n      \"contentType\": \"<string>\",\n      \"loanNumber\": \"<string>\",\n      \"name\": \"<string>\",\n      \"data\": \"<string>\",\n      \"remoteId\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b9ef96e6-05c6-4abc-8090-aea9617fea41",
+              "name": "Document uploaded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "documents",
+                    "upload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"documents\": [\n    {\n      \"documentType\": \"AppraisalReport\",\n      \"contentType\": \"application/pdf\",\n      \"loanNumber\": \"<string>\",\n      \"name\": \"Document 1\",\n      \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n      \"remoteId\": \"remote-doc-1\"\n    },\n    {\n      \"documentType\": \"AppraisalReport\",\n      \"contentType\": \"application/pdf\",\n      \"loanNumber\": \"<string>\",\n      \"name\": \"Document 1\",\n      \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n      \"remoteId\": \"remote-doc-1\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"errors\": null,\n  \"warnings\": null,\n  \"data\": {\n    \"documents\": [\n      {\n        \"id\": \"459f521f-f2fa-4230-a704-46147ac8as7e\",\n        \"name\": \"Document 1\",\n        \"documentType\": \"AppraisalReport\"\n      },\n      {\n        \"id\": \"459f521f-f2fa-4230-a704-46147ac8as7e\",\n        \"name\": \"Document 1\",\n        \"documentType\": \"AppraisalReport\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "80c240f8-9505-40f0-aab4-03c07b418f53",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "documents",
+                    "upload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"documents\": [\n    {\n      \"documentType\": \"AppraisalReport\",\n      \"contentType\": \"application/pdf\",\n      \"loanNumber\": \"<string>\",\n      \"name\": \"Document 1\",\n      \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n      \"remoteId\": \"remote-doc-1\"\n    },\n    {\n      \"documentType\": \"AppraisalReport\",\n      \"contentType\": \"application/pdf\",\n      \"loanNumber\": \"<string>\",\n      \"name\": \"Document 1\",\n      \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n      \"remoteId\": \"remote-doc-1\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2dd61329-84b3-4333-bdf0-d8f904ea0d6e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":environment",
+                    "enotes",
+                    ":enote_id",
+                    "documents",
+                    "upload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "environment",
+                      "description": "(Required) The environment where the eNote, transaction, or audit log will be located."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "enote_id",
+                      "description": "(Required) The unique identifier for an eNote"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"documents\": [\n    {\n      \"documentType\": \"AppraisalReport\",\n      \"contentType\": \"application/pdf\",\n      \"loanNumber\": \"<string>\",\n      \"name\": \"Document 1\",\n      \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n      \"remoteId\": \"remote-doc-1\"\n    },\n    {\n      \"documentType\": \"AppraisalReport\",\n      \"contentType\": \"application/pdf\",\n      \"loanNumber\": \"<string>\",\n      \"name\": \"Document 1\",\n      \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==\",\n      \"remoteId\": \"remote-doc-1\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://evault.ncino.com/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0e7fa617-8ab4-47b5-ae2d-4576360e23e1",
+    "name": "nCino eVault Enotes API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "All routes are currently in development and should be treated as such.",
+      "type": "text/plain"
+    }
+  }
+}

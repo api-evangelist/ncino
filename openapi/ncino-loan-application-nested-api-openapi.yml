@@ -1,0 +1,372 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Loan Application (Nested) Loan Application (Nested) API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Loan Application (Nested)
+  description: Endpoints pertaining to a loan application in nested format.
+paths:
+  /loan_applications/nested/{loan_application_id}:
+    get:
+      tags:
+      - Loan Application (Nested)
+      operationId: loan_application_(nested)-show
+      parameters:
+      - name: loan_application_id
+        description: Loan application ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanApplicationNested'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        Retrieves a specific loan application by ID.'
+      summary: 🚧 Retrieve a specific loan application by ID. (BETA)
+components:
+  responses:
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+  schemas:
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    IncomeCreateBody:
+      type: object
+      properties:
+        owner:
+          type: string
+          description: 'The borrower who receives this income source: "Borrower", or "Co-borrower". This cannot be updated.'
+        type:
+          type: string
+          description: This income source's type.
+        amount:
+          type: integer
+          description: The amount of income from this source.
+        frequency:
+          type: string
+          description: The frequency at which this income is earned.
+      required:
+      - owner
+      description: Body for creating a new income record.
+    LiabilityCreateBody:
+      type: object
+      properties:
+        type:
+          type: string
+          description: This liability's type.
+        balance:
+          type: integer
+          description: This liability's balance.
+        owner:
+          type: string
+          description: 'The borrower responsible for this liability: "Borrower", "Co-borrower", or "Both".'
+      description: Body for creating a new liability record.
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    Liability:
+      allOf:
+      - $ref: '#/components/schemas/LiabilityCreateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: A single liability record.
+    ExpenseCreateBody:
+      type: object
+      properties:
+        type:
+          type: string
+          description: This expense's type.
+        category:
+          type: string
+          description: This expense's category.
+        amount:
+          type: integer
+          description: The amount paid to this expense.
+        frequency:
+          type: string
+          description: The frequency at which this expense is paid.
+      description: Body for creating a new expense record.
+    Income:
+      allOf:
+      - $ref: '#/components/schemas/IncomeCreateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+          owner:
+            type: string
+            description: 'The borrower who receives this income source: "Borrower", or "Co-borrower". This cannot be updated.'
+        required:
+        - _id
+        - owner
+      description: A single income record.
+    Asset:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque, interim item identifier (not a uuid — see class description).
+          type:
+            type:
+            - string
+            - 'null'
+            description: This asset's type.
+          value:
+            type:
+            - string
+            - 'null'
+            description: This asset's estimated value.
+          owner:
+            type:
+            - string
+            - 'null'
+            description: 'The owner(s) of this asset: "Borrower", "Co-borrower", or "Both".'
+        required:
+        - _id
+      description: 'A single asset record. Beyond the form''s standard fields (`type`,
+
+        `value`, `owner`), a company''s form may declare FI-custom fields, so
+
+        additional properties are permitted. `_id` is an opaque string
+
+        identifier, stable only for the lifetime of the loan application''s
+
+        current field ordering. A persisted, stable identifier is planned as
+
+        future work. It uses the underscore-prefixed namespace reserved for API
+
+        meta fields (alongside `_self`/`_type`/`_links`), so a data field can
+
+        never overwrite it.'
+    LoanApplicationNested:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          assets:
+            type: array
+            items:
+              $ref: '#/components/schemas/Asset'
+            description: The borrower's and coborrower's assets.
+          borrower_incomes:
+            type: array
+            items:
+              $ref: '#/components/schemas/Income'
+            description: The borrower's sources of income.
+          coborrower_incomes:
+            type: array
+            items:
+              $ref: '#/components/schemas/Income'
+            description: The coborrower's sources of income.
+          expenses:
+            type: array
+            items:
+              $ref: '#/components/schemas/Expense'
+            description: The borrower's and coborrower's expenses.
+          liabilities:
+            type: array
+            items:
+              $ref: '#/components/schemas/Liability'
+            description: The borrower's and coborrower's liabilities.
+      description: A loan application in nested format.
+    Expense:
+      allOf:
+      - $ref: '#/components/schemas/ExpenseCreateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: A single expense record.
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

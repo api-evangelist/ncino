@@ -1,0 +1,3494 @@
+{
+  "item": [
+    {
+      "id": "f029b7f9-5c82-4dbb-9b83-bb9dfe4b3434",
+      "name": "Borrowers",
+      "description": {
+        "content": "Endpoints pertaining to <<glossary:borrower account>>s in the nCino Mortgage platform",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "03a53688-e31a-4b42-b9fd-f947bb230aff",
+          "name": "Create a borrower account",
+          "request": {
+            "name": "Create a borrower account",
+            "description": {
+              "content": "This endpoint will create a <<glossary:borrower account>> in the platform.\n\nThe borrower will use this information to register or log in to their account on the specified <<glossary:loan officer>>'s shared application.\n> 🙇 Heads up!\n**This record is not to be confused with a <<glossary:loan borrower>> record,** which is directly associated with and created through a loan or loan application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                "borrowers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"loan_officer_id\": \"<uuid>\",\n  \"partner_id\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7771e290-3c1e-4fd3-8581-678dd6b416f3",
+              "name": "Created borrower account",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"loan_officer_id\": \"<uuid>\",\n  \"partner_id\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_self\": \"string\",\n  \"_type\": \"string\",\n  \"id\": \"19ff6dd2-2e9b-8d52-38ba-44304e6f9051\",\n  \"_links\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6991790-2d26-4f7b-a59f-1308b6ccf470",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"loan_officer_id\": \"<uuid>\",\n  \"partner_id\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 4662,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 5011,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2402e712-bf55-4230-b7a0-97c06a37d845",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"loan_officer_id\": \"<uuid>\",\n  \"partner_id\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36183e65-931f-4b18-ac88-4e2516482aa3",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"loan_officer_id\": \"<uuid>\",\n  \"partner_id\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "54c1f7c7-8711-4faf-8e22-aa64db129d0c",
+              "name": "Borrower account already exists for the given email",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"loan_officer_id\": \"<uuid>\",\n  \"partner_id\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3e3b8c0-da88-44c6-b892-7f9bb02d633f",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"loan_officer_id\": \"<uuid>\",\n  \"partner_id\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c7da15fb-1756-4879-b4e4-e7abd7d8245e",
+          "name": "Retrieve all borrower accounts",
+          "request": {
+            "name": "Retrieve all borrower accounts",
+            "description": {
+              "content": "This endpoint will retrieve all <<glossary:borrower account>>s for the company.\n\nTo filter the scope of records returned, leverage one or more of the query params found below. `Email` is a common parameter by which to filter.\n\nBy default, all borrower accounts are returned regardless of `is_active` status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                "borrowers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<string>",
+                  "description": "Email by which to filter borrower accounts."
+                },
+                {
+                  "disabled": false,
+                  "key": "has_custom_consent",
+                  "value": "<boolean>",
+                  "description": "Consent status by which to filter borrower accounts."
+                },
+                {
+                  "disabled": false,
+                  "key": "is_active",
+                  "value": "<boolean>",
+                  "description": "Status by which to filter borrower accounts."
+                },
+                {
+                  "disabled": false,
+                  "key": "loan_officer_id",
+                  "value": "<uuid>",
+                  "description": "Loan officer's ID by which to filter borrower accounts."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "The page to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "The number of records returned in each page."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_after",
+                  "value": "<dateTime>",
+                  "description": "The date which a resource must be created after to be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_before",
+                  "value": "<dateTime>",
+                  "description": "The date which a resource must be created before to be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "updated_after",
+                  "value": "<dateTime>",
+                  "description": "The date which a resource must be updated after to be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "updated_before",
+                  "value": "<dateTime>",
+                  "description": "The date which a resource must be updated before to be returned."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "131d8972-b97a-4535-936d-2aa2a3e9d1b4",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "has_custom_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_active",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "loan_officer_id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_before",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_self\": \"string\",\n  \"_type\": \"string\",\n  \"contents\": [\n    {\n      \"_self\": \"string\",\n      \"_type\": \"string\",\n      \"email\": \"string\",\n      \"first_name\": \"string\",\n      \"id\": \"0c8bf646-96bc-ca6e-d306-75ed42797cc9\",\n      \"last_name\": \"string\",\n      \"_links\": {},\n      \"created_at\": \"2018-07-10T16:28:48.802Z\",\n      \"updated_at\": \"1959-11-23T08:10:56.950Z\",\n      \"phone\": null,\n      \"is_active\": true,\n      \"custom_consent\": true\n    },\n    {\n      \"_self\": \"string\",\n      \"_type\": \"string\",\n      \"email\": \"string\",\n      \"first_name\": \"string\",\n      \"id\": \"f7f534ad-3136-d762-c868-8a5e43577a34\",\n      \"last_name\": \"string\",\n      \"_links\": {},\n      \"created_at\": \"1970-11-26T09:07:24.390Z\",\n      \"updated_at\": \"1993-04-19T07:12:19.720Z\",\n      \"phone\": null,\n      \"is_active\": true,\n      \"custom_consent\": true\n    }\n  ],\n  \"_links\": {},\n  \"total_pages\": 3379,\n  \"total\": 4135\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "30e882d8-02e5-486d-a72f-1f88352bd1cd",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "has_custom_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_active",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "loan_officer_id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_before",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b7c6fad-4b00-42c9-9466-a49229c799c0",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "has_custom_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_active",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "loan_officer_id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_before",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4edf80cc-de82-43b8-81e6-e8797248cbe8",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "has_custom_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_active",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "loan_officer_id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_before",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8ed4d46-5427-4462-80b2-c4b415484b08",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "has_custom_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "is_active",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "loan_officer_id",
+                      "value": "<uuid>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "updated_before",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "34e3714b-d9bb-4384-9512-bd9269535f0a",
+          "name": "Retrieve a borrower account",
+          "request": {
+            "name": "Retrieve a borrower account",
+            "description": {
+              "content": "This endpoint will retrieve a single <<glossary:borrower account>>.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                "borrowers",
+                ":user_borrower_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "user_borrower_id",
+                  "description": "(Required) Borrower account ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e697df9b-450f-41d5-a839-7cfa0121e210",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_self\": \"string\",\n  \"_type\": \"string\",\n  \"email\": \"string\",\n  \"first_name\": \"string\",\n  \"id\": \"1a5b6c23-3b47-757a-cf1c-8c974a8d135b\",\n  \"last_name\": \"string\",\n  \"_links\": {},\n  \"created_at\": \"2017-11-03T12:59:21.183Z\",\n  \"updated_at\": \"2010-07-31T07:15:15.493Z\",\n  \"phone\": \"string\",\n  \"is_active\": true,\n  \"custom_consent\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a3d8591d-e5d6-4bf3-a8cb-34faed17078c",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2ab1977-8750-4530-8037-412e63a55f13",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba45612e-2c8c-4e39-a0b0-afd007120da3",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "73120dd8-3f9c-4601-bef2-aa04e7a4e25a",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "45bd23d4-ee5b-463a-9b0a-9caa0b824fc3",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "be587626-e393-42ce-b573-83888c3791b4",
+          "name": "Update a borrower account",
+          "request": {
+            "name": "Update a borrower account",
+            "description": {
+              "content": "This endpoint will update any data provided via body params on the <<glossary:borrower account>>. Only the body params listed maybe be used.\n\nPassing an empty body will result in a successful request but no changes in data.\n> 🙇 Heads up!\n**Email addresses may NOT be reused across borrower accounts.** Every borrower account must have a unique email address.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                "borrowers",
+                ":user_borrower_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "user_borrower_id",
+                  "description": "(Required) Borrower account ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"custom_consent\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "09bffd38-0a9f-48f7-af55-0ecb8e2fac91",
+              "name": "Successfully updated borrower account",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"custom_consent\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea6799d8-2740-4195-8b19-5a1ed4cdffb9",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"custom_consent\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37875a5a-1e5e-456d-8dcc-3bd1657d4331",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"custom_consent\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e19cf4cd-2c77-429d-be46-5651cd268509",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"custom_consent\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "491c5011-a362-4fe2-bf4d-1b831b7b3769",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"custom_consent\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ae76e42-0d62-46fd-a256-e1c887cdb8d3",
+              "name": "Borrower account already exists for the given email",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"custom_consent\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "474ace20-10ad-4b99-8fa8-7ecdb311ef17",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<email>\",\n  \"phone\": \"<phone>\",\n  \"custom_consent\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dc910953-1b7e-4c61-975b-ffec939d40dd",
+          "name": "Delete a borrower account",
+          "request": {
+            "name": "Delete a borrower account",
+            "description": {
+              "content": "This endpoint will delete a <<glossary:borrower account>>.\n\n> 🙇 Heads up!\n**This action will delete all loan applications attached to the borrower account and thus should be considered an irreversible action.**",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                "borrowers",
+                ":user_borrower_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "user_borrower_id",
+                  "description": "(Required) Borrower account ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e0563f59-2050-425e-a225-e10ebc06e514",
+              "name": "Successfully deleted borrower account",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0859830c-2a57-49c9-bef4-7ddd882d3349",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12554932-2663-41be-8a4a-60e5f0c910e8",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d67d2b9-b31c-4bcd-babb-1d1ec3b63883",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "98149884-2492-426a-ab22-550df5066413",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3ba5054-633a-4430-8399-a7590ef3e1c9",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d6f1013-631e-4e1f-b647-1eb6324157c0",
+          "name": "Perform action on a borrower account",
+          "request": {
+            "name": "Perform action on a borrower account",
+            "description": {
+              "content": "This endpoint allows a variety of actions to be taken on a <<glossary:borrower account>>.\n\n> 📌 Available actions\n**SEND_WELCOME_EMAIL** - Resend welcome email\n**REASSIGN_LO** - Reassign borrower account to a different loan officer. Applications for the indicated borrower account may be reassigned to the new <<glossary:loan officer>>.\nIf existing applications are not reassigned or loan records are associated with the borrower account then a new borrower account will be created.\n<<glossary:Partner>> information will be removed during the reassignment and will need to be reestablished through a borrower account update.\nTo update the association of a loan officer and borrower account on a loan record, update the loan officer on the loan record.\n**ASSIGN_PARTNER** - Assign partner to borrower account\n**REMOVE_PARTNER** - Unassign partner from borrower account\n\nThe `action` property must be one of the available actions above, provided in the JSON as screaming snake case.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                "borrowers",
+                ":user_borrower_id",
+                "actions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "user_borrower_id",
+                  "description": "(Required) Borrower account ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cce12eb3-9fe4-4dbc-a765-e83cf6a2150a",
+              "name": "Created borrower account",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id",
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_self\": \"string\",\n  \"_type\": \"string\",\n  \"id\": \"19ff6dd2-2e9b-8d52-38ba-44304e6f9051\",\n  \"_links\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bce4ce05-de1c-44ed-b3a1-e61732a77aa5",
+              "name": "No content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id",
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d63f3ef8-d83b-4e49-97a9-5daeb5cd841f",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id",
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3bc812d-966b-47e1-9f17-627071693539",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id",
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eafefe9d-e54b-4ae4-9e32-fa0a5378ccbb",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id",
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "abd7811d-e87d-4442-9612-c5d762909f8e",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id",
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d5acdee-bbe2-4645-b27f-92fcba77dfd7",
+              "name": "An association already exists for the borrower account",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id",
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0b0ea17-2909-454c-b1fa-739e2b50127d",
+              "name": "Resource is in an invalid state",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id",
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58c48aa2-c9e9-4ae0-9ee8-7dbdeded644b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    "borrowers",
+                    ":user_borrower_id",
+                    "actions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "user_borrower_id",
+                      "description": "(Required) Borrower account ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 3296,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 579,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.ncinomortgage.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ce948d22-ef39-4740-8531-1857d4ec3c80",
+    "name": "nCino Mortgage Borrowers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community",
+      "type": "text/plain"
+    }
+  }
+}

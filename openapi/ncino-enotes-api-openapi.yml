@@ -1,0 +1,609 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: nCino eVault Enotes API
+  description: All routes are currently in development and should be treated as such.
+servers:
+- url: https://evault.ncino.com/api
+  description: Production server
+security:
+- bearerAuth: []
+tags:
+- name: Enotes
+paths:
+  /{environment}/enotes:
+    x-acl: enotes
+    post:
+      summary: Create an eNote
+      description: Creates a new <Glossary>eNote</Glossary> in eVault from the supplied borrower, property, and loan details along with the eNote document data (the eNote file and its PDF rendering).
+      tags:
+      - Enotes
+      parameters:
+      - name: environment
+        description: The environment where the eNote, transaction, or audit log will be located.
+        required: true
+        in: path
+        schema:
+          $ref: '#/components/schemas/environment'
+      requestBody:
+        description: In order to create an eNote, all of the following must be included in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/enotes_post'
+      responses:
+        '200':
+          description: Created eNote
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/default_success_response'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/guid'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks/put/responses/500'
+  /{environment}/enotes/{enote_id}:
+    x-acl: enotes
+    get:
+      summary: Get an eNote
+      description: Retrieves the full details and current status of an <Glossary>eNote</Glossary> by its guid, including its registration status, named parties, and <Glossary>audit log</Glossary> entries.
+      operationId: getEnote
+      tags:
+      - Enotes
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - name: enote_id
+        description: The unique identifier for an eNote
+        required: true
+        in: path
+        schema:
+          $ref: '#/components/schemas/guid'
+      responses:
+        '200':
+          description: eNote
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/default_success_response'
+                - type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/enote_response'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/enotes/{enote_id}/smartdoc:
+    x-acl: enotes
+    get:
+      summary: Get an eNote smartdoc
+      description: Retrieves the <Glossary>smartdoc</Glossary> (SMART Doc®) representation of an <Glossary>eNote</Glossary> by its guid.
+      operationId: getEnoteSmartdoc
+      tags:
+      - Enotes
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes~1%7Benote_id%7D/get/parameters/1'
+      responses:
+        '200':
+          description: eNote
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/default_success_response'
+                - type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/base64'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/enotes/{enote_id}/pdf:
+    x-acl: enotes
+    get:
+      summary: Get an eNote pdf
+      description: Retrieves the PDF rendering of an <Glossary>eNote</Glossary> by its guid.
+      operationId: getEnotePdf
+      tags:
+      - Enotes
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes~1%7Benote_id%7D/get/parameters/1'
+      responses:
+        '200':
+          description: eNote
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/default_success_response'
+                - type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/base64'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/enotes/{enote_id}/audit-log:
+    x-acl: enotes
+    get:
+      summary: Get an eNote audit log
+      description: Retrieves the <Glossary>audit log</Glossary> for an <Glossary>eNote</Glossary> — the time-ordered record of events (registration, transfers, status changes, and so on) recorded against its <Glossary>electronic record</Glossary>.
+      operationId: getEnoteAuditLog
+      tags:
+      - Enotes
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes~1%7Benote_id%7D/get/parameters/1'
+      responses:
+        '200':
+          description: eNote
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/default_success_response'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        auditLog:
+                          $ref: '#/components/schemas/base64'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/enotes/{enote_id}/documents/upload:
+    x-acl: enotes
+    post:
+      summary: Upload a document to an eNote
+      description: Uploads one or more supporting documents (such as an appraisal or title policy) and attaches them to an <Glossary>eNote</Glossary>.
+      tags:
+      - Enotes
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes~1%7Benote_id%7D/get/parameters/1'
+      requestBody:
+        description: In order to upload documents to an eNote, all of the following must be included in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/enotes-enote_guid-documents-upload_post'
+      responses:
+        '200':
+          description: Document uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/default_success_response'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        documents:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                $ref: '#/components/schemas/guid'
+                              name:
+                                $ref: '#/components/schemas/document_name'
+                              documentType:
+                                $ref: '#/components/schemas/document_type'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks/put/responses/500'
+components:
+  schemas:
+    lien_type:
+      type: string
+      example: FirstLien
+    enotes_post:
+      type: object
+      required:
+      - lienType
+      - borrowerFirstName
+      - borrowerLastName
+      - streetAddress
+      - city
+      - state
+      - zip
+      - enoteData
+      - enoteDataFileType
+      - pdfData
+      properties:
+        lienType:
+          $ref: '#/components/schemas/lien_type'
+        borrowerFirstName:
+          $ref: '#/components/schemas/first_name'
+        borrowerLastName:
+          $ref: '#/components/schemas/last_name'
+        streetAddress:
+          $ref: '#/components/schemas/street'
+        city:
+          $ref: '#/components/schemas/city'
+        state:
+          $ref: '#/components/schemas/state'
+        zip:
+          $ref: '#/components/schemas/zip'
+        loanNumber:
+          $ref: '#/components/schemas/loan_number'
+        enoteData:
+          $ref: '#/components/schemas/base64'
+        enoteDataFileType:
+          $ref: '#/components/schemas/file_type'
+        pdfData:
+          $ref: '#/components/schemas/base64'
+    document_name:
+      type: string
+      example: Document 1
+    incoming:
+      type: boolean
+      example: false
+    first_name:
+      type: string
+      example: Simple
+    status:
+      type: string
+      nullable: true
+      example: unregistered
+    enotes-enote_guid-documents-upload_post:
+      type: object
+      required:
+      - documents
+      properties:
+        documents:
+          type: array
+          items:
+            type: object
+            required:
+            - documentType
+            - contentType
+            - loanNumber
+            - name
+            - data
+            properties:
+              remoteId:
+                type: string
+                example: remote-doc-1
+              documentType:
+                $ref: '#/components/schemas/document_type'
+              contentType:
+                $ref: '#/components/schemas/content_type'
+              loanNumber:
+                $ref: '#/components/schemas/loan_number'
+              name:
+                $ref: '#/components/schemas/document_name'
+              data:
+                $ref: '#/components/schemas/base64'
+    city_state_zip:
+      type: string
+      example: Lehi, UT 84043
+    active:
+      type: boolean
+      example: true
+    content_type:
+      type: string
+      enum:
+      - application/pdf
+      - application/xml
+      example: application/pdf
+    loan_number:
+      type: string
+      example: 0292364
+    zip:
+      type: string
+      example: '12345'
+    default_success_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+        warnings:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+    file_type:
+      type: string
+      enum:
+      - application/zip
+      - application/xml
+      example: application/zip
+    city:
+      type: string
+      example: Lehi
+    is_system:
+      type: boolean
+      example: false
+    environment:
+      type: string
+      enum:
+      - stage
+      - production
+      example: stage
+      readOnly: true
+    last_name:
+      type: string
+      example: Nexus
+    modified:
+      type: boolean
+      example: false
+    smartdoc_presented:
+      type: boolean
+      nullable: true
+      example: null
+    document_type:
+      type: string
+      example: AppraisalReport
+    assumed:
+      type: boolean
+      example: false
+    guid:
+      type: string
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    enote_response:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/guid'
+        loanNumber:
+          $ref: '#/components/schemas/loan_number'
+        min:
+          $ref: '#/components/schemas/min'
+        isTest:
+          $ref: '#/components/schemas/is_test'
+        smartdocPresented:
+          $ref: '#/components/schemas/smartdoc_presented'
+        smartdocVersion:
+          $ref: '#/components/schemas/smartdoc_version'
+        lienType:
+          $ref: '#/components/schemas/lien_type'
+        borrowerFirstName:
+          $ref: '#/components/schemas/first_name'
+        borrowerLastName:
+          $ref: '#/components/schemas/last_name'
+        borrowerAddress1:
+          $ref: '#/components/schemas/street'
+        borrowerAddress2:
+          $ref: '#/components/schemas/city_state_zip'
+        status:
+          $ref: '#/components/schemas/status'
+        registeredAt:
+          $ref: '#/components/schemas/general_iso8601'
+        tampersealed:
+          $ref: '#/components/schemas/tamperseal'
+        tampersealLastValidatedAt:
+          $ref: '#/components/schemas/tamperseal_last_validated_at'
+        assumed:
+          $ref: '#/components/schemas/assumed'
+        modified:
+          $ref: '#/components/schemas/modified'
+        active:
+          $ref: '#/components/schemas/active'
+        unregisteredReason:
+          $ref: '#/components/schemas/unregistered_reason'
+        createdAt:
+          $ref: '#/components/schemas/general_iso8601'
+        updatedAt:
+          $ref: '#/components/schemas/general_iso8601'
+        auditLogs:
+          $ref: '#/components/schemas/audit_logs'
+    event_type:
+      type: string
+      enum:
+      - connectivity
+      - eRegistry_connectivity
+      - eDelivery_connectivity
+      - eregistry_connectivity_notification
+      - edelivery_connectivity_notification
+      - inquiry
+      - member_inquiry
+      - contact_inquiry
+      - registration
+      - delivery
+      - transfer
+      - change_status
+      - change_data
+      - manual_archive
+      - resend_notifications
+      - tamperseal_validation
+      - dtd_validation
+      - data_validation
+      - arc_mapping_validation
+      - connectivity_notification
+      - registration_notification
+      - delete_document
+      - controller_history
+      - add_secured_party
+      - release_secured_party
+      - reverse_secured_party
+      - add_document
+      - assumption
+      - modification_electronic
+      - modification_paper
+      - update_rightsholders
+      - change_data_notification
+      - assumption_reversal
+      - charged_off
+      - charged_off_reversal
+      - converted_to_paper
+      - converted_to_paper_reversal
+      - document_reversal
+      - modification_reversal
+      - paid_off
+      - paid_off_reversal
+      - registration_reversal
+      - transferred_to_proprietary_registry
+      - transferred_to_proprietary_registry_reversal
+      - paper_replacement
+      - paper_replacement_reversal
+      - change_status_notification
+      - delivery_initiated
+      - delivery_canceled
+      - delivery_accepted
+      - delivery_rejected
+      - delivery_expired
+      - delivery_distributed
+      - delivery_approved
+      - delivery_disapproved
+      - delivery_initiated_notification
+      - delivery_expired_notification
+      - delivery_accepted_notification
+      - delivery_rejected_notification
+      - delivery_distributed_notification
+      - delivery_approved_notification
+      - delivery_disapproved_notification
+      - delivery_notification
+      - transfer_initiated
+      - transfer_accepted
+      - transfer_rejected
+      - transfer_reset
+      - transfer_expired
+      - transfer_completed
+      - transfer_initiated_notification
+      - transfer_completed_notification
+      - transfer_rejected_notification
+      - transfer_expired_notification
+      - transfer_notification
+      - add_enote_additional_data_point
+      - update_enote_additional_data_point
+      - delete_enote_additional_data_point
+      - upload_document
+      - edit_document
+      - change_loan_number
+      - change_type
+      - archive_document
+      - reactivate_document
+      - view_doc
+      - view_audit
+      - download_doc
+      - inquiry_validation
+      - tamperseal_validation
+      - dtd_validation
+      - data_validation
+      - arc_mapping_validation
+      - view_enote_presentation
+      - view_enote_xml
+      - view_enote_data
+      - upload_enote
+      - became_authoritative_copy
+      - released_authoritative_copy
+      - multi_factor_authentication
+      - user_login
+      - manual_archive
+      - user_sso_login
+      - add_api_client
+      - edit_api_client
+      - deactivate_org_api_clients
+      - activate_org_api_clients
+      - edit_org_api_client_permissions
+      example: delivery_initiated
+    audit_logs:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/guid'
+          eventType:
+            $ref: '#/components/schemas/event_type'
+          incoming:
+            $ref: '#/components/schemas/incoming'
+          status:
+            $ref: '#/components/schemas/status'
+          requestTimestamp:
+            $ref: '#/components/schemas/general_iso8601'
+          isSystem:
+            $ref: '#/components/schemas/is_system'
+          isTest:
+            $ref: '#/components/schemas/is_test'
+      example:
+      - id: 459f521f-f2fa-4230-a704-46147ac8as7e
+        eventType: connectivity
+        incoming: false
+        status: success
+        requestTimestamp: '2019-02-28T00:00:00Z'
+        isTest: false
+    min:
+      type: string
+      example: 123456789012345680
+    tamperseal_last_validated_at:
+      type: string
+      nullable: true
+      example: null
+    state:
+      type: string
+      example: NV
+    base64:
+      type: string
+      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
+    general_iso8601:
+      type: string
+      example: '2019-02-28T00:00:00Z'
+    street:
+      type: string
+      example: 123 SimpleNexus Ln
+    is_test:
+      type: boolean
+      example: true
+    tamperseal:
+      type: boolean
+      example: false
+    unregistered_reason:
+      type: string
+      nullable: true
+      example: null
+    smartdoc_version:
+      type: string
+      nullable: true
+      example: 1.02
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'JWT access token used to authorize every API request. Send it as `Authorization: Bearer <access_token>`. Tokens are issued by the token endpoint (POST https://evault.ncino.com/oauth/auth_token) and expire after the `expires_in` seconds returned there (default 3600); request a new token or exchange the refresh token once it expires.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic credentials used only by the token endpoint (POST /oauth/auth_token). The username is your API client_id and the password is your client_secret, sent as `Authorization: Basic base64(client_id:client_secret)`.'

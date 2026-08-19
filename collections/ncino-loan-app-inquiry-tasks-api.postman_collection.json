@@ -1,0 +1,583 @@
+{
+  "item": [
+    {
+      "id": "580368c9-dfcc-4d6d-9611-7ea1fadd3129",
+      "name": "Loan App Inquiry Tasks",
+      "description": {
+        "content": "Endpoints pertaining to inquiry <<glossary:task>>s",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "02b29ec1-c78b-4726-8e73-223303d8cea7",
+          "name": "🚧 Create an inquiry task (BETA)",
+          "request": {
+            "name": "🚧 Create an inquiry task (BETA)",
+            "description": {
+              "content": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will create an inquiry task for a loan application.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "loan_applications",
+                ":loan_application_id",
+                "inquiry_tasks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "loan_application_id",
+                  "description": "(Required) Loan application ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                "key": "X-Api-Version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"question\": \"<string>\",\n  \"loan_borrower_id\": \"<uuid>\",\n  \"checkbox_required\": \"<boolean>\",\n  \"checkbox_label\": \"<string,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4dc20648-2240-4d12-953a-29096898d220",
+              "name": "Created inquiry task",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loan_applications",
+                    ":loan_application_id",
+                    "inquiry_tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "loan_application_id",
+                      "description": "(Required) Loan application ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"question\": \"<string>\",\n  \"loan_borrower_id\": \"<uuid>\",\n  \"checkbox_required\": \"<boolean>\",\n  \"checkbox_label\": \"<string,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_self\": \"string\",\n  \"_type\": \"string\",\n  \"id\": \"98092420-6283-09b1-1364-c35937596c0e\",\n  \"_links\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d687168b-cacc-4254-9c9a-e978861fd7eb",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loan_applications",
+                    ":loan_application_id",
+                    "inquiry_tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "loan_application_id",
+                      "description": "(Required) Loan application ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"question\": \"<string>\",\n  \"loan_borrower_id\": \"<uuid>\",\n  \"checkbox_required\": \"<boolean>\",\n  \"checkbox_label\": \"<string,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 9800,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 883,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "42be6f68-70e7-4e05-af84-13a39cffaa24",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loan_applications",
+                    ":loan_application_id",
+                    "inquiry_tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "loan_application_id",
+                      "description": "(Required) Loan application ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"question\": \"<string>\",\n  \"loan_borrower_id\": \"<uuid>\",\n  \"checkbox_required\": \"<boolean>\",\n  \"checkbox_label\": \"<string,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2723,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 6879,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df365823-8e80-4a13-b93c-98aee57ea87c",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loan_applications",
+                    ":loan_application_id",
+                    "inquiry_tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "loan_application_id",
+                      "description": "(Required) Loan application ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"question\": \"<string>\",\n  \"loan_borrower_id\": \"<uuid>\",\n  \"checkbox_required\": \"<boolean>\",\n  \"checkbox_label\": \"<string,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2723,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 6879,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3c81a853-168b-41e6-8609-01c2b7431ea6",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loan_applications",
+                    ":loan_application_id",
+                    "inquiry_tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "loan_application_id",
+                      "description": "(Required) Loan application ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"question\": \"<string>\",\n  \"loan_borrower_id\": \"<uuid>\",\n  \"checkbox_required\": \"<boolean>\",\n  \"checkbox_label\": \"<string,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2723,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 6879,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e56b8ef5-da88-4d47-8329-5e0a0793d373",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "loan_applications",
+                    ":loan_application_id",
+                    "inquiry_tasks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "loan_application_id",
+                      "description": "(Required) Loan application ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify API version, for example '1.0'. By default, the version configured in the company settings is used.",
+                    "key": "X-Api-Version",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"question\": \"<string>\",\n  \"loan_borrower_id\": \"<uuid>\",\n  \"checkbox_required\": \"<boolean>\",\n  \"checkbox_label\": \"<string,null>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "API version.",
+                  "key": "X-Api-Version",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "API supported versions for endpoint.",
+                  "key": "X-Api-Supported-Versions",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"id\": \"string\",\n      \"status\": 2723,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"status\": 6879,\n      \"title\": \"string\",\n      \"detail\": \"string\",\n      \"_links\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.ncinomortgage.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "11a7089b-e055-48d3-8494-3d8717205bee",
+    "name": "nCino Mortgage Loan App Inquiry Tasks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community",
+      "type": "text/plain"
+    }
+  }
+}

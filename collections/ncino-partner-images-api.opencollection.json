@@ -1,0 +1,107 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Partner Images API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Partner Images",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update a partner's image",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ncinomortgage.com/users/partners/:partner_id/images/:image_key",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "image_key",
+                "value": "",
+                "type": "path",
+                "description": "Image to be updated."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "query",
+                "description": "Loan officer ID."
+              },
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Uploads a <<glossary:partner>> Image. Available image_keys, along with the supported file types and sizes are in the table below.\n<table border=1px cellpadding=5px>\n\t<tr>\n\t\t<th>Image Key</th>\n\t\t<th>Supported File Types</th>\n\t\t<th>Image Dimensions</th>\n\t</tr>\n\t<tr>\n\t\t<td>profile</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>192x192</td>\n\t</tr>\n\t<tr>\n\t\t<td>header</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n"
+        },
+        {
+          "info": {
+            "name": "Delete a partner's image",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/users/partners/:partner_id/images/:image_key",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "image_key",
+                "value": "",
+                "type": "path",
+                "description": "Image to be deleted."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "query",
+                "description": "Loan officer ID."
+              },
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:partner>>'s image."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

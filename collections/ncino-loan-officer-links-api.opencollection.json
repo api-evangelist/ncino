@@ -1,0 +1,216 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan Officer Links API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Officer Links",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve loan officer links",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/links",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve <<glossary:loan officer>> <<glossary:link>>s."
+        },
+        {
+          "info": {
+            "name": "Create a loan officer link",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/links",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will create a <<glossary:loan officer>> <<glossary:link>>."
+        },
+        {
+          "info": {
+            "name": "Retrieve a loan officer link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/links/:link_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "link_id",
+                "value": "",
+                "type": "path",
+                "description": "Link ID."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve a <<glossary:loan officer>> <<glossary:link>>."
+        },
+        {
+          "info": {
+            "name": "Update a loan officer link",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/links/:link_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "link_id",
+                "value": "",
+                "type": "path",
+                "description": "Link ID."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will update a <<glossary:loan officer>> <<glossary:link>>."
+        },
+        {
+          "info": {
+            "name": "Delete a loan officer link",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/links/:link_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "link_id",
+                "value": "",
+                "type": "path",
+                "description": "Link ID."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:loan officer>> <<glossary:link>>."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

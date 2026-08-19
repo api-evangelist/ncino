@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Region Reports API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Region Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate a region report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/regions/:region_id/reports",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "region_id",
+                "value": "",
+                "type": "path",
+                "description": "Region ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a <<glossary:region>> report. The report will generate an <<glossary:asynchronous job>> which can be accessed when the job returned in the response has successfully completed."
+        },
+        {
+          "info": {
+            "name": "Download a region's report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/regions/:region_id/reports/:report_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "region_id",
+                "value": "",
+                "type": "path",
+                "description": "Scope response to region_id"
+              },
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "Scope response to report_id"
+              }
+            ]
+          },
+          "docs": "Download a report for a given <<glossary:region>>."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

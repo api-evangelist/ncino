@@ -1,0 +1,396 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Links API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Links
+  description: Endpoints pertaining to links
+paths:
+  /links:
+    get:
+      tags:
+      - Links
+      operationId: links-index
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/CreatedAfter'
+      - $ref: '#/components/parameters/CreatedBefore'
+      - $ref: '#/components/parameters/UpdatedAfter'
+      - $ref: '#/components/parameters/UpdatedBefore'
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkPagination'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: 'This endpoint will retrieve all organization <<glossary:link>>s.
+
+
+        > 🙇 Heads up!
+
+        **All Organization Links** - this will grab all links that are associated with the Company, Regions, and Branches'
+      summary: Retrieve links
+components:
+  responses:
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+  schemas:
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    LinkType:
+      type: string
+      enum:
+      - FACEBOOK
+      - LINKEDIN
+      - TWITTER
+      - YELP
+      - YOUTUBE
+      - WEBSITE
+      - BLOG
+      - HOME_SEARCH
+      - LOCAL_DISCOUNTS
+      - TRULIA
+      - ZILLOW
+      - PINTEREST
+      - INSTAGRAM
+      - PATH_2_OWN
+      - PREFLIGHT
+      - GET_PREAPPROVED
+      - LICENSING
+      - INCOME_ANALYSIS
+      - LOAN_STATUS
+      - LOAN_STATUS_FOR_REALTORS
+      - HOME_SEARCH_HOME_SCOUTING
+      - FAIRWAY_AMERICAN_WARRIOR_INITIATIVE
+      - FAIRWAY_CORE_VALUES_VIDEO
+      - FAIRWAY_LOAN_PROGRAMS
+      - GET_PREQUALIFIED
+      - INFORMATION_ON_THE_LOAN_PROCESS
+      - LANCASTER_HOME_GIVEAWAY_VIDEO
+      - RAV_ESTIMATE
+      - COMPANY_WEBSITE
+      - CLIENT_LOGIN
+      - APPLY_NOW
+      - HOME_INSPECTION
+      - PREFERRED_BUILDER
+      - CURRENT_RATES
+      - MORTGAGE_MARKET_UPDATE
+      - DOS_AND_DONTS
+      - RD_PROPERTY_ELIGIBILITY
+      - DOCUMENT_CHECKLIST
+      - ANGIES_LIST
+      - STALWART_INSURANCE
+      - HOME_VALUE
+      - PREFERRED_INSURANCE
+      - GET_A_RATE_QUOTE
+      - HOUSING_BUZZ_BLOG
+      - MY_REVIEWS
+      - PREFERRED_MOVING_COMPANY
+      - OPEN_HOUSE
+      - FIND_A_SCHOOL
+      - VIEW_HOMEBUYER_GUIDEBOOK
+      - HOME_SEARCH_APP
+      - HOME_SEARCH_WEB
+      - JOIN_OUR_TEAM
+      - MY_LISTINGS
+      - SEMINAR_REGISTRATION
+      - ABOUT_US
+      - WHAT_MY_CLIENTS_ARE_SAYING
+      - FEE_NAVIGATOR
+      - HOME_SCOUTING_SMARTPHONE_APP
+      - PREQUALIFY_NOW
+      - HOME_SERVICE_DIRECTORY
+      - SATISFACTION_SURVEY
+      - OWNING_A_HOME_CFPB
+      - PARTNERSHIP_BENEFITS
+      - MORTGAGE_REVIEW
+      - REFER_A_FRIEND
+      - ASK_ME_A_QUESTION
+      - LEGAL
+      - THE_HOME_BUYING_PROCESS_EXPLAINED
+      - WHY_CHOOSE_US
+      - ASSET_VERIFICATION
+      - HOME_SEARCH_HOME_SCOUT
+      - MORTGAGE_COACH
+      - IDX_DASHBOARD
+      - AGENT_ACCESS_HOME_SEARCH_IDX
+      - SCAT_MAN
+      - PODCAST
+      description: Link type enum key.
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    LinkPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Link'
+        required:
+        - contents
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    Link:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          link_type:
+            allOf:
+            - $ref: '#/components/schemas/LinkType'
+            description: Link type enum key.
+          link_text:
+            type:
+            - string
+            - 'null'
+            description: Link's text.
+          url:
+            type: string
+            format: http_uri
+            description: Link's URL.
+          is_social:
+            type: boolean
+            description: Whether the link is social.
+          is_private:
+            type: boolean
+            description: Whether the link is private.
+          launch_browser:
+            type: boolean
+            description: Whether the link should launch a browser when clicked.
+        required:
+        - url
+        additionalProperties: false
+      description: Link record
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

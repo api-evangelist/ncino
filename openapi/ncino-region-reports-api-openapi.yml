@@ -1,0 +1,339 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Region Reports API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Region Reports
+  description: Endpoints pertaining to region reports
+paths:
+  /regions/{region_id}/reports:
+    post:
+      tags:
+      - Region Reports
+      operationId: region_reports-generate
+      parameters:
+      - name: region_id
+        description: Region ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: Generate a <<glossary:region>> report. The report will generate an <<glossary:asynchronous job>> which can be accessed when the job returned in the response has successfully completed.
+      summary: Generate a region report
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/ReportPostBody'
+              - $ref: '#/components/schemas/TimeBoundReportPostBody'
+              discriminator:
+                propertyName: report_type
+                mapping:
+                  CO_BRANDED_APPS: '#/components/schemas/TimeBoundReportPostBody'
+                  DOCUSIGN_ENVELOPES: '#/components/schemas/TimeBoundReportPostBody'
+                  LOAN_APP_DETAILS: '#/components/schemas/TimeBoundReportPostBody'
+                  LOAN_APPS_COUNT: '#/components/schemas/TimeBoundReportPostBody'
+                  LO_ACTIVITY: '#/components/schemas/TimeBoundReportPostBody'
+                  NPS_FEEDBACK: '#/components/schemas/TimeBoundReportPostBody'
+                  PACKAGE_TRACKER: '#/components/schemas/TimeBoundReportPostBody'
+                  PROSPECTS: '#/components/schemas/TimeBoundReportPostBody'
+                  QR_CODES: '#/components/schemas/ReportPostBody'
+                  VERIFICATION_OF_ASSETS_ORDERS: '#/components/schemas/TimeBoundReportPostBody'
+  /regions/{region_id}/reports/{report_id}:
+    get:
+      tags:
+      - Region Reports
+      operationId: region_reports-download
+      parameters:
+      - name: region_id
+        description: Scope response to region_id
+        required: true
+        in: path
+        schema:
+          type: string
+      - name: report_id
+        description: Scope response to report_id
+        required: true
+        in: path
+        schema:
+          type: string
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+          headers:
+            Content-Disposition:
+              $ref: '#/components/headers/ContentDispositionResponseHeader'
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '410':
+          description: Report has been archived
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: Download a report for a given <<glossary:region>>.
+      summary: Download a region's report
+components:
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  headers:
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ContentDispositionResponseHeader:
+      description: Additional information about response payload.
+      schema:
+        type: string
+  schemas:
+    TimeBoundReportPostBody:
+      allOf:
+      - $ref: '#/components/schemas/ReportPostBody'
+      - type: object
+        properties:
+          start_date:
+            type: string
+            format: date
+            description: Start date for including records into report
+          end_date:
+            type: string
+            format: date
+            description: End date for including records into report
+        required:
+        - start_date
+        - end_date
+        additionalProperties: false
+      description: 'Available properties for generating a time-scoped report.
+
+        Start and end dates can span a time range as large as a year and default to a range covering the last day if both dates aren''t provided.'
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    ReportPostBody:
+      type: object
+      properties:
+        report_type:
+          type: string
+          enum:
+          - CO_BRANDED_APPS
+          - DOCUSIGN_ENVELOPES
+          - LOAN_APP_DETAILS
+          - LOAN_APPS_COUNT
+          - LO_ACTIVITY
+          - NPS_FEEDBACK
+          - PACKAGE_TRACKER
+          - PROSPECTS
+          - QR_CODES
+          - VERIFICATION_OF_ASSETS_ORDERS
+          description: Report type to generate
+      required:
+      - report_type
+      description: Available properties for generating a report.
+      additionalProperties: false
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

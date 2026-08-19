@@ -1,0 +1,690 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Loan App Doc Tasks API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Loan App Doc Tasks
+  description: Endpoints pertaining to loan doc <<glossary:task>>s
+paths:
+  /loan_applications/{loan_application_id}/loan_doc_tasks:
+    post:
+      tags:
+      - Loan App Doc Tasks
+      operationId: loan_app_doc_tasks-create
+      parameters:
+      - name: loan_application_id
+        description: Loan application ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '201':
+          description: Created loan doc task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will create a loan doc task for a loan.
+      summary: Create a loan doc task
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanDocTaskPostBody'
+    get:
+      tags:
+      - Loan App Doc Tasks
+      operationId: loan_app_doc_tasks-index
+      parameters:
+      - name: doc_type
+        description: Doc type by which to filter loan doc tasks.
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: loan_application_id
+        description: Loan application ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: loan_borrower_id
+        description: Loan borrower ID by which to filter loan doc tasks.
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/CreatedAfter'
+      - $ref: '#/components/parameters/CreatedBefore'
+      - $ref: '#/components/parameters/UpdatedAfter'
+      - $ref: '#/components/parameters/UpdatedBefore'
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanDocTaskPagination'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        Retrieves a list of loan doc tasks on a loan.'
+      summary: 🚧 Retrieve all loan doc tasks belonging to the loan application (BETA)
+  /loan_applications/{loan_application_id}/loan_doc_tasks/{loan_doc_task_id}:
+    get:
+      tags:
+      - Loan App Doc Tasks
+      operationId: loan_app_doc_tasks-show
+      parameters:
+      - name: loan_application_id
+        description: Loan application ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: loan_doc_task_id
+        description: Loan doc task ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanDocTask'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        This endpoint will retrieve a single loan doc <<glossary:task>>.'
+      summary: 🚧 Retrieve a loan doc task (BETA)
+    delete:
+      tags:
+      - Loan App Doc Tasks
+      operationId: loan_app_doc_tasks-destroy
+      parameters:
+      - name: loan_application_id
+        description: Loan application ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: loan_doc_task_id
+        description: Loan doc task ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully deleted loan doc task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        This endpoint will delete a loan doc <<glossary:task>>.'
+      summary: 🚧 Delete a loan doc task (BETA)
+    put:
+      tags:
+      - Loan App Doc Tasks
+      operationId: loan_app_doc_tasks-update
+      parameters:
+      - name: loan_application_id
+        description: Loan application ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: loan_doc_task_id
+        description: Loan doc task ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully updated loan doc task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        This endpoint will update a loan doc <<glossary:task>>.'
+      summary: 🚧 Update a loan doc task (BETA)
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanDocTaskUpdateBody'
+  /loan_applications/{loan_application_id}/loan_doc_tasks/{loan_doc_task_id}/actions:
+    post:
+      tags:
+      - Loan App Doc Tasks
+      operationId: loan_app_doc_tasks-actions
+      parameters:
+      - name: loan_application_id
+        description: Loan application ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: loan_doc_task_id
+        description: Loan doc task ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '412':
+          description: Loan doc task is already complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: "This endpoint allows a variety of actions to be taken on a <<glossary:loan doc task>>.\n\n> \U0001F4CC Available actions\n  **MARK_AS_COMPLETE** - Mark a loan doc task as complete"
+      summary: Mark a loan doc task as complete
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/MarkAsCompleteLoanDocTask'
+              discriminator:
+                propertyName: action
+                mapping:
+                  MARK_AS_COMPLETE: '#/components/schemas/MarkAsCompleteLoanDocTask'
+components:
+  schemas:
+    LoanDocTaskPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/LoanDocTask'
+        required:
+        - contents
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    LoanDocTaskUpdateBody:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Loan doc task's name.
+      description: Available properties for updating a loan doc task.
+      additionalProperties: false
+      minProperties: 1
+    LoanDocTaskAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - MARK_AS_COMPLETE
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a loan doc task action.
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    LoanDocTask:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          name:
+            type: string
+            description: Task title
+          description:
+            type:
+            - string
+            - 'null'
+            description: Task description.
+          current_state:
+            type: string
+            description: Current state.
+          created_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the task record was created.
+          updated_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the task record was last updated.
+        additionalProperties: false
+      description: Loan doc task model
+    LoanDocDefinitionTypes:
+      type: string
+      enum:
+      - null_doc
+      - other
+      - w2
+      - drivers_license
+      - paystub
+      - bank_statement
+      - federal_tax_return
+      - divorce_decree
+      - '1099'
+      - social_security_card
+      - dd214
+      - k1
+      - passport
+      - certificate_of_housing_counseling
+      description: Types of loan doc definitions.
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    LoanDocTaskPostBody:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Loan doc task's name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Loan doc task's description.
+        doc_type:
+          allOf:
+          - $ref: '#/components/schemas/LoanDocDefinitionTypes'
+          description: Type of loan doc definition to create.
+        loan_borrower_id:
+          type: string
+          format: uuid
+          description: ID of the loan borrower to assign the task to.
+      required:
+      - name
+      - doc_type
+      - loan_borrower_id
+      description: Available properties for creating a loan doc task.
+      additionalProperties: false
+    MarkAsCompleteLoanDocTask:
+      allOf:
+      - $ref: '#/components/schemas/LoanDocTaskAction'
+      description: Available properties for marking a loan doc task as complete.
+  responses:
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

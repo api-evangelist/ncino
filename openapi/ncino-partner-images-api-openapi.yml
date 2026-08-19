@@ -1,0 +1,275 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Partner Images API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Partner Images
+  description: Endpoints pertaining to partners
+paths:
+  /users/partners/{partner_id}/images/{image_key}:
+    put:
+      tags:
+      - Partner Images
+      operationId: partner_images-update
+      parameters:
+      - name: image_key
+        description: Image to be updated.
+        required: true
+        in: path
+        schema:
+          type: string
+          enum:
+          - profile
+          - header
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: partner_id
+        description: Partner ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully updated partner image
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: "Uploads a <<glossary:partner>> Image. Available image_keys, along with the supported file types and sizes are in the table below.\n<table border=1px cellpadding=5px>\n\t<tr>\n\t\t<th>Image Key</th>\n\t\t<th>Supported File Types</th>\n\t\t<th>Image Dimensions</th>\n\t</tr>\n\t<tr>\n\t\t<td>profile</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>192x192</td>\n\t</tr>\n\t<tr>\n\t\t<td>header</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>640x200</td>\n\t</tr>\n</table>"
+      summary: Update a partner's image
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageUpdateBody'
+    delete:
+      tags:
+      - Partner Images
+      operationId: partner_images-destroy
+      parameters:
+      - name: image_key
+        description: Image to be deleted.
+        required: true
+        in: path
+        schema:
+          type: string
+          enum:
+          - profile
+          - header
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: partner_id
+        description: Partner ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully deleted partner image
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will delete a <<glossary:partner>>'s image.
+      summary: Delete a partner's image
+components:
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  headers:
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  schemas:
+    ImageUpdateBody:
+      type: object
+      properties:
+        file:
+          type: string
+          format: byte
+          description: Base64-encoded image data without metadata with a file type of [jpg, jpeg, png].
+      required:
+      - file
+      description: Available properties for updating an image.
+      additionalProperties: false
+      minProperties: 1
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

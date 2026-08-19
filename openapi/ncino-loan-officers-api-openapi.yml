@@ -1,0 +1,1091 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Loan Officers API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Loan Officers
+  description: Endpoints pertaining to <<glossary:loan officer>>s
+paths:
+  /users/loan_officers:
+    post:
+      tags:
+      - Loan Officers
+      operationId: loan_officers-create
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '201':
+          description: Created loan officer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '409':
+          description: Loan officer already exists for the given email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will create a <<glossary:loan officer>> record.
+      summary: Create a loan officer record
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanOfficerPostBody'
+    get:
+      tags:
+      - Loan Officers
+      operationId: loan_officers-index
+      parameters:
+      - name: email
+        description: Email by which to filter loan officers.
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: is_active
+        description: Active status by which to filter loan officers.
+        required: false
+        in: query
+        schema:
+          type: boolean
+      - name: is_admin
+        description: Admin status by which to filter loan officers.
+        required: false
+        in: query
+        schema:
+          type: boolean
+      - name: org_id
+        description: Organization (<<glossary:company>>, <<glossary:region>>, or <<glossary:branch>>) ID by which to filter loan officers.
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/CreatedAfter'
+      - $ref: '#/components/parameters/CreatedBefore'
+      - $ref: '#/components/parameters/UpdatedAfter'
+      - $ref: '#/components/parameters/UpdatedBefore'
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanOfficerPagination'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will retrieve all <<glossary:loan officer>>s.
+      summary: Retrieve all loan officers
+  /users/loan_officers/{loan_officer_id}:
+    get:
+      tags:
+      - Loan Officers
+      operationId: loan_officers-show
+      parameters:
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanOfficer'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will retrieve a <<glossary:loan officer>>.
+      summary: Retrieve a loan officer
+    patch:
+      tags:
+      - Loan Officers
+      operationId: loan_officers-update
+      parameters:
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully updated loan officer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '409':
+          description: Loan officer already exists for the given email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will update a <<glossary:loan officer>>.
+      summary: Update a loan officer
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanOfficerPatchBody'
+  /users/loan_officers/{loan_officer_id}/actions:
+    post:
+      tags:
+      - Loan Officers
+      operationId: loan_officers-actions
+      parameters:
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '201':
+          description: Created <<glossary:asynchronous job>> to process action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '409':
+          description: Action cannot be performed due to an ongoing asynchronous job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '412':
+          description: Resource is in an invalid state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '423':
+          description: Action cannot be performed due to an ongoing loan officer operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: "This endpoint allows a variety of actions to be taken on a <<glossary:loan officer>>.\n\n> \U0001F4CC Available actions\n  **PROMOTE** - Promote loan officer to organization admin\n  **DEMOTE** - Demote loan officer from organization admin\n  **ENABLE** - Activate loan officer\n  **DISABLE** - Deactivate loan officer\n  **SEND_WELCOME_EMAIL** - Send a welcome email to loan officer\n  **CHANGE_ORG** - Move loan officer to a different organization"
+      summary: Perform action on a loan officer
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/PromoteLoanOfficer'
+              - $ref: '#/components/schemas/DemoteLoanOfficer'
+              - $ref: '#/components/schemas/EnableLoanOfficer'
+              - $ref: '#/components/schemas/DisableLoanOfficer'
+              - $ref: '#/components/schemas/SendWelcomeEmailLoanOfficer'
+              - $ref: '#/components/schemas/ChangeOrgLoanOfficer'
+              discriminator:
+                propertyName: action
+                mapping:
+                  PROMOTE: '#/components/schemas/PromoteLoanOfficer'
+                  DEMOTE: '#/components/schemas/DemoteLoanOfficer'
+                  ENABLE: '#/components/schemas/EnableLoanOfficer'
+                  DISABLE: '#/components/schemas/DisableLoanOfficer'
+                  SEND_WELCOME_EMAIL: '#/components/schemas/SendWelcomeEmailLoanOfficer'
+                  CHANGE_ORG: '#/components/schemas/ChangeOrgLoanOfficer'
+components:
+  schemas:
+    LoanOfficerPostBody:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Loan officer's first name.
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Loan officer's last name.
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Loan officer's email.
+        phone:
+          type: string
+          format: phone
+          description: Loan officer's phone.
+        website:
+          type: string
+          format: http_uri
+          maxLength: 700
+          description: Loan officers website URL (e.g. http://mydomain.com).
+        address:
+          allOf:
+          - $ref: '#/components/schemas/LoanOfficerInputAddress'
+          description: Loan officer's address.
+        nmls:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Loan officer's NMLS ID.
+        cost_center:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Cost center identifier.
+        title:
+          type:
+          - string
+          - 'null'
+          description: Loan officer's title.
+        office_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Loan officer's office phone.
+        bio:
+          type:
+          - string
+          - 'null'
+          maxLength: 700
+          description: Loan officer's bio.
+        is_discoverable:
+          type: boolean
+          description: Whether the loan officer can be billed.
+      required:
+      - first_name
+      - last_name
+      - email
+      - phone
+      - website
+      - address
+      description: Available properties for creating a <<glossary:loan officer>> record.
+      additionalProperties: false
+    EnableLoanOfficer:
+      allOf:
+      - $ref: '#/components/schemas/LoanOfficerAction'
+      description: Available properties for enabling a loan officer.
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    LoanOfficerPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/LoanOfficer'
+        required:
+        - contents
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    LoanOfficerInputAddress:
+      allOf:
+      - $ref: '#/components/schemas/InputAddress'
+      - type: object
+        properties:
+          state:
+            allOf:
+            - $ref: '#/components/schemas/StateCode'
+            description: Loan officer's state.
+        required:
+        - state
+        additionalProperties: false
+      description: Available properties for a loan officer's address.
+    ThirdParty:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          credit_user_id:
+            type:
+            - string
+            - 'null'
+            description: External user ID for credit orders.
+          los_username:
+            type:
+            - string
+            - 'null'
+            description: External LOS username.
+          crm_user_id:
+            type:
+            - string
+            - 'null'
+            description: External user ID for CRM.
+          crm_user_type:
+            type:
+            - string
+            - 'null'
+            description: External user type for CRM.
+        required:
+        - credit_user_id
+        - los_username
+        additionalProperties: false
+      description: Third party data for user
+    EmptyString:
+      type: string
+      enum:
+      - ''
+      description: An empty string.
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    PromoteLoanOfficer:
+      allOf:
+      - $ref: '#/components/schemas/LoanOfficerAction'
+      description: Available properties for promoting a loan officer.
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    ChangeOrgLoanOfficer:
+      allOf:
+      - $ref: '#/components/schemas/LoanOfficerAction'
+      - type: object
+        properties:
+          org_type:
+            type: string
+            enum:
+            - COMPANY
+            - REGION
+            - BRANCH
+            description: Organization type (<<glossary:COMPANY>>, <<glossary:REGION>>, <<glossary:BRANCH>>).
+          org_id:
+            type: string
+            format: uuid
+            description: Organization ID.
+        required:
+        - org_type
+        - org_id
+        additionalProperties: false
+      description: Available properties for changing a loan officer's organization.
+    InputAddress:
+      type: object
+      properties:
+        street1:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Street line 1
+        street2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Street line 2
+        city:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: City
+        state:
+          allOf:
+          - $ref: '#/components/schemas/StateCode'
+          description: State
+        zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip code
+      additionalProperties: false
+    InputThirdParty:
+      type: object
+      properties:
+        credit_user_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: External user ID for credit orders.
+        los_username:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: External LOS username.
+        crm_user_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: External user ID for CRM.
+        crm_user_type:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: External user type for CRM.
+      description: Third party integration data for <<glossary:loan officer>>.
+      additionalProperties: false
+    DemoteLoanOfficer:
+      allOf:
+      - $ref: '#/components/schemas/LoanOfficerAction'
+      description: Available properties for demoting a loan officer.
+    SendWelcomeEmailLoanOfficer:
+      allOf:
+      - $ref: '#/components/schemas/LoanOfficerAction'
+      description: Available properties for sending a welcome email to a loan officer.
+    DisableLoanOfficer:
+      allOf:
+      - $ref: '#/components/schemas/LoanOfficerAction'
+      - type: object
+        properties:
+          borrower_LO_reassignment:
+            type: string
+            format: uuid
+            description: Loan officer's ID to which existing <<glossary:borrower account>>s will be reassigned. Default loan officer is used if no ID is provided.
+          partner_LO_reassignment:
+            type: string
+            format: uuid
+            description: Loan officer's ID to which existing <<glossary:partner>>s will be reassigned. Default loan officer is used if no ID is provided.
+        additionalProperties: false
+      description: Available properties for disabling a loan officer.
+    LoanOfficerAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - PROMOTE
+          - DEMOTE
+          - ENABLE
+          - DISABLE
+          - SEND_WELCOME_EMAIL
+          - CHANGE_ORG
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a loan officer action.
+      additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    Address:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          street1:
+            type:
+            - string
+            - 'null'
+            description: Street line 1.
+          street2:
+            type:
+            - string
+            - 'null'
+            description: Street line 2.
+          city:
+            type:
+            - string
+            - 'null'
+            description: City.
+          state:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: State.
+          zip:
+            type:
+            - string
+            - 'null'
+            description: Zip code.
+        additionalProperties: false
+      description: Address model
+    LoanOfficerPatchBody:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Loan officer's first name.
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Loan officer's last name.
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Loan officer's email.
+        phone:
+          type: string
+          format: phone
+          description: Loan officer's phone.
+        office_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Loan officer's office phone.
+        website:
+          type: string
+          format: http_uri
+          maxLength: 700
+          description: Loan officer's website URL (e.g. http://mydomain.com).
+        nmls:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Loan officer's NMLS ID.
+        cost_center:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Cost center identifier.
+        title:
+          type:
+          - string
+          - 'null'
+          description: Loan officer's title.
+        bio:
+          type:
+          - string
+          - 'null'
+          maxLength: 700
+          description: Loan officer's bio.
+        is_discoverable:
+          type: boolean
+          description: Whether the loan officer can be billed.
+        address:
+          allOf:
+          - $ref: '#/components/schemas/InputAddress'
+          description: Loan officer's address.
+        third_party:
+          allOf:
+          - $ref: '#/components/schemas/InputThirdParty'
+          description: Loan officer's third party integration information.
+      description: Available properties for updating a <<glossary:loan officer>> record.
+      additionalProperties: false
+      minProperties: 1
+    LoanOfficer:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          created_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the loan officer record was created.
+          updated_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the loan officer record was last updated.
+          first_name:
+            type: string
+            description: Loan officer's first name.
+          last_name:
+            type: string
+            description: Loan officer's last name.
+          email:
+            type: string
+            description: Loan officer's email.
+          phone:
+            type:
+            - string
+            - 'null'
+            description: Loan officer's phone.
+          website:
+            type:
+            - string
+            - 'null'
+            format: http_uri
+            description: Loan officer's website URL (e.g. http://mydomain.com).
+          address:
+            allOf:
+            - $ref: '#/components/schemas/Address'
+            description: Loan officer's address.
+          is_active:
+            type: boolean
+            description: Whether the loan officer is active in the system.
+          nmls:
+            type:
+            - string
+            - 'null'
+            description: Loan officer's NMLS ID.
+          cost_center:
+            type:
+            - string
+            - 'null'
+            description: Cost center identifier.
+          is_admin:
+            type: boolean
+            description: Whether the loan officer is also an org admin.
+          third_party:
+            allOf:
+            - $ref: '#/components/schemas/ThirdParty'
+            description: Loan officer's third party integration information.
+          title:
+            type:
+            - string
+            - 'null'
+            description: Loan officer's title.
+          office_phone:
+            type:
+            - string
+            - 'null'
+            description: Loan officer's office phone.
+          bio:
+            type:
+            - string
+            - 'null'
+            description: Loan officer's bio.
+          mobile_url:
+            type:
+            - string
+            - 'null'
+            format: http_uri
+            description: Loan officer's mobile URL.
+          nm_url:
+            type:
+            - string
+            - 'null'
+            format: http_uri
+            description: Loan officer's nCino Mortgage URL.
+          profile_url:
+            type:
+            - string
+            - 'null'
+            format: http_uri
+            description: Loan officer's profile URL.
+          header_url:
+            type:
+            - string
+            - 'null'
+            format: http_uri
+            description: Loan officer's header URL.
+          is_discoverable:
+            type: boolean
+            description: Whether the Loan officer can be billed.
+        required:
+        - first_name
+        - last_name
+        - email
+        - address
+        additionalProperties: false
+      description: Loan officer model
+    StateCode:
+      type: string
+      enum:
+      - AA
+      - AE
+      - AK
+      - AL
+      - AP
+      - AR
+      - AS
+      - AZ
+      - CA
+      - CO
+      - CT
+      - DC
+      - DE
+      - FL
+      - FM
+      - GA
+      - GU
+      - HI
+      - IA
+      - ID
+      - IL
+      - IN
+      - KS
+      - KY
+      - LA
+      - MA
+      - MD
+      - ME
+      - MH
+      - MI
+      - MN
+      - MO
+      - MP
+      - MS
+      - MT
+      - NC
+      - ND
+      - NE
+      - NH
+      - NJ
+      - NM
+      - NV
+      - NY
+      - OH
+      - OK
+      - OR
+      - PA
+      - PR
+      - PW
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VA
+      - VI
+      - VT
+      - WA
+      - WI
+      - WV
+      - WY
+      description: State abbreviated code.
+  responses:
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

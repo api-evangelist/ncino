@@ -1,0 +1,216 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Partner Links API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Partner Links",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve partner links",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/partners/:partner_id/links",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve <<glossary:partner>> <<glossary:link>>s."
+        },
+        {
+          "info": {
+            "name": "Create a partner link",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/users/partners/:partner_id/links",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will create a <<glossary:partner>> <<glossary:link>>."
+        },
+        {
+          "info": {
+            "name": "Retrieve a partner's link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/partners/:partner_id/links/:link_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "link_id",
+                "value": "",
+                "type": "path",
+                "description": "Link ID."
+              },
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve a <<glossary:partner>>'s <<glossary:link>>s."
+        },
+        {
+          "info": {
+            "name": "Update a partner link",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/users/partners/:partner_id/links/:link_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "link_id",
+                "value": "",
+                "type": "path",
+                "description": "Link ID."
+              },
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will update a <<glossary:partner>> <<glossary:link>>."
+        },
+        {
+          "info": {
+            "name": "Delete a partner link",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/users/partners/:partner_id/links/:link_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "link_id",
+                "value": "",
+                "type": "path",
+                "description": "Link ID."
+              },
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:partner>> <<glossary:link>>."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

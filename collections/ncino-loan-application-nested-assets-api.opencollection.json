@@ -1,0 +1,221 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan Application (Nested) Assets API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Application (Nested) Assets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "🚧 Retrieve all assets (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loan_applications/nested/:loan_application_id/assets",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieves all assets in a <<glossary:loan application>>."
+        },
+        {
+          "info": {
+            "name": "🚧 Creates one or more asset records (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loan_applications/nested/:loan_application_id/assets",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nAppends one or more asset records to a <<glossary:loan application>>.\nEach record is a flat set of the form-defined asset fields (e.g.\n`type`, `value`, `owner`) plus any FI-custom fields the company's form\ndeclares. The batch is atomic — an invalid record writes nothing.\n\n> 🚧 Interim identifier scheme\n`_id` "
+        },
+        {
+          "info": {
+            "name": "🚧 Update multiple asset records. (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/loan_applications/nested/:loan_application_id/assets",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nUpdates multiple asset records."
+        },
+        {
+          "info": {
+            "name": "🚧 Retrieve a specific asset record by ID. (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loan_applications/nested/:loan_application_id/assets/:record_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              },
+              {
+                "name": "record_id",
+                "value": "",
+                "type": "path",
+                "description": "Asset record ID."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieves a specific asset record by ID."
+        },
+        {
+          "info": {
+            "name": "🚧 Update a specific asset record. (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/loan_applications/nested/:loan_application_id/assets/:record_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              },
+              {
+                "name": "record_id",
+                "value": "",
+                "type": "path",
+                "description": "Asset record ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nUpdates a specific asset record by ID."
+        },
+        {
+          "info": {
+            "name": "🚧 Delete a specific asset record. (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/loan_applications/nested/:loan_application_id/assets/:record_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              },
+              {
+                "name": "record_id",
+                "value": "",
+                "type": "path",
+                "description": "Asset record ID."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nDeletes a specific asset record by ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,922 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Loan Officer Partners API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Loan Officer Partners
+  description: Endpoints pertaining to a <<glossary:loan officer>>s' <<glossary:partner>>s
+paths:
+  /users/loan_officers/{loan_officer_id}/partners:
+    post:
+      tags:
+      - Loan Officer Partners
+      operationId: loan_officer_partners-create
+      parameters:
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '201':
+          description: Created partner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '409':
+          description: Partner already exists for the given email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will create a <<glossary:partner>> for a <<glossary:loan officer>>.
+      summary: Create a partner record for a loan officer
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartnerPostBody'
+    get:
+      tags:
+      - Loan Officer Partners
+      operationId: loan_officer_partners-index
+      parameters:
+      - name: accepted_invite
+        description: Accepted invite status by which to filter partners.
+        required: false
+        in: query
+        schema:
+          type: boolean
+      - name: email
+        description: Email by which to filter partners.
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/CreatedAfter'
+      - $ref: '#/components/parameters/CreatedBefore'
+      - $ref: '#/components/parameters/UpdatedAfter'
+      - $ref: '#/components/parameters/UpdatedBefore'
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerPagination'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will retrieve all <<glossary:partner>>s for a <<glossary:loan officer>>.
+      summary: Retrieve all partners for a loan officer
+  /users/loan_officers/{loan_officer_id}/partners/{partner_id}:
+    get:
+      tags:
+      - Loan Officer Partners
+      operationId: loan_officer_partners-show
+      parameters:
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: partner_id
+        description: Partner ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partner'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will retrieve a <<glossary:loan officer>>'s <<glossary:partner>>.
+      summary: Retrieve a loan officer's partner
+    patch:
+      tags:
+      - Loan Officer Partners
+      operationId: loan_officer_partners-update
+      parameters:
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: partner_id
+        description: Partner ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully updated partner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: 'This endpoint will updates a <<glossary:loan officer>>''s <<glossary:partner>> record. Only partners can update their email address.
+
+
+        > 🙇 Heads up!
+
+        **In order to update their email address, please have the partner log into the nCino Mortgage application and update their profile.**'
+      summary: Update a loan officer's partner
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartnerPatchBody'
+    delete:
+      tags:
+      - Loan Officer Partners
+      operationId: loan_officer_partners-destroy
+      parameters:
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: partner_id
+        description: Partner ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully deleted loan officer's partner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will delete a <<glossary:loan officer>>'s <<glossary:partner>>.
+      summary: Delete a loan officer's partner
+  /users/loan_officers/{loan_officer_id}/partners/{partner_id}/actions:
+    post:
+      tags:
+      - Loan Officer Partners
+      operationId: loan_officer_partners-actions
+      parameters:
+      - name: loan_officer_id
+        description: Loan officer ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: partner_id
+        description: Partner ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '412':
+          description: Action cannot be performed because the data is in an invalid state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: "This endpoint allows a variety of actions to be taken on a <<glossary:partner>>.\n\n> \U0001F4CC Available actions\n  **SEND_INVITE** - Send an invite to a partner\n  **ENABLE** - Enable partner\n  **DISABLE** - Disable partner"
+      summary: Perform action on a loan officer's partner
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/SendInvitePartner'
+              - $ref: '#/components/schemas/EnablePartner'
+              - $ref: '#/components/schemas/DisablePartner'
+              discriminator:
+                propertyName: action
+                mapping:
+                  SEND_INVITE: '#/components/schemas/SendInvitePartner'
+                  ENABLE: '#/components/schemas/EnablePartner'
+                  DISABLE: '#/components/schemas/DisablePartner'
+components:
+  schemas:
+    DisablePartner:
+      allOf:
+      - $ref: '#/components/schemas/PartnerAction'
+      description: Available properties for disabling a partner.
+    PartnerPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Partner'
+        required:
+        - contents
+    EnablePartner:
+      allOf:
+      - $ref: '#/components/schemas/PartnerAction'
+      description: Available properties for enabling a partner.
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    Partner:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          created_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the partner record was created.
+          updated_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the partner record was last updated.
+          first_name:
+            type: string
+            description: Partner's first name.
+          last_name:
+            type:
+            - string
+            - 'null'
+            description: Partner's last name.
+          email:
+            type: string
+            maxLength: 255
+            description: Partner's email.
+          mobile_phone:
+            type:
+            - string
+            - 'null'
+            description: Partner's phone.
+          address:
+            allOf:
+            - $ref: '#/components/schemas/Address'
+            description: Partner's address.
+          type:
+            type: string
+            enum:
+            - AGENT
+            description: Partner's type.
+          professional_title:
+            type:
+            - string
+            - 'null'
+            description: Partner's professional title.
+          list_partner_first:
+            type: boolean
+            description: Whether the partner is listed first.
+          is_cobranded:
+            type: boolean
+            description: Whether the partner is cobranded.
+          photo_url:
+            type:
+            - string
+            - 'null'
+            description: Partner's photo url.
+          logo_url:
+            type:
+            - string
+            - 'null'
+            description: Partner's logo url.
+          cobranded_url:
+            type:
+            - string
+            - 'null'
+            description: Partner's cobranded url.
+          accepted_invite:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the partner accepted invite.
+        required:
+        - first_name
+        - email
+        additionalProperties: false
+      description: Partner model
+    EmptyString:
+      type: string
+      enum:
+      - ''
+      description: An empty string.
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    PartnerPostBody:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Partner's first name.
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Partner's last name.
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Partner's email.
+        mobile_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Partner's phone.
+        type:
+          type: string
+          enum:
+          - AGENT
+          description: Partner's role type.
+        professional_title:
+          type:
+          - string
+          - 'null'
+          maxLength: 80
+          description: Partner's professional title.
+        list_partner_first:
+          type: boolean
+          description: Whether the partner is listed first.
+        is_cobranded:
+          type: boolean
+          description: Whether the partner is cobranded.
+        address:
+          allOf:
+          - $ref: '#/components/schemas/InputAddress'
+          description: Partner's address.
+      required:
+      - first_name
+      - last_name
+      - email
+      description: Available properties for creating a <<glossary:loan officer>>'s <<glossary:partner>> record.
+      additionalProperties: false
+    PartnerPatchBody:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Partner's first name.
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Partner's last name.
+        mobile_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Partner's phone.
+        type:
+          type: string
+          enum:
+          - AGENT
+          description: Partner's role type.
+        professional_title:
+          type:
+          - string
+          - 'null'
+          maxLength: 80
+          description: Partner's professional title.
+        list_partner_first:
+          type: boolean
+          description: Whether the partner is listed first.
+        is_cobranded:
+          type: boolean
+          description: Whether the partner is cobranded.
+        address:
+          allOf:
+          - $ref: '#/components/schemas/InputAddress'
+          description: Partner's address.
+      description: Available properties for updating a <<glossary:loan officer>>'s <<glossary:partner>> record.
+      additionalProperties: false
+      minProperties: 1
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    InputAddress:
+      type: object
+      properties:
+        street1:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Street line 1
+        street2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Street line 2
+        city:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: City
+        state:
+          allOf:
+          - $ref: '#/components/schemas/StateCode'
+          description: State
+        zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip code
+      additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    Address:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          street1:
+            type:
+            - string
+            - 'null'
+            description: Street line 1.
+          street2:
+            type:
+            - string
+            - 'null'
+            description: Street line 2.
+          city:
+            type:
+            - string
+            - 'null'
+            description: City.
+          state:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: State.
+          zip:
+            type:
+            - string
+            - 'null'
+            description: Zip code.
+        additionalProperties: false
+      description: Address model
+    SendInvitePartner:
+      allOf:
+      - $ref: '#/components/schemas/PartnerAction'
+      description: Available properties for sending an invite to a partner.
+    PartnerAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - SEND_INVITE
+          - ENABLE
+          - DISABLE
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a partner action.
+      additionalProperties: false
+    StateCode:
+      type: string
+      enum:
+      - AA
+      - AE
+      - AK
+      - AL
+      - AP
+      - AR
+      - AS
+      - AZ
+      - CA
+      - CO
+      - CT
+      - DC
+      - DE
+      - FL
+      - FM
+      - GA
+      - GU
+      - HI
+      - IA
+      - ID
+      - IL
+      - IN
+      - KS
+      - KY
+      - LA
+      - MA
+      - MD
+      - ME
+      - MH
+      - MI
+      - MN
+      - MO
+      - MP
+      - MS
+      - MT
+      - NC
+      - ND
+      - NE
+      - NH
+      - NJ
+      - NM
+      - NV
+      - NY
+      - OH
+      - OK
+      - OR
+      - PA
+      - PR
+      - PW
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VA
+      - VI
+      - VT
+      - WA
+      - WI
+      - WV
+      - WY
+      description: State abbreviated code.
+  responses:
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

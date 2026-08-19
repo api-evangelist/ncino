@@ -1,0 +1,808 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Team Members API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Team Members
+  description: Endpoints pertaining to team members
+paths:
+  /users/team_members:
+    post:
+      tags:
+      - Team Members
+      operationId: team_members-create
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '201':
+          description: Created team member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '409':
+          description: Team member already exists for the given email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will create a <<glossary:team member>> record.
+      summary: Create a team member record
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamMemberPostBody'
+    get:
+      tags:
+      - Team Members
+      operationId: team_members-index
+      parameters:
+      - name: email
+        description: Email by which to filter team members.
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: is_active
+        description: Active status by which to filter team members.
+        required: false
+        in: query
+        schema:
+          type: boolean
+      - name: role
+        description: Role type enum key by which to filter team members.
+        required: false
+        in: query
+        schema:
+          $ref: '#/components/schemas/TeamMemberRoleType'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/CreatedAfter'
+      - $ref: '#/components/parameters/CreatedBefore'
+      - $ref: '#/components/parameters/UpdatedAfter'
+      - $ref: '#/components/parameters/UpdatedBefore'
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMemberPagination'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will retrieve all <<glossary:team member>>s.
+      summary: Retrieve all team members
+  /users/team_members/{team_member_id}:
+    get:
+      tags:
+      - Team Members
+      operationId: team_members-show
+      parameters:
+      - name: team_member_id
+        description: Team member ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamMember'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will retrieve a <<glossary:team member>>.
+      summary: Retrieve a team member
+    patch:
+      tags:
+      - Team Members
+      operationId: team_members-update
+      parameters:
+      - name: team_member_id
+        description: Team member ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully updated team member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '409':
+          description: Team member already exists for the given email or los_username
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will update a <<glossary:team member>>.
+      summary: Update a team member
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamMemberPatchBody'
+    delete:
+      tags:
+      - Team Members
+      operationId: team_members-destroy
+      parameters:
+      - name: team_member_id
+        description: Team member ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully deleted team member
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '412':
+          description: Resource is in an invalid state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: 'This endpoint will delete a <<glossary:team member>>.
+
+        > 🙇 Heads up!
+
+        **This action is irreversible.**'
+      summary: Delete a team member
+  /users/team_members/{team_member_id}/actions:
+    post:
+      tags:
+      - Team Members
+      operationId: team_members-actions
+      parameters:
+      - name: team_member_id
+        description: Team member ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '412':
+          description: Resource is in an invalid state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: "Performs action on a <<glossary:team member>> account.\n\n> \U0001F4CC Available actions\n  **ENABLE** - Activate team member\n  **DISABLE** - Deactivate team member\n  **SEND_WELCOME_EMAIL** - Send a welcome email to team member\n  **CHANGE_ORG** - Change team member's organization"
+      summary: Perform action on a team member account
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/EnableTeamMember'
+              - $ref: '#/components/schemas/DisableTeamMember'
+              - $ref: '#/components/schemas/SendWelcomeEmailTeamMember'
+              - $ref: '#/components/schemas/ChangeOrgTeamMember'
+              discriminator:
+                propertyName: action
+                mapping:
+                  ENABLE: '#/components/schemas/EnableTeamMember'
+                  DISABLE: '#/components/schemas/DisableTeamMember'
+                  SEND_WELCOME_EMAIL: '#/components/schemas/SendWelcomeEmailTeamMember'
+                  CHANGE_ORG: '#/components/schemas/ChangeOrgTeamMember'
+components:
+  responses:
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  schemas:
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    ChangeOrgTeamMember:
+      allOf:
+      - $ref: '#/components/schemas/TeamMemberAction'
+      - type: object
+        properties:
+          org_type:
+            type: string
+            enum:
+            - COMPANY
+            - REGION
+            - BRANCH
+            description: Organization type (COMPANY, REGION, BRANCH).
+          org_id:
+            type: string
+            format: uuid
+            description: Organization ID.
+        required:
+        - org_type
+        - org_id
+        additionalProperties: false
+      description: Available properties for changing a team member's organization.
+    TeamMemberPatchBody:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Team member's first name.
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Team member's last name.
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Team member's email.
+        phone:
+          type: string
+          format: phone
+          description: Team member's phone.
+        role:
+          allOf:
+          - $ref: '#/components/schemas/TeamMemberRoleType'
+          description: Team member's role type.
+        nmls:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Team member's NMLS ID.
+        third_party:
+          allOf:
+          - $ref: '#/components/schemas/LimitedInputThirdParty'
+          description: Team member's third party integration information.
+      description: Available properties for updating a team member record.
+      additionalProperties: false
+      minProperties: 1
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    TeamMemberPostBody:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Team member's first name.
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Team member's last name.
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Team member's email.
+        role:
+          allOf:
+          - $ref: '#/components/schemas/TeamMemberRoleType'
+          description: Team member's role enum key.
+        phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Team member's phone.
+        nmls:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Team member's NMLS ID.
+      required:
+      - first_name
+      - last_name
+      - email
+      - role
+      description: Available properties for creating a team member record.
+      additionalProperties: false
+    ThirdParty:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          credit_user_id:
+            type:
+            - string
+            - 'null'
+            description: External user ID for credit orders.
+          los_username:
+            type:
+            - string
+            - 'null'
+            description: External LOS username.
+          crm_user_id:
+            type:
+            - string
+            - 'null'
+            description: External user ID for CRM.
+          crm_user_type:
+            type:
+            - string
+            - 'null'
+            description: External user type for CRM.
+        required:
+        - credit_user_id
+        - los_username
+        additionalProperties: false
+      description: Third party data for user
+    TeamMemberAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - ENABLE
+          - DISABLE
+          - SEND_WELCOME_EMAIL
+          - CHANGE_ORG
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a team member action.
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    SendWelcomeEmailTeamMember:
+      allOf:
+      - $ref: '#/components/schemas/TeamMemberAction'
+      description: Available properties for sending a welcome email to a team member.
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    TeamMemberPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/TeamMember'
+        required:
+        - contents
+    DisableTeamMember:
+      allOf:
+      - $ref: '#/components/schemas/TeamMemberAction'
+      description: Available properties for disabling a team member.
+    TeamMember:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          created_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the team member record was created.
+          updated_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the team member record was last updated.
+          first_name:
+            type: string
+            description: Team member's first name.
+          last_name:
+            type: string
+            description: Team member's last name.
+          email:
+            type: string
+            description: Team member's email.
+          role:
+            allOf:
+            - $ref: '#/components/schemas/TeamMemberRoleType'
+            description: Team member's role.
+          phone:
+            type:
+            - string
+            - 'null'
+            description: Team member's phone.
+          nmls:
+            type:
+            - string
+            - 'null'
+            description: Team member's NMLS ID.
+          third_party:
+            allOf:
+            - $ref: '#/components/schemas/ThirdParty'
+            description: Team member's third party integration information.
+          is_active:
+            type: boolean
+            description: Whether the team member is active in the system.
+        required:
+        - first_name
+        - last_name
+        - email
+        additionalProperties: false
+      description: Team member model
+    EnableTeamMember:
+      allOf:
+      - $ref: '#/components/schemas/TeamMemberAction'
+      description: Available properties for enabling a team member.
+    LimitedInputThirdParty:
+      type: object
+      properties:
+        credit_user_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: External user ID for credit orders.
+        los_username:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: External LOS username.
+      description: Third party integration data for team member.
+      additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    TeamMemberRoleType:
+      type: string
+      enum:
+      - CLOSER
+      - PROCESSOR
+      - LOA
+      - DISCLOSURE_DESK
+      - FUNDER
+      - SHIPPER
+      - POST_CLOSER
+      - ACCOUNT_EXECUTIVE
+      description: Team member's role type enum key.
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

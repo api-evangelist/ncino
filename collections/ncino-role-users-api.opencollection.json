@@ -1,0 +1,136 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Role Users API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Role Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "🚧 Retrieve all users assigned to a role (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/roles/:role_id/users",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Filter by user's email (case-insensitive substring match)."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by user's first or last name (case-insensitive substring match)."
+              },
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "<<glossary:role>> ID."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieve all users assigned to a role\n\nTODO: Remove the line below when endpoint is ready to go live for customers"
+        },
+        {
+          "info": {
+            "name": "🚧 Assign users to a role (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/roles/:role_id/users",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "<<glossary:role>> ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nAssign users to a role\n\nTODO: Remove the line below when endpoint is ready to go live for customers"
+        },
+        {
+          "info": {
+            "name": "🚧 Remove users from a role (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/roles/:role_id/users",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path",
+                "description": "<<glossary:role>> ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRemove users from a role\n\nTODO: Remove the line below when endpoint is ready to go live for customers"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

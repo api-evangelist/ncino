@@ -1,0 +1,257 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan Borrowers API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Borrowers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "🚧 Retrieve all loan borrowers (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/borrowers",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              },
+              {
+                "name": "pair_index",
+                "value": "",
+                "type": "query",
+                "description": "Pair index by which to filter borrowers on the loan."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieves a list of borrowers on a loan. <<glossary:Loan borrower>>s are separate from <<glossary:borrower account>>s.\nA loan borrower may or may not have an account in nCino Mortgage.\nThe corresponding user borrower account will be listed in the _links object, if available."
+        },
+        {
+          "info": {
+            "name": "🚧 Create a loan borrower record (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/borrowers",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will create a <<glossary:loan borrower>> record."
+        },
+        {
+          "info": {
+            "name": "🚧 Retrieve a loan borrower (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/borrowers/:borrower_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "borrower_id",
+                "value": "",
+                "type": "path",
+                "description": "Borrower ID."
+              },
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will retrieve a single <<glossary:loan borrower>>."
+        },
+        {
+          "info": {
+            "name": "🚧 Update a loan borrower (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/borrowers/:borrower_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "borrower_id",
+                "value": "",
+                "type": "path",
+                "description": "Borrower ID."
+              },
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will update any data provided via body params on the <<glossary:loan borrower>>. Only the body params listed maybe be used."
+        },
+        {
+          "info": {
+            "name": "🚧 Delete a loan borrower (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/borrowers/:borrower_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "borrower_id",
+                "value": "",
+                "type": "path",
+                "description": "Borrower ID."
+              },
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will delete a <<glossary:loan borrower>>."
+        },
+        {
+          "info": {
+            "name": "Perform action on a loan borrower",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/borrowers/:borrower_id/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "borrower_id",
+                "value": "",
+                "type": "path",
+                "description": "Borrower ID."
+              },
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows a variety of actions to be taken on a <<glossary:loan borrower>>\n\n> 📌 Available actions\n**ORDER_VERIFICATION** - order verification for the loan borrower (requires Verifications v2 feature be enabled)\n**DISCONNECT_BORROWER** - disconnect loan borrower payroll and bank data connections for verification purposes (requires Verifications v2 feature be enabled)\n**SEND_VERIFICATION_REMINDER** - send email reminder to loan borrower to complete the verification experience (requires"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

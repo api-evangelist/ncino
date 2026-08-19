@@ -1,0 +1,95 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Company Images API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Company Images",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update a company's image",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ncinomortgage.com/companies/:company_id/images/:image_key",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path",
+                "description": "Company ID."
+              },
+              {
+                "name": "image_key",
+                "value": "",
+                "type": "path",
+                "description": "Image to be updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will update a <<glossary:company>>'s image.\n\n<table border=1px cellpadding=5px>\n\t<tr>\n\t\t<th>image_key</th>\n\t\t<th>Supported File Types</th>\n\t\t<th>Image Dimensions</th>\n\t</tr>\n\t<tr>\n\t\t<td>logo</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>1000x313</td>\n\t</tr>\n\t<tr>\n\t\t<td>app_icon</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>100x100</td>\n\t</tr>\n\t<tr>\n\t\t<td>app_homepage_logo</td>\n\t\t"
+        },
+        {
+          "info": {
+            "name": "Delete a company's image",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/companies/:company_id/images/:image_key",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path",
+                "description": "Company ID."
+              },
+              {
+                "name": "image_key",
+                "value": "",
+                "type": "path",
+                "description": "Image to be deleted."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:company>>'s image."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

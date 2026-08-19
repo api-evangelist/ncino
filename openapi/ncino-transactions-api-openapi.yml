@@ -1,0 +1,864 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: nCino eVault Transactions API
+  description: All routes are currently in development and should be treated as such.
+servers:
+- url: https://evault.ncino.com/api
+  description: Production server
+security:
+- bearerAuth: []
+tags:
+- name: Transactions
+paths:
+  /{environment}/transactions/{transaction_id}:
+    x-acl: transactions
+    get:
+      summary: Get a transaction
+      description: Retrieves a previously submitted transaction by its transaction guid, including its current status and details.
+      operationId: getTransaction
+      tags:
+      - Transactions
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - name: transaction_id
+        description: The unique identifier for a transaction
+        required: true
+        in: path
+        schema:
+          $ref: '#/components/schemas/guid'
+      responses:
+        '200':
+          description: Transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/default_success_response'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/guid'
+                        requestId:
+                          $ref: '#/components/schemas/request_id'
+                        enoteId:
+                          $ref: '#/components/schemas/guid'
+                        min:
+                          $ref: '#/components/schemas/min'
+                        transactionType:
+                          $ref: '#/components/schemas/transaction_type'
+                        detailedType:
+                          $ref: '#/components/schemas/detailed_transaction_type'
+                        initiatorMersOrgId:
+                          $ref: '#/components/schemas/mers_org_id'
+                        initiatorName:
+                          $ref: '#/components/schemas/name'
+                        isSystem:
+                          $ref: '#/components/schemas/is_system'
+                        isTest:
+                          $ref: '#/components/schemas/is_test'
+                        incoming:
+                          $ref: '#/components/schemas/incoming'
+                        status:
+                          $ref: '#/components/schemas/status'
+                        completed:
+                          $ref: '#/components/schemas/boolean'
+                        requestTimestamp:
+                          $ref: '#/components/schemas/general_iso8601'
+                        createdAt:
+                          $ref: '#/components/schemas/general_iso8601'
+                        updatedAt:
+                          $ref: '#/components/schemas/general_iso8601'
+                        additionalDetails:
+                          $ref: '#/components/schemas/transaction_additional_details'
+                        auditLogs:
+                          $ref: '#/components/schemas/audit_logs'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+    post:
+      summary: Updates an existing transaction
+      description: Confirms or updates a pending transaction — for example accepting or rejecting a pending <Glossary>transfer</Glossary> awaiting confirmation. The confirmation type is specified in the request body.
+      tags:
+      - Transactions
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - $ref: '#/paths/~1%7Benvironment%7D~1transactions~1%7Btransaction_id%7D/get/parameters/1'
+      requestBody:
+        description: In order to perform this transaction, include the following in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transaction_post'
+      responses:
+        '200':
+          description: Update transaction
+          $ref: '#/paths/~1%7Benvironment%7D~1inquiry/post/responses/200'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/inquiry:
+    x-acl: transactions
+    post:
+      summary: Performs an inquiry
+      description: Looks up the current registry state of an <Glossary>eNote</Glossary> by its <Glossary>MIN</Glossary> or eNote guid, returning status or summary information.
+      tags:
+      - Transactions
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      requestBody:
+        description: In order to perform an inquiry, all of the following must be included in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/inquiry_post'
+      responses:
+        '200':
+          description: Inquiry
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/default_success_response'
+                - type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/mers_response'
+                    transactionId:
+                      $ref: '#/components/schemas/guid'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/connectivity:
+    x-acl: transactions
+    post:
+      summary: Performs a connectivity test
+      description: Verifies connectivity to <Glossary>MERS eRegistry</Glossary> or <Glossary>MERS eDelivery</Glossary> for the given environment. The target is set by the address type in the request body.
+      tags:
+      - Transactions
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      requestBody:
+        description: In order to perform a connectivity test, all of the following must be included in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/connectivity_post'
+      responses:
+        '200':
+          description: Connectivity
+          $ref: '#/paths/~1%7Benvironment%7D~1inquiry/post/responses/200'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/enotes/{enote_id}/register:
+    x-acl: transactions
+    post:
+      summary: Performs a Registration
+      description: Registers a newly created <Glossary>eNote</Glossary> on <Glossary>MERS eRegistry</Glossary>, establishing the initial <Glossary>controller</Glossary> and the <Glossary>location</Glossary> that maintains its <Glossary>authoritative copy</Glossary>. On success the eNote's <Glossary>electronic record</Glossary> is created with a status of Active.
+      tags:
+      - Transactions
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes~1%7Benote_id%7D/get/parameters/1'
+      requestBody:
+        description: In order to perform a registration, all of the following must be included in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/register_post'
+      responses:
+        '200':
+          description: Register
+          $ref: '#/paths/~1%7Benvironment%7D~1inquiry/post/responses/200'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/enotes/{enote_id}/change-status:
+    x-acl: transactions
+    post:
+      summary: Performs a Change Status
+      description: Changes the lifecycle status of a registered <Glossary>eNote</Glossary>'s <Glossary>electronic record</Glossary> — for example marking it paid off, charged off, <Glossary>converted to paper</Glossary>, or <Glossary>paper replacement</Glossary>, or reversing a prior status change. The status type is specified in the request body.
+      tags:
+      - Transactions
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes~1%7Benote_id%7D/get/parameters/1'
+      requestBody:
+        description: In order to perform a change status, all of the following must be included in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/change_status_post'
+      responses:
+        '200':
+          description: Change Status
+          $ref: '#/paths/~1%7Benvironment%7D~1inquiry/post/responses/200'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/enotes/{enote_id}/change-data:
+    x-acl: transactions
+    post:
+      summary: Performs a Change Data
+      description: Updates data or party associations on a registered <Glossary>eNote</Glossary>'s <Glossary>electronic record</Glossary> without a full transfer — for example adding or releasing a <Glossary>secured party</Glossary>, changing the <Glossary>master servicer</Glossary> or <Glossary>subservicer</Glossary>, or reporting a modification or assumption. The change type is specified in the request body.
+      tags:
+      - Transactions
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes~1%7Benote_id%7D/get/parameters/1'
+      requestBody:
+        description: In order to perform a change data, all of the following must be included in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/change_data_post'
+      responses:
+        '200':
+          description: Change Data
+          $ref: '#/paths/~1%7Benvironment%7D~1inquiry/post/responses/200'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/enotes/{enote_id}/deliver:
+    x-acl: transactions
+    post:
+      summary: Performs a Delivery
+      description: Delivers the <Glossary>eNote</Glossary> to one or more recipient organizations via <Glossary>MERS eDelivery</Glossary>. Each recipient is identified by its <Glossary>MERS Org ID</Glossary> and may accept or reject the delivery.
+      tags:
+      - Transactions
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes~1%7Benote_id%7D/get/parameters/1'
+      requestBody:
+        description: In order to perform a delivery, all of the following must be included in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/delivery_post'
+      responses:
+        '200':
+          description: Delivery
+          $ref: '#/paths/~1%7Benvironment%7D~1inquiry/post/responses/200'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+  /{environment}/enotes/{enote_id}/transfer:
+    x-acl: transactions
+    post:
+      summary: Performs a Transfer
+      description: Changes the parties on a registered <Glossary>eNote</Glossary> — for example the <Glossary>controller</Glossary>, <Glossary>location</Glossary>, or <Glossary>secured party</Glossary>. The transfer type included in the request body determines which parties change.
+      tags:
+      - Transactions
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes~1%7Benote_id%7D/get/parameters/1'
+      requestBody:
+        description: In order to perform a transfer, all of the following must be included in the request body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/transfer_post'
+      responses:
+        '200':
+          description: Transfer
+          $ref: '#/paths/~1%7Benvironment%7D~1inquiry/post/responses/200'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+components:
+  schemas:
+    name:
+      type: string
+      example: Name
+    transfer_post:
+      type: object
+      required:
+      - type
+      - effectiveDate
+      properties:
+        type:
+          $ref: '#/components/schemas/transfer_type'
+        effectiveDate:
+          $ref: '#/components/schemas/effective_date'
+        controllerOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        locationOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        servicerOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        subservicerOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        securedPartyOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        securedPartyDelegateeOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        delegateeForTransferOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        counterPartyOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        includeDelivery:
+          $ref: '#/components/schemas/boolean'
+    document_name:
+      type: string
+      example: Document 1
+    incoming:
+      type: boolean
+      example: false
+    change_data_type:
+      type: string
+      enum:
+      - ADD_SECURED_PARTY
+      - RELEASE_SECURED_PARTY
+      - REVERSE_SECURED_PARTY
+      - ADD_DOCUMENT
+      - ASSUME
+      - MODIFY
+      - UPDATE
+      example: ADD_DOCUMENT
+    inquiry_post:
+      type: object
+      properties:
+        min:
+          $ref: '#/components/schemas/min'
+        enote_guid:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Alternative to min. Either min or enote_guid is required.
+    delivery_post:
+      type: object
+      required:
+      - recipients
+      properties:
+        recipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/mers_org_id'
+          example:
+          - '1234567'
+    change_status_post:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          $ref: '#/components/schemas/change_status_type'
+        docGuid:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Required when type is REV_DOCUMENT.
+    status:
+      type: string
+      nullable: true
+      example: unregistered
+    transaction_additional_details:
+      type: object
+      properties:
+        detailsType:
+          $ref: '#/components/schemas/detailed_transaction_type'
+        documentName:
+          type: string
+          example: Name
+        documentType:
+          type: string
+          example: Other
+        trackingNumber:
+          type: string
+          example: '123456'
+        approvalCode:
+          type: string
+          example: '5016'
+        approvalDescription:
+          type: string
+          example: signature doesn't match the value on mers registry
+        recipients:
+          type: array
+          items:
+            type: object
+            properties:
+              mersOrgId:
+                $ref: '#/components/schemas/mers_org_id'
+              status:
+                $ref: '#/components/schemas/delivery_recipient_status'
+              approvalCode:
+                type: string
+                example: '5016'
+              approvalDescription:
+                type: string
+                example: signature doesn't match the value on mers registry
+          example:
+          - mersOrgId: 1234567
+            status: disapproved
+            approvalCode: 5016
+            approvalDescription: signature doesn't match the value on mers registry
+        transferType:
+          $ref: '#/components/schemas/transfer_type'
+        mersReferenceId:
+          type: string
+          example: '123456'
+        confirmationStatus:
+          $ref: '#/components/schemas/transfer_confirmation_status'
+        effectiveDate:
+          $ref: '#/components/schemas/effective_date'
+        controller:
+          $ref: '#/components/schemas/mers_org_id'
+        masterServicer:
+          $ref: '#/components/schemas/mers_org_id'
+        subServicer:
+          $ref: '#/components/schemas/mers_org_id'
+        location:
+          $ref: '#/components/schemas/mers_org_id'
+        transferDelegatee:
+          $ref: '#/components/schemas/mers_org_id'
+        securedParty:
+          $ref: '#/components/schemas/mers_org_id'
+        securedPartyDelegatee:
+          $ref: '#/components/schemas/mers_org_id'
+        originalController:
+          $ref: '#/components/schemas/mers_org_id'
+        originalMasterServicer:
+          $ref: '#/components/schemas/mers_org_id'
+        originalSubServicer:
+          $ref: '#/components/schemas/mers_org_id'
+        originalLocation:
+          $ref: '#/components/schemas/mers_org_id'
+        originalTransferDelegatee:
+          $ref: '#/components/schemas/mers_org_id'
+        originalSecuredParty:
+          $ref: '#/components/schemas/mers_org_id'
+        originalSecuredPartyDelegatee:
+          $ref: '#/components/schemas/mers_org_id'
+      example:
+        detailsType: ChangeDataDetails
+        documentName: Name
+        documentType: Other
+    transaction_post:
+      type: object
+      properties:
+        confirmationType:
+          $ref: '#/components/schemas/confirmation_type'
+    confirmation_type:
+      type: string
+      enum:
+      - Accept
+      - Reject
+      - Approve
+      - Disapprove
+      - Cancel
+      example: Accept
+    content_type:
+      type: string
+      enum:
+      - application/pdf
+      - application/xml
+      example: application/pdf
+    mers_address_type:
+      type: string
+      enum:
+      - eRegistry
+      - eDelivery
+      example: eRegistry
+    transfer_type:
+      type: string
+      enum:
+      - TransferAll
+      - TransferControl
+      - TransferControlWithSecuredParty
+      - TransferControlAndDelegatee
+      - TransferControlAndLocation
+      - TransferControlAndLocationWithSecuredParty
+      - TransferDelegatee
+      - TransferLocation
+      example: TransferAll
+    effective_date:
+      type: string
+      example: '2019-02-28'
+    boolean:
+      type: boolean
+      example: true
+    transaction_type:
+      type: string
+      enum:
+      - connectivity
+      - inquiry
+      - member_inquiry
+      - contact_inquiry
+      - registration
+      - delivery
+      - transfer
+      - change_status
+      - change_data
+      - resend_notifications
+      - controller_history
+      example: transfer
+    detailed_transaction_type:
+      type: string
+      enum:
+      - ChangeStatusDetails
+      - ChangeDataDetails
+      - RegistrationDetails
+      - TransferDetails
+      - DeliveryDetails
+      example: TransferDetails
+    default_success_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+        warnings:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+    mers_org_id:
+      type: string
+      example: 1234567
+    is_system:
+      type: boolean
+      example: false
+    request_id:
+      type: string
+      example: 123456
+    transfer_confirmation_status:
+      type: string
+      enum:
+      - pending
+      - accepted
+      - rejected
+      - no_action_required
+      example: accepted
+    change_data_post:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          $ref: '#/components/schemas/change_data_type'
+        documentType:
+          $ref: '#/components/schemas/document_type'
+        documentData:
+          $ref: '#/components/schemas/base64'
+        documentName:
+          $ref: '#/components/schemas/document_name'
+        contentType:
+          $ref: '#/components/schemas/content_type'
+        borrowers:
+          type: array
+          items:
+            type: object
+            properties:
+              firstName:
+                $ref: '#/components/schemas/name'
+              middleName:
+                $ref: '#/components/schemas/name'
+              lastName:
+                $ref: '#/components/schemas/name'
+              suffix:
+                $ref: '#/components/schemas/name'
+          example:
+          - firstName: First
+            middleName: Middle
+            lastName: Last
+            suffix: Sr
+        modificationType:
+          $ref: '#/components/schemas/modification_type'
+        locationOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        masterServicerOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        subServicerOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        transferDelegateeOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        securedPartyOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        securedPartyDelegateeOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+    document_type:
+      type: string
+      example: AppraisalReport
+    guid:
+      type: string
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    event_type:
+      type: string
+      enum:
+      - connectivity
+      - eRegistry_connectivity
+      - eDelivery_connectivity
+      - eregistry_connectivity_notification
+      - edelivery_connectivity_notification
+      - inquiry
+      - member_inquiry
+      - contact_inquiry
+      - registration
+      - delivery
+      - transfer
+      - change_status
+      - change_data
+      - manual_archive
+      - resend_notifications
+      - tamperseal_validation
+      - dtd_validation
+      - data_validation
+      - arc_mapping_validation
+      - connectivity_notification
+      - registration_notification
+      - delete_document
+      - controller_history
+      - add_secured_party
+      - release_secured_party
+      - reverse_secured_party
+      - add_document
+      - assumption
+      - modification_electronic
+      - modification_paper
+      - update_rightsholders
+      - change_data_notification
+      - assumption_reversal
+      - charged_off
+      - charged_off_reversal
+      - converted_to_paper
+      - converted_to_paper_reversal
+      - document_reversal
+      - modification_reversal
+      - paid_off
+      - paid_off_reversal
+      - registration_reversal
+      - transferred_to_proprietary_registry
+      - transferred_to_proprietary_registry_reversal
+      - paper_replacement
+      - paper_replacement_reversal
+      - change_status_notification
+      - delivery_initiated
+      - delivery_canceled
+      - delivery_accepted
+      - delivery_rejected
+      - delivery_expired
+      - delivery_distributed
+      - delivery_approved
+      - delivery_disapproved
+      - delivery_initiated_notification
+      - delivery_expired_notification
+      - delivery_accepted_notification
+      - delivery_rejected_notification
+      - delivery_distributed_notification
+      - delivery_approved_notification
+      - delivery_disapproved_notification
+      - delivery_notification
+      - transfer_initiated
+      - transfer_accepted
+      - transfer_rejected
+      - transfer_reset
+      - transfer_expired
+      - transfer_completed
+      - transfer_initiated_notification
+      - transfer_completed_notification
+      - transfer_rejected_notification
+      - transfer_expired_notification
+      - transfer_notification
+      - add_enote_additional_data_point
+      - update_enote_additional_data_point
+      - delete_enote_additional_data_point
+      - upload_document
+      - edit_document
+      - change_loan_number
+      - change_type
+      - archive_document
+      - reactivate_document
+      - view_doc
+      - view_audit
+      - download_doc
+      - inquiry_validation
+      - tamperseal_validation
+      - dtd_validation
+      - data_validation
+      - arc_mapping_validation
+      - view_enote_presentation
+      - view_enote_xml
+      - view_enote_data
+      - upload_enote
+      - became_authoritative_copy
+      - released_authoritative_copy
+      - multi_factor_authentication
+      - user_login
+      - manual_archive
+      - user_sso_login
+      - add_api_client
+      - edit_api_client
+      - deactivate_org_api_clients
+      - activate_org_api_clients
+      - edit_org_api_client_permissions
+      example: delivery_initiated
+    audit_logs:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/guid'
+          eventType:
+            $ref: '#/components/schemas/event_type'
+          incoming:
+            $ref: '#/components/schemas/incoming'
+          status:
+            $ref: '#/components/schemas/status'
+          requestTimestamp:
+            $ref: '#/components/schemas/general_iso8601'
+          isSystem:
+            $ref: '#/components/schemas/is_system'
+          isTest:
+            $ref: '#/components/schemas/is_test'
+      example:
+      - id: 459f521f-f2fa-4230-a704-46147ac8as7e
+        eventType: connectivity
+        incoming: false
+        status: success
+        requestTimestamp: '2019-02-28T00:00:00Z'
+        isTest: false
+    mers_response:
+      type: string
+      example: <xml>MERS response</xml>
+    change_status_type:
+      type: string
+      enum:
+      - REV_REGISTRATION
+      - PAID_OFF
+      - REV_PAID_OFF
+      - CHARGED_OFF
+      - REV_CHARGED_OFF
+      - CONV_PAPER
+      - REV_CONV_PAPER
+      - PAPER_REPLACEMENT
+      - REV_PAPER_REPLACEMENT
+      - TRANSF_TO_PROP
+      - REV_TRANSF_TO_PROP
+      - REV_ASSUMPTION
+      - REV_DOCUMENT
+      - REV_MODIFICATION
+      - ARCHIVE
+      example: REV_REGISTRATION
+    delivery_recipient_status:
+      type: string
+      enum:
+      - sent
+      - accepted
+      - rejected
+      - approved
+      - disapproved
+      - canceled
+      - expired
+      example: approved
+    min:
+      type: string
+      example: 123456789012345680
+    base64:
+      type: string
+      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
+    general_iso8601:
+      type: string
+      example: '2019-02-28T00:00:00Z'
+    modification_type:
+      type: string
+      enum:
+      - Electronic
+      - Paper
+      example: Electronic
+    connectivity_post:
+      type: object
+      properties:
+        addressType:
+          $ref: '#/components/schemas/mers_address_type'
+    is_test:
+      type: boolean
+      example: true
+    register_post:
+      type: object
+      required:
+      - controllerOrgId
+      - locationOrgId
+      - servicerOrgId
+      - borrowers
+      properties:
+        controllerOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        locationOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        servicerOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        delegateeToTransferOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        securedPartyOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        securedPartyDelegateeOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        transferControl:
+          type: boolean
+          example: false
+        borrowers:
+          type: array
+          items:
+            type: object
+            properties:
+              firstName:
+                $ref: '#/components/schemas/name'
+              middleName:
+                $ref: '#/components/schemas/name'
+              lastName:
+                $ref: '#/components/schemas/name'
+              suffix:
+                $ref: '#/components/schemas/name'
+          example:
+          - firstName: First
+            middleName: Middle
+            lastName: Last
+            suffix: Sr
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'JWT access token used to authorize every API request. Send it as `Authorization: Bearer <access_token>`. Tokens are issued by the token endpoint (POST https://evault.ncino.com/oauth/auth_token) and expire after the `expires_in` seconds returned there (default 3600); request a new token or exchange the refresh token once it expires.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic credentials used only by the token endpoint (POST /oauth/auth_token). The username is your API client_id and the password is your client_secret, sent as `Authorization: Basic base64(client_id:client_secret)`.'

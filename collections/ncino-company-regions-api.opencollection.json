@@ -1,0 +1,222 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Company Regions API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Company Regions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a specific region",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/companies/:company_id/regions/:region_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path",
+                "description": "Company ID."
+              },
+              {
+                "name": "region_id",
+                "value": "",
+                "type": "path",
+                "description": "Region ID."
+              }
+            ]
+          },
+          "docs": "This endpoint retrieves a specific <<glossary:region>>."
+        },
+        {
+          "info": {
+            "name": "Update a region",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/companies/:company_id/regions/:region_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path",
+                "description": "Company ID."
+              },
+              {
+                "name": "region_id",
+                "value": "",
+                "type": "path",
+                "description": "Region ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint updates a <<glossary:region>>."
+        },
+        {
+          "info": {
+            "name": "Delete a region",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/companies/:company_id/regions/:region_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path",
+                "description": "Company ID."
+              },
+              {
+                "name": "region_id",
+                "value": "",
+                "type": "path",
+                "description": "Region ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:region>>.\n\n> 🙇 Heads up!\nThe region is not deleted immediately, but deleted in an <<glossary:asynchronous job>>."
+        },
+        {
+          "info": {
+            "name": "Retrieve a company's regions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/companies/:company_id/regions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path",
+                "description": "Company ID."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "State by which to filter regions."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve a <<glossary:company>>'s <<glossary:region>>s."
+        },
+        {
+          "info": {
+            "name": "Create a new region",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/companies/:company_id/regions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path",
+                "description": "Company ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint creates a <<glossary:region>>."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

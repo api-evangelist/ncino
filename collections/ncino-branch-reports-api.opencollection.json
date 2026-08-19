@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Branch Reports API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Branch Reports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate a branch report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/branches/:branch_id/reports",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "branch_id",
+                "value": "",
+                "type": "path",
+                "description": "<<glossary:Branch>> ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint generates a <<glossary:branch>> report. The report will create an <<glossary:asynchronous job>> and can be accessed when the job returned in the response has successfully completed."
+        },
+        {
+          "info": {
+            "name": "Download a branch report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/branches/:branch_id/reports/:report_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "branch_id",
+                "value": "",
+                "type": "path",
+                "description": "Scope response to branch_id"
+              },
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "Scope response to report_id"
+              }
+            ]
+          },
+          "docs": "This endpoint downloads a <<glossary:branch>> report."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

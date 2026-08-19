@@ -1,0 +1,35 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino eVault Connectivity API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Connectivity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Verifies API connectivity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://evault.ncino.com/api/connectivity-check"
+          },
+          "docs": "Lightweight connection/health check. Requires a valid <Glossary>bearer token</Glossary> but no specific permission — a 200 response confirms the caller's credentials are valid and can reach the eVault API. No environment segment or identifiers are needed."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1836 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Loans API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Loans
+  description: Endpoints for loans
+paths:
+  /loans:
+    post:
+      tags:
+      - Loans
+      operationId: loans-create
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '201':
+          description: Created loan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '412':
+          description: Resource is in an invalid state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will create a <<glossary:loan>> record.
+      summary: Create a loan
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanPostBody'
+    get:
+      tags:
+      - Loans
+      operationId: loans-index
+      parameters:
+      - name: borrower_name
+        description: Filter loans by borrower name (prefix match against the borrower or co-borrower first or last name).
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: closing_date_end
+        description: Filter to loans with a closing date on or before this date (inclusive).
+        required: false
+        in: query
+        schema:
+          type: string
+          format: date
+      - name: closing_date_start
+        description: Filter to loans with a closing date on or after this date (inclusive).
+        required: false
+        in: query
+        schema:
+          type: string
+          format: date
+      - name: in_los
+        description: Filter loans by whether they are synced to the LOS.
+        required: false
+        in: query
+        schema:
+          type: boolean
+      - name: is_active
+        description: Filter loans by active status (default true).
+        required: false
+        in: query
+        schema:
+          type: boolean
+      - name: loan_number
+        description: Filter loans by exact loan number.
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: loan_officer_id
+        description: <<glossary:Loan officer>> ID by which to filter loans.
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: loan_purpose
+        description: Loan purpose search parameter by which to filter loans.
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: loan_type
+        description: Loan type search parameter by which to filter loans.
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: order
+        description: 'Sort by creation date: "asc" (oldest first, default) or "desc" (newest first).'
+        required: false
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      - name: org_id
+        description: Organization (company, region, or branch) ID by which to filter loans.
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: user_borrower_id
+        description: User borrower ID by which to filter loans.
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/CreatedAfter'
+      - $ref: '#/components/parameters/CreatedBefore'
+      - $ref: '#/components/parameters/UpdatedAfter'
+      - $ref: '#/components/parameters/UpdatedBefore'
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanPagination'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will retrieve all <<glossary:loan>> records.
+      summary: Retrieve all loans
+  /loans/{loan_id}:
+    get:
+      tags:
+      - Loans
+      operationId: loans-show
+      parameters:
+      - name: loan_id
+        description: Loan ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Loan.Detail'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will retrieve a <<glossary:loan>> record.
+      summary: Retrieve a loan
+    patch:
+      tags:
+      - Loans
+      operationId: loans-update
+      parameters:
+      - name: loan_id
+        description: Loan ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully updated loan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will update a <<glossary:loan>> record.
+      summary: Update a loan
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanPatchBody'
+    delete:
+      tags:
+      - Loans
+      operationId: loans-destroy
+      parameters:
+      - name: loan_id
+        description: Loan ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '201':
+          description: Created <<glossary:asynchronous job>> to delete the loan.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will delete a <<glossary:loan>> record.
+      summary: Delete a loan
+  /loans/{loan_id}/actions:
+    post:
+      tags:
+      - Loans
+      operationId: loans-actions
+      parameters:
+      - name: loan_id
+        description: Loan ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '412':
+          description: Resource is in an invalid state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: 'This endpoint will perform an action on a <<glossary:loan>> record.
+
+
+        > 🚧 Under construction
+
+        > **Certain actions on this endpoint are in beta.** Functionality or availability are subject to change and will be communicated.
+
+
+        > 📌 Available actions
+
+        **DEACTIVATE** - deactivate a loan (sets is_active to false)
+
+        **ACTIVATE** - activate a loan (sets is_active to true)
+
+        **REORDER_BORROWERS** - reorder a loan''s borrowers
+
+        **REASSIGN_LO** - reassign a loan''s loan officer
+
+        🚧 **ASSIGN_TEAM_MEMBER** - assign a team member to a loan
+
+        🚧 **UNASSIGN_TEAM_MEMBER** - unassign a team member from a loan'
+      summary: Perform action on a loan
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/DeactivateLoan'
+              - $ref: '#/components/schemas/ActivateLoan'
+              - $ref: '#/components/schemas/ReorderBorrowers'
+              - $ref: '#/components/schemas/ReassignLo'
+              - $ref: '#/components/schemas/AssignTeamMember'
+              - $ref: '#/components/schemas/UnassignTeamMember'
+              discriminator:
+                propertyName: action
+                mapping:
+                  DEACTIVATE: '#/components/schemas/DeactivateLoan'
+                  ACTIVATE: '#/components/schemas/ActivateLoan'
+                  REORDER_BORROWERS: '#/components/schemas/ReorderBorrowers'
+                  REASSIGN_LO: '#/components/schemas/ReassignLo'
+                  ASSIGN_TEAM_MEMBER: '#/components/schemas/AssignTeamMember'
+                  UNASSIGN_TEAM_MEMBER: '#/components/schemas/UnassignTeamMember'
+  /loans/{loan_id}/ron_eligibility:
+    get:
+      tags:
+      - Loans
+      operationId: loans-check_ron_eligibility
+      parameters:
+      - name: loan_id
+        description: Loan ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RonEligibility'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '404':
+          description: Loan not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        This endpoint checks whether a <<glossary:loan>> is eligible for Remote Online Notarization
+
+        (RON), based on the loan''s saved property address and the servicer''s RON configuration.'
+      summary: 🚧 Check RON eligibility for a loan (BETA)
+components:
+  schemas:
+    AssignTeamMember:
+      allOf:
+      - $ref: '#/components/schemas/LoanAction'
+      - type: object
+        properties:
+          team_member_id:
+            type: string
+            format: uuid
+            description: ID of the team member to assign to the loan.
+        required:
+        - team_member_id
+        additionalProperties: false
+      description: Available properties for assigning a team member to a loan.
+    LoanPatchBody:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+          description: Loan type.
+        purpose:
+          type:
+          - string
+          - 'null'
+          description: Loan purpose.
+        amount:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan amount.
+        closing_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date on which the loan plans to close.
+        additional_comments:
+          type:
+          - string
+          - 'null'
+          description: Additional comments on the loan record.
+        amortization_type:
+          type:
+          - string
+          - 'null'
+          description: Loan's amortization type.
+        amount_base:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's base amount.
+        amount_total:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's total amount.
+        approved_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date on which the loan was approved.
+        apr:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's annual percentage rate.
+        debt_to_income_ratio:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's debt-to-income ratio.
+        doc_signing_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date on which loan documents are signed.
+        down_payment_amount:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's down payment dollar amount.
+        down_payment_pct:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's down payment percentage of loan amount.
+        dti_high:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's debt-to-income ratio high.
+        dti_low:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's debt-to-income ratio low.
+        first_payment_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date on which the loan's first payment is due.
+        first_time_buyer:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the loan is for a first-time buyer.
+        funding_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date on which the loan intends to be funded.
+        intent_to_proceed_at:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date on which the intent to proceed was acknowledged.
+        intent_to_proceed_letter_sent_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date on which the intent to proceed letter was sent.
+        interest_rate_lock_expires_at:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Datetime at which the loan's interest rate lock expires.
+        interest_rate:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's interest rate.
+        lien_position:
+          type:
+          - string
+          - 'null'
+          description: Loan's lien position.
+        loan_term_months:
+          type:
+          - integer
+          - 'null'
+          description: Loan's term in months.
+        maturity_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date on which the loan reaches maturity.
+        occupancy_status:
+          type:
+          - string
+          - 'null'
+          description: Loan's occupancy status.
+        p_and_i_payment_amount:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's principal plus interest payment amount.
+        payment_frequency:
+          type:
+          - string
+          - 'null'
+          description: Loan's payment frequency.
+        preapproval_amount:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's preapproval amount.
+        preapproval_notes:
+          type:
+          - string
+          - 'null'
+          description: Notes on the loan's preapproval.
+        processor_email:
+          type:
+          - string
+          - 'null'
+          description: Loan processor's email.
+        program:
+          type:
+          - string
+          - 'null'
+          description: Loan's program.
+        rate_expires_at:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Datetime at which the loan's rate expires.
+        rate_locked:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the loan's rate is locked.
+        total_monthly_payment_amount:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: Loan's total monthly payment amount.
+        property:
+          allOf:
+          - $ref: '#/components/schemas/LoanInputAddress'
+          description: Loan's property information.
+      description: Available properties for updating a loan record
+      additionalProperties: false
+      minProperties: 1
+    LoanInputAddress:
+      type: object
+      properties:
+        street:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Loan's property street.
+        city:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Loan's property city.
+        state:
+          allOf:
+          - $ref: '#/components/schemas/StateCode'
+          description: Loan's state.
+        zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Loan's property zip code.
+        county:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Loan's property county.
+        appraised_value:
+          type:
+          - integer
+          - 'null'
+          description: Loan's property appraised value.
+        purchase_price:
+          type:
+          - integer
+          - 'null'
+          description: Loan's property purchase price.
+        estimated_value:
+          type:
+          - integer
+          - 'null'
+          description: Loan's property estimated value.
+        num_of_stories:
+          type:
+          - integer
+          - 'null'
+          description: Loan's property number of stories.
+        num_of_units:
+          type:
+          - integer
+          - 'null'
+          description: Loan's property number of units.
+      description: Available properties for a loan's address.
+      additionalProperties: false
+    ReassignLo:
+      allOf:
+      - $ref: '#/components/schemas/LoanAction'
+      - type: object
+        properties:
+          loan_officer_id:
+            type: string
+            format: uuid
+            description: ID of the loan officer to reassign the loan to.
+        required:
+        - loan_officer_id
+        additionalProperties: false
+      description: Available properties for reassigning a loan's loan officer.
+    ReorderBorrowers:
+      allOf:
+      - $ref: '#/components/schemas/LoanAction'
+      - type: object
+        properties:
+          pairs:
+            type: array
+            items:
+              $ref: '#/components/schemas/BorrowerPair'
+            minItems: 1
+            description: List of borrower pairs on the loan. All borrower guids must be provided.
+        required:
+        - pairs
+        additionalProperties: false
+      description: Available properties for reordering borrowers on a loan.
+    RonUnderwriter:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Underwriter identifier from the RON vendor.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Underwriter name.
+      description: An underwriter eligible through a RON title agency.
+      additionalProperties: false
+    Borrower:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          pair_index:
+            type: integer
+            description: Index (order) of the borrower pair that the borrower belongs to.
+          email:
+            type:
+            - string
+            - 'null'
+            description: Borrower's email.
+          role:
+            type: string
+            description: Borrower's role type on the loan.
+        additionalProperties: false
+      description: Borrower model
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    RonTitleAgencyAddress:
+      type: object
+      properties:
+        street_line_1:
+          type:
+          - string
+          - 'null'
+          description: Street line 1.
+        street_line_2:
+          type:
+          - string
+          - 'null'
+          description: Street line 2.
+        city:
+          type:
+          - string
+          - 'null'
+          description: City.
+        state:
+          type:
+          - string
+          - 'null'
+          description: State code.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: Postal code.
+        country:
+          type:
+          - string
+          - 'null'
+          description: Country code.
+      description: Address for a RON title agency.
+      additionalProperties: false
+    LoanAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - DEACTIVATE
+          - ACTIVATE
+          - REORDER_BORROWERS
+          - REASSIGN_LO
+          - ASSIGN_TEAM_MEMBER
+          - UNASSIGN_TEAM_MEMBER
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a loan action.
+      additionalProperties: false
+    RonJurisdiction:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Jurisdiction identifier from the RON vendor.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Jurisdiction (county or city) name.
+        state:
+          type:
+          - string
+          - 'null'
+          description: Jurisdiction state code.
+        supported:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the jurisdiction is supported by the vendor.
+        recording_type:
+          type:
+          - string
+          - 'null'
+          description: The recording type for the jurisdiction.
+        eligible:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the jurisdiction is eligible for RON.
+        eligible_title_agencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/RonTitleAgency'
+          description: Title agencies eligible to record in this jurisdiction.
+      description: A recording jurisdiction evaluated for Remote Online Notarization (RON) eligibility.
+      additionalProperties: false
+    Property:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          address:
+            allOf:
+            - $ref: '#/components/schemas/PropertyAddress'
+            description: Property's address.
+          type:
+            type:
+            - string
+            - 'null'
+            description: Property type.
+        additionalProperties: false
+      description: Property model
+    EmptyString:
+      type: string
+      enum:
+      - ''
+      description: An empty string.
+    Borrower.Preview:
+      allOf:
+      - $ref: '#/components/schemas/Borrower'
+      - type: object
+        properties:
+          full_name:
+            type: string
+            description: Borrower's name.
+      description: Borrower model (Preview)
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    BorrowerPair:
+      type: object
+      properties:
+        borrower_id:
+          type: string
+          format: uuid
+          description: ID of the borrower on the pair
+        co_borrower_id:
+          type: string
+          format: uuid
+          description: ID of the coborrower on the pair
+        is_title_only:
+          type: boolean
+          description: Whether the borrower is a title-only borrower. Defaults to false if not provided.
+      required:
+      - borrower_id
+      description: Available properties for denoting a borrower pair on a loan.
+      additionalProperties: false
+    PropertyAddress:
+      allOf:
+      - $ref: '#/components/schemas/Address'
+      - type: object
+        properties:
+          county:
+            type:
+            - string
+            - 'null'
+            description: County.
+        additionalProperties: false
+      description: PropertyAddress model
+    RonEligibility:
+      type: object
+      properties:
+        is_ron_eligible:
+          type: boolean
+          description: Whether the loan is eligible for RON based on its property's recording jurisdiction.
+        message:
+          type:
+          - string
+          - 'null'
+          description: Human-readable explanation when the loan is not eligible or RON is not configured.
+        ron_vendor:
+          type:
+          - string
+          - 'null'
+          description: The RON vendor evaluated for eligibility.
+        jurisdictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/RonJurisdiction'
+          description: Recording jurisdictions evaluated for eligibility.
+      description: Remote Online Notarization (RON) eligibility result for a <<glossary:loan>>.
+      additionalProperties: false
+    Property.Detail:
+      allOf:
+      - $ref: '#/components/schemas/Property'
+      - type: object
+        properties:
+          appraised_value:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Property's appraised value.
+          estimated_value:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Property's estimated value.
+          purchase_price:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Property's purchase price.
+          number_of_units:
+            type:
+            - integer
+            - 'null'
+            description: Number of units at property.
+          number_of_stories:
+            type:
+            - integer
+            - 'null'
+            description: Number of stories at property.
+      description: Property model (Detail)
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    RonTitleAgency:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Title agency identifier from the RON vendor.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Title agency name.
+        alta_id:
+          type:
+          - string
+          - 'null'
+          description: Title agency ALTA ID.
+        address:
+          allOf:
+          - $ref: '#/components/schemas/RonTitleAgencyAddress'
+          description: Title agency address.
+        eligible_underwriters:
+          type: array
+          items:
+            $ref: '#/components/schemas/RonUnderwriter'
+          description: Underwriters eligible through this title agency.
+      description: A title agency eligible to record in a RON jurisdiction.
+      additionalProperties: false
+    LoanApplication.Preview:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplication'
+      - type: object
+        properties:
+          has_coborrower:
+            type:
+            - boolean
+            - 'null'
+            description: Whether application has a coborrower.
+      description: Loan application model (Preview)
+    UnassignTeamMember:
+      allOf:
+      - $ref: '#/components/schemas/LoanAction'
+      - type: object
+        properties:
+          team_member_id:
+            type: string
+            format: uuid
+            description: ID of the team member to unassign from the loan.
+        required:
+        - team_member_id
+        additionalProperties: false
+      description: Available properties for unassigning a team member from a loan.
+    Loan.Detail:
+      allOf:
+      - $ref: '#/components/schemas/Loan'
+      - type: object
+        properties:
+          additional_comments:
+            type:
+            - string
+            - 'null'
+            description: Additional comments on the loan record.
+          amortization_type:
+            type:
+            - string
+            - 'null'
+            description: Loan's amortization type.
+          amount_base:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's base amount.
+          amount_total:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's total amount.
+          approved_date:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Date on which the loan was approved.
+          apr:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's annual percentage rate.
+          borrowers:
+            type:
+            - array
+            - 'null'
+            items:
+              $ref: '#/components/schemas/Borrower.Preview'
+            description: List of borrowers on the loan record.
+          debt_to_income_ratio:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's debt-to-income ratio.
+          doc_signing_date:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Date on which loan documents are signed.
+          down_payment_amount:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's down payment dollar amount.
+          down_payment_pct:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's down payment percentage of loan amount.
+          dti_high:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's debt-to-income ratio high.
+          dti_low:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's debt-to-income ratio low.
+          first_payment_date:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: Date on which the loan's first payment is due.
+          first_time_buyer:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the loan is for a first-time buyer.
+          funding_date:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Date on which the loan intends to be funded.
+          intent_to_proceed_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Date on which the intent to proceed was acknowledged.
+          intent_to_proceed_letter_sent_date:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Date on which the intent to proceed letter was sent.
+          interest_rate_lock_expires_at:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: Datetime at which the loan's interest rate lock expires.
+          interest_rate:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's interest rate.
+          lien_position:
+            type:
+            - string
+            - 'null'
+            description: Loan's lien position.
+          loan_applications:
+            type:
+            - array
+            - 'null'
+            items:
+              $ref: '#/components/schemas/LoanApplication.Preview'
+            description: List of loan applications on the loan record.
+          loan_term_months:
+            type:
+            - integer
+            - 'null'
+            description: Loan's term in months.
+          maturity_date:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: Date on which the loan reaches maturity.
+          occupancy_status:
+            type:
+            - string
+            - 'null'
+            description: Loan's occupancy status.
+          p_and_i_payment_amount:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's principal plus interest payment amount.
+          payment_frequency:
+            type:
+            - string
+            - 'null'
+            description: Loan's payment frequency.
+          preapproval_amount:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's preapproval amount.
+          preapproval_notes:
+            type:
+            - string
+            - 'null'
+            description: Notes on the loan's preapproval.
+          processor_email:
+            type:
+            - string
+            - 'null'
+            description: Loan processor's email.
+          program:
+            type:
+            - string
+            - 'null'
+            description: Loan's program.
+          rate_expires_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Datetime at which the loan's rate expires.
+          rate_locked:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the loan's rate is locked.
+          total_monthly_payment_amount:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan's total monthly payment amount.
+      description: Loan model (Detail)
+    LoanPostBody:
+      allOf:
+      - $ref: '#/components/schemas/LoanPatchBody'
+      - type: object
+        properties:
+          loan_officer_id:
+            type: string
+            format: uuid
+            description: <<glossary:Loan officer>> ID.
+          loan_number:
+            type: string
+            minLength: 1
+            maxLength: 255
+            description: Loan number.
+        required:
+        - loan_officer_id
+        - loan_number
+        additionalProperties: false
+      description: Available properties for creating a loan record
+    LoanApplication:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          first_name:
+            type:
+            - string
+            - 'null'
+            description: Borrower's first name.
+          last_name:
+            type:
+            - string
+            - 'null'
+            description: Borrower's last name.
+          email:
+            type:
+            - string
+            - 'null'
+            description: Borrower's email.
+          loan_officer_name:
+            type:
+            - string
+            - 'null'
+            description: <<glossary:Loan officer>>'s name.
+          loan_officer_email:
+            type:
+            - string
+            - 'null'
+            description: <<glossary:Loan officer>>'s email.
+          created_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the loan application was created.
+          updated_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the loan application was last modified.
+          is_active:
+            type: boolean
+            description: Whether the loan application is active.
+          is_submitted:
+            type: boolean
+            description: Whether the loan application has been submitted.
+          address:
+            type:
+            - string
+            - 'null'
+            description: Borrower's street.
+          borrower_external_customer_identifier:
+            type:
+            - string
+            - 'null'
+            maxLength: 255
+            description: External customer identifier for the borrower, supplied by an enterprise integrator (e.g. FI Customer Number). No format validation is applied.
+          city:
+            type:
+            - string
+            - 'null'
+            description: Borrower's city.
+          coborrower_external_customer_identifier:
+            type:
+            - string
+            - 'null'
+            maxLength: 255
+            description: External customer identifier for the coborrower, supplied by an enterprise integrator. No format validation is applied.
+          dob:
+            type:
+            - string
+            - 'null'
+            description: Borrower's date of birth.
+          marital_status:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s marital status.
+          occupancy_type:
+            type:
+            - string
+            - 'null'
+            description: Occupancy type for the property.
+          property_city:
+            type:
+            - string
+            - 'null'
+            description: City where the property is located.
+          property_state:
+            type:
+            - string
+            - 'null'
+            description: State where the property is located.
+          property_street:
+            type:
+            - string
+            - 'null'
+            description: Street address of the property.
+          property_type:
+            type:
+            - string
+            - 'null'
+            description: Type of property.
+          property_unit_number:
+            type:
+            - string
+            - 'null'
+            description: Unit number of the property.
+          property_zip:
+            type:
+            - string
+            - 'null'
+            description: Zip code of the property.
+          purchase_price:
+            type:
+            - integer
+            - 'null'
+            description: Purchase price of the property
+          state:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: U.S. state where borrower resides.
+          suffix:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s name suffix.
+          unit_number:
+            type:
+            - string
+            - 'null'
+            description: Unit number of the property.
+          zip:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s zip code.
+      description: Loan application model
+    DeactivateLoan:
+      allOf:
+      - $ref: '#/components/schemas/LoanAction'
+      description: Available properties for deactivating a loan.
+    Loan.Preview:
+      allOf:
+      - $ref: '#/components/schemas/Loan'
+      - type: object
+        properties:
+          primary_borrower_name:
+            type:
+            - string
+            - 'null'
+            description: Primary borrower's name.
+          primary_borrower_email:
+            type:
+            - string
+            - 'null'
+            description: Primary borrower's email.
+      description: Loan model (Preview)
+    LoanPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Loan.Preview'
+        required:
+        - contents
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    Loan:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          loan_officer_name:
+            type:
+            - string
+            - 'null'
+            description: <<glossary:Loan officer>>'s name.
+          loan_officer_email:
+            type:
+            - string
+            - 'null'
+            description: <<glossary:Loan officer>>'s email.
+          loan_number:
+            type:
+            - string
+            - 'null'
+            description: Loan's loan number.
+          property:
+            anyOf:
+            - $ref: '#/components/schemas/Property'
+            - $ref: '#/components/schemas/Property.Detail'
+            description: Loan's property information.
+          is_active:
+            type: boolean
+            description: Whether the loan is active.
+          created_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the loan was created.
+          updated_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the loan was last modified.
+          type:
+            type:
+            - string
+            - 'null'
+            description: Loan type.
+          purpose:
+            type:
+            - string
+            - 'null'
+            description: Loan purpose.
+          amount:
+            type:
+            - number
+            - 'null'
+            format: float
+            description: Loan amount.
+          closing_date:
+            type:
+            - string
+            - 'null'
+            format: date
+            description: Date on which the loan plans to close.
+        additionalProperties: false
+      description: Loan model
+    Address:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          street1:
+            type:
+            - string
+            - 'null'
+            description: Street line 1.
+          street2:
+            type:
+            - string
+            - 'null'
+            description: Street line 2.
+          city:
+            type:
+            - string
+            - 'null'
+            description: City.
+          state:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: State.
+          zip:
+            type:
+            - string
+            - 'null'
+            description: Zip code.
+        additionalProperties: false
+      description: Address model
+    ActivateLoan:
+      allOf:
+      - $ref: '#/components/schemas/LoanAction'
+      description: Available properties for activating a loan.
+    StateCode:
+      type: string
+      enum:
+      - AA
+      - AE
+      - AK
+      - AL
+      - AP
+      - AR
+      - AS
+      - AZ
+      - CA
+      - CO
+      - CT
+      - DC
+      - DE
+      - FL
+      - FM
+      - GA
+      - GU
+      - HI
+      - IA
+      - ID
+      - IL
+      - IN
+      - KS
+      - KY
+      - LA
+      - MA
+      - MD
+      - ME
+      - MH
+      - MI
+      - MN
+      - MO
+      - MP
+      - MS
+      - MT
+      - NC
+      - ND
+      - NE
+      - NH
+      - NJ
+      - NM
+      - NV
+      - NY
+      - OH
+      - OK
+      - OR
+      - PA
+      - PR
+      - PW
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VA
+      - VI
+      - VT
+      - WA
+      - WI
+      - WV
+      - WY
+      description: State abbreviated code.
+  responses:
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

@@ -1,0 +1,237 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Borrowers API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Borrowers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve all borrower accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/borrowers",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Email by which to filter borrower accounts."
+              },
+              {
+                "name": "has_custom_consent",
+                "value": "",
+                "type": "query",
+                "description": "Consent status by which to filter borrower accounts."
+              },
+              {
+                "name": "is_active",
+                "value": "",
+                "type": "query",
+                "description": "Status by which to filter borrower accounts."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "query",
+                "description": "Loan officer's ID by which to filter borrower accounts."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve all <<glossary:borrower account>>s for the company.\n\nTo filter the scope of records returned, leverage one or more of the query params found below. `Email` is a common parameter by which to filter.\n\nBy default, all borrower accounts are returned regardless of `is_active` status."
+        },
+        {
+          "info": {
+            "name": "Create a borrower account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/users/borrowers",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will create a <<glossary:borrower account>> in the platform.\n\nThe borrower will use this information to register or log in to their account on the specified <<glossary:loan officer>>'s shared application.\n> 🙇 Heads up!\n**This record is not to be confused with a <<glossary:loan borrower>> record,** which is directly associated with and created through a loan or loan application."
+        },
+        {
+          "info": {
+            "name": "Retrieve a borrower account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/borrowers/:user_borrower_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "user_borrower_id",
+                "value": "",
+                "type": "path",
+                "description": "Borrower account ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve a single <<glossary:borrower account>>."
+        },
+        {
+          "info": {
+            "name": "Update a borrower account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/users/borrowers/:user_borrower_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "user_borrower_id",
+                "value": "",
+                "type": "path",
+                "description": "Borrower account ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will update any data provided via body params on the <<glossary:borrower account>>. Only the body params listed maybe be used.\n\nPassing an empty body will result in a successful request but no changes in data.\n> 🙇 Heads up!\n**Email addresses may NOT be reused across borrower accounts.** Every borrower account must have a unique email address."
+        },
+        {
+          "info": {
+            "name": "Delete a borrower account",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/users/borrowers/:user_borrower_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "user_borrower_id",
+                "value": "",
+                "type": "path",
+                "description": "Borrower account ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:borrower account>>.\n\n> 🙇 Heads up!\n**This action will delete all loan applications attached to the borrower account and thus should be considered an irreversible action.**"
+        },
+        {
+          "info": {
+            "name": "Perform action on a borrower account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/users/borrowers/:user_borrower_id/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "user_borrower_id",
+                "value": "",
+                "type": "path",
+                "description": "Borrower account ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows a variety of actions to be taken on a <<glossary:borrower account>>.\n\n> 📌 Available actions\n**SEND_WELCOME_EMAIL** - Resend welcome email\n**REASSIGN_LO** - Reassign borrower account to a different loan officer. Applications for the indicated borrower account may be reassigned to the new <<glossary:loan officer>>.\nIf existing applications are not reassigned or loan records are associated with the borrower account then a new borrower account will be created.\n<<glossary:Partne"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

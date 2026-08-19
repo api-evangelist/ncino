@@ -1,0 +1,191 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan Milestones API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Milestones",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "🚧 List loan milestones (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/loan_milestones",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieves all milestones on a loan, ordered by step."
+        },
+        {
+          "info": {
+            "name": "🚧 Retrieve a loan milestone (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/loan_milestones/:loan_milestone_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              },
+              {
+                "name": "loan_milestone_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan milestone ID."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieves a single milestone on a loan."
+        },
+        {
+          "info": {
+            "name": "🚧 Update a loan milestone (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/loan_milestones/:loan_milestone_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              },
+              {
+                "name": "loan_milestone_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan milestone ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nUpdates a single milestone's completion status and/or notes."
+        },
+        {
+          "info": {
+            "name": "🚧 Perform action on a loan milestone (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/loan_milestones/:loan_milestone_id/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              },
+              {
+                "name": "loan_milestone_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan milestone ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nPerforms an action on a loan milestone.\n\n> 📌 Available actions\n  **CASCADE_STATUS** - Cascade the completion status of this milestone.\n  When completed is true: marks this and all preceding milestones as complete, all subsequent as incomplete.\n  When completed is false: marks this and all subsequent mileston"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

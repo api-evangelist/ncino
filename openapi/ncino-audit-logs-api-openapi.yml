@@ -1,0 +1,272 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: nCino eVault Audit Logs API
+  description: All routes are currently in development and should be treated as such.
+servers:
+- url: https://evault.ncino.com/api
+  description: Production server
+security:
+- bearerAuth: []
+tags:
+- name: Audit Logs
+paths:
+  /{environment}/audit-logs/{audit_log_id}:
+    x-acl: auditLogs
+    get:
+      summary: Get an audit log
+      description: Retrieves a single <Glossary>audit log</Glossary> entry by its guid.
+      operationId: getAuditLog
+      tags:
+      - Audit Logs
+      parameters:
+      - $ref: '#/paths/~1%7Benvironment%7D~1enotes/post/parameters/0'
+      - name: audit_log_id
+        description: The unique identifier for an audit log
+        required: true
+        in: path
+        schema:
+          $ref: '#/components/schemas/guid'
+      responses:
+        '200':
+          description: eNote
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/default_success_response'
+                - type: object
+                  properties:
+                    data:
+                      type: object
+                      properties:
+                        id:
+                          $ref: '#/components/schemas/guid'
+                        eventType:
+                          $ref: '#/components/schemas/event_type'
+                        incoming:
+                          $ref: '#/components/schemas/incoming'
+                        status:
+                          $ref: '#/components/schemas/status'
+                        min:
+                          $ref: '#/components/schemas/min'
+                        enoteId:
+                          $ref: '#/components/schemas/guid'
+                        documentId:
+                          $ref: '#/components/schemas/guid'
+                        transactionId:
+                          $ref: '#/components/schemas/guid'
+                        ipAddress:
+                          $ref: '#/components/schemas/ip_address'
+                        userAgent:
+                          $ref: '#/components/schemas/user_agent'
+                        additionalInfo:
+                          $ref: '#/components/schemas/additional_info'
+                        initiatorMersOrgId:
+                          $ref: '#/components/schemas/mers_org_id'
+                        requestTimestamp:
+                          $ref: '#/components/schemas/general_iso8601'
+                        createdAt:
+                          $ref: '#/components/schemas/general_iso8601'
+                        updatedAt:
+                          $ref: '#/components/schemas/general_iso8601'
+                        user:
+                          $ref: '#/components/schemas/user'
+                        isSystem:
+                          $ref: '#/components/schemas/is_system'
+                        isTest:
+                          $ref: '#/components/schemas/is_test'
+                        request:
+                          $ref: '#/components/schemas/base64'
+                        response:
+                          $ref: '#/components/schemas/base64'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+        '500':
+          description: Error
+          $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
+components:
+  schemas:
+    additional_info:
+      type: string
+      nullable: true
+      example: null
+    default_success_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+        warnings:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+    base64:
+      type: string
+      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
+    user:
+      type: object
+      nullable: true
+      example: null
+    general_iso8601:
+      type: string
+      example: '2019-02-28T00:00:00Z'
+    guid:
+      type: string
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    incoming:
+      type: boolean
+      example: false
+    is_system:
+      type: boolean
+      example: false
+    mers_org_id:
+      type: string
+      example: 1234567
+    event_type:
+      type: string
+      enum:
+      - connectivity
+      - eRegistry_connectivity
+      - eDelivery_connectivity
+      - eregistry_connectivity_notification
+      - edelivery_connectivity_notification
+      - inquiry
+      - member_inquiry
+      - contact_inquiry
+      - registration
+      - delivery
+      - transfer
+      - change_status
+      - change_data
+      - manual_archive
+      - resend_notifications
+      - tamperseal_validation
+      - dtd_validation
+      - data_validation
+      - arc_mapping_validation
+      - connectivity_notification
+      - registration_notification
+      - delete_document
+      - controller_history
+      - add_secured_party
+      - release_secured_party
+      - reverse_secured_party
+      - add_document
+      - assumption
+      - modification_electronic
+      - modification_paper
+      - update_rightsholders
+      - change_data_notification
+      - assumption_reversal
+      - charged_off
+      - charged_off_reversal
+      - converted_to_paper
+      - converted_to_paper_reversal
+      - document_reversal
+      - modification_reversal
+      - paid_off
+      - paid_off_reversal
+      - registration_reversal
+      - transferred_to_proprietary_registry
+      - transferred_to_proprietary_registry_reversal
+      - paper_replacement
+      - paper_replacement_reversal
+      - change_status_notification
+      - delivery_initiated
+      - delivery_canceled
+      - delivery_accepted
+      - delivery_rejected
+      - delivery_expired
+      - delivery_distributed
+      - delivery_approved
+      - delivery_disapproved
+      - delivery_initiated_notification
+      - delivery_expired_notification
+      - delivery_accepted_notification
+      - delivery_rejected_notification
+      - delivery_distributed_notification
+      - delivery_approved_notification
+      - delivery_disapproved_notification
+      - delivery_notification
+      - transfer_initiated
+      - transfer_accepted
+      - transfer_rejected
+      - transfer_reset
+      - transfer_expired
+      - transfer_completed
+      - transfer_initiated_notification
+      - transfer_completed_notification
+      - transfer_rejected_notification
+      - transfer_expired_notification
+      - transfer_notification
+      - add_enote_additional_data_point
+      - update_enote_additional_data_point
+      - delete_enote_additional_data_point
+      - upload_document
+      - edit_document
+      - change_loan_number
+      - change_type
+      - archive_document
+      - reactivate_document
+      - view_doc
+      - view_audit
+      - download_doc
+      - inquiry_validation
+      - tamperseal_validation
+      - dtd_validation
+      - data_validation
+      - arc_mapping_validation
+      - view_enote_presentation
+      - view_enote_xml
+      - view_enote_data
+      - upload_enote
+      - became_authoritative_copy
+      - released_authoritative_copy
+      - multi_factor_authentication
+      - user_login
+      - manual_archive
+      - user_sso_login
+      - add_api_client
+      - edit_api_client
+      - deactivate_org_api_clients
+      - activate_org_api_clients
+      - edit_org_api_client_permissions
+      example: delivery_initiated
+    status:
+      type: string
+      nullable: true
+      example: unregistered
+    is_test:
+      type: boolean
+      example: true
+    ip_address:
+      type: string
+      nullable: true
+      example: null
+    user_agent:
+      type: string
+      nullable: true
+      example: null
+    min:
+      type: string
+      example: 123456789012345680
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'JWT access token used to authorize every API request. Send it as `Authorization: Bearer <access_token>`. Tokens are issued by the token endpoint (POST https://evault.ncino.com/oauth/auth_token) and expire after the `expires_in` seconds returned there (default 3600); request a new token or exchange the refresh token once it expires.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic credentials used only by the token endpoint (POST /oauth/auth_token). The username is your API client_id and the password is your client_secret, sent as `Authorization: Basic base64(client_id:client_secret)`.'

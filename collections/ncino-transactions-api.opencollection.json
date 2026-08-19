@@ -1,0 +1,163 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino eVault Transactions API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://evault.ncino.com/api/:environment/transactions/:transaction_id",
+            "params": [
+              {
+                "name": "transaction_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for a transaction"
+              }
+            ]
+          },
+          "docs": "Retrieves a previously submitted transaction by its transaction guid, including its current status and details."
+        },
+        {
+          "info": {
+            "name": "Updates an existing transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/:environment/transactions/:transaction_id",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Confirms or updates a pending transaction — for example accepting or rejecting a pending <Glossary>transfer</Glossary> awaiting confirmation. The confirmation type is specified in the request body."
+        },
+        {
+          "info": {
+            "name": "Performs an inquiry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/:environment/inquiry",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Looks up the current registry state of an <Glossary>eNote</Glossary> by its <Glossary>MIN</Glossary> or eNote guid, returning status or summary information."
+        },
+        {
+          "info": {
+            "name": "Performs a connectivity test",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/:environment/connectivity",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Verifies connectivity to <Glossary>MERS eRegistry</Glossary> or <Glossary>MERS eDelivery</Glossary> for the given environment. The target is set by the address type in the request body."
+        },
+        {
+          "info": {
+            "name": "Performs a Registration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/:environment/enotes/:enote_id/register",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Registers a newly created <Glossary>eNote</Glossary> on <Glossary>MERS eRegistry</Glossary>, establishing the initial <Glossary>controller</Glossary> and the <Glossary>location</Glossary> that maintains its <Glossary>authoritative copy</Glossary>. On success the eNote's <Glossary>electronic record</Glossary> is created with a status of Active."
+        },
+        {
+          "info": {
+            "name": "Performs a Change Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/:environment/enotes/:enote_id/change-status",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Changes the lifecycle status of a registered <Glossary>eNote</Glossary>'s <Glossary>electronic record</Glossary> — for example marking it paid off, charged off, <Glossary>converted to paper</Glossary>, or <Glossary>paper replacement</Glossary>, or reversing a prior status change. The status type is specified in the request body."
+        },
+        {
+          "info": {
+            "name": "Performs a Change Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/:environment/enotes/:enote_id/change-data",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates data or party associations on a registered <Glossary>eNote</Glossary>'s <Glossary>electronic record</Glossary> without a full transfer — for example adding or releasing a <Glossary>secured party</Glossary>, changing the <Glossary>master servicer</Glossary> or <Glossary>subservicer</Glossary>, or reporting a modification or assumption. The change type is specified in the request body."
+        },
+        {
+          "info": {
+            "name": "Performs a Delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/:environment/enotes/:enote_id/deliver",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delivers the <Glossary>eNote</Glossary> to one or more recipient organizations via <Glossary>MERS eDelivery</Glossary>. Each recipient is identified by its <Glossary>MERS Org ID</Glossary> and may accept or reject the delivery."
+        },
+        {
+          "info": {
+            "name": "Performs a Transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/:environment/enotes/:enote_id/transfer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Changes the parties on a registered <Glossary>eNote</Glossary> — for example the <Glossary>controller</Glossary>, <Glossary>location</Glossary>, or <Glossary>secured party</Glossary>. The transfer type included in the request body determines which parties change."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

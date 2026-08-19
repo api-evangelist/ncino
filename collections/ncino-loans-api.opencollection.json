@@ -1,0 +1,310 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loans API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loans",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve all loans",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loans",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "borrower_name",
+                "value": "",
+                "type": "query",
+                "description": "Filter loans by borrower name (prefix match against the borrower or co-borrower first or last name)."
+              },
+              {
+                "name": "closing_date_end",
+                "value": "",
+                "type": "query",
+                "description": "Filter to loans with a closing date on or before this date (inclusive)."
+              },
+              {
+                "name": "closing_date_start",
+                "value": "",
+                "type": "query",
+                "description": "Filter to loans with a closing date on or after this date (inclusive)."
+              },
+              {
+                "name": "in_los",
+                "value": "",
+                "type": "query",
+                "description": "Filter loans by whether they are synced to the LOS."
+              },
+              {
+                "name": "is_active",
+                "value": "",
+                "type": "query",
+                "description": "Filter loans by active status (default true)."
+              },
+              {
+                "name": "loan_number",
+                "value": "",
+                "type": "query",
+                "description": "Filter loans by exact loan number."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "query",
+                "description": "<<glossary:Loan officer>> ID by which to filter loans."
+              },
+              {
+                "name": "loan_purpose",
+                "value": "",
+                "type": "query",
+                "description": "Loan purpose search parameter by which to filter loans."
+              },
+              {
+                "name": "loan_type",
+                "value": "",
+                "type": "query",
+                "description": "Loan type search parameter by which to filter loans."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort by creation date: \"asc\" (oldest first, default) or \"desc\" (newest first)."
+              },
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "query",
+                "description": "Organization (company, region, or branch) ID by which to filter loans."
+              },
+              {
+                "name": "user_borrower_id",
+                "value": "",
+                "type": "query",
+                "description": "User borrower ID by which to filter loans."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve all <<glossary:loan>> records."
+        },
+        {
+          "info": {
+            "name": "Create a loan",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loans",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will create a <<glossary:loan>> record."
+        },
+        {
+          "info": {
+            "name": "Retrieve a loan",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve a <<glossary:loan>> record."
+        },
+        {
+          "info": {
+            "name": "Update a loan",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will update a <<glossary:loan>> record."
+        },
+        {
+          "info": {
+            "name": "Delete a loan",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:loan>> record."
+        },
+        {
+          "info": {
+            "name": "Perform action on a loan",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will perform an action on a <<glossary:loan>> record.\n\n> 🚧 Under construction\n> **Certain actions on this endpoint are in beta.** Functionality or availability are subject to change and will be communicated.\n\n> 📌 Available actions\n**DEACTIVATE** - deactivate a loan (sets is_active to false)\n**ACTIVATE** - activate a loan (sets is_active to true)\n**REORDER_BORROWERS** - reorder a loan's borrowers\n**REASSIGN_LO** - reassign a loan's loan officer\n🚧 **ASSIGN_TEAM_MEMBER** - assign a"
+        },
+        {
+          "info": {
+            "name": "🚧 Check RON eligibility for a loan (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/ron_eligibility",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan ID."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint checks whether a <<glossary:loan>> is eligible for Remote Online Notarization\n(RON), based on the loan's saved property address and the servicer's RON configuration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

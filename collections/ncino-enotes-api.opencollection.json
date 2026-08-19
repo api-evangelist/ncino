@@ -1,0 +1,114 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino eVault Enotes API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Enotes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create an eNote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/:environment/enotes",
+            "params": [
+              {
+                "name": "environment",
+                "value": "",
+                "type": "path",
+                "description": "The environment where the eNote, transaction, or audit log will be located."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new <Glossary>eNote</Glossary> in eVault from the supplied borrower, property, and loan details along with the eNote document data (the eNote file and its PDF rendering)."
+        },
+        {
+          "info": {
+            "name": "Get an eNote",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://evault.ncino.com/api/:environment/enotes/:enote_id",
+            "params": [
+              {
+                "name": "enote_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for an eNote"
+              }
+            ]
+          },
+          "docs": "Retrieves the full details and current status of an <Glossary>eNote</Glossary> by its guid, including its registration status, named parties, and <Glossary>audit log</Glossary> entries."
+        },
+        {
+          "info": {
+            "name": "Get an eNote smartdoc",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://evault.ncino.com/api/:environment/enotes/:enote_id/smartdoc"
+          },
+          "docs": "Retrieves the <Glossary>smartdoc</Glossary> (SMART Doc®) representation of an <Glossary>eNote</Glossary> by its guid."
+        },
+        {
+          "info": {
+            "name": "Get an eNote pdf",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://evault.ncino.com/api/:environment/enotes/:enote_id/pdf"
+          },
+          "docs": "Retrieves the PDF rendering of an <Glossary>eNote</Glossary> by its guid."
+        },
+        {
+          "info": {
+            "name": "Get an eNote audit log",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://evault.ncino.com/api/:environment/enotes/:enote_id/audit-log"
+          },
+          "docs": "Retrieves the <Glossary>audit log</Glossary> for an <Glossary>eNote</Glossary> — the time-ordered record of events (registration, transfers, status changes, and so on) recorded against its <Glossary>electronic record</Glossary>."
+        },
+        {
+          "info": {
+            "name": "Upload a document to an eNote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/:environment/enotes/:enote_id/documents/upload",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Uploads one or more supporting documents (such as an appraisal or title policy) and attaches them to an <Glossary>eNote</Glossary>."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

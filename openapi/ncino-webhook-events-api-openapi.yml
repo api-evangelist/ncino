@@ -1,0 +1,196 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: nCino eVault Webhook Events API
+  description: All routes are currently in development and should be treated as such.
+servers:
+- url: https://evault.ncino.com/api
+  description: Production server
+security:
+- bearerAuth: []
+tags:
+- name: Webhook Events
+paths: {}
+webhooks:
+  WebhookEvent:
+    post:
+      operationId: webhookEvent
+      summary: Webhook event notification
+      tags:
+      - Webhook Events
+      description: When a subscribed event fires, eVault sends a POST to the `url` configured on the <Glossary>webhook</Glossary>. Every event uses the same payload shape; the `event_type` field identifies which event fired and the identifier fields present depend on the event (see the schema). Verify the `ncino-evault-signature` header to confirm the payload's authenticity.
+      parameters:
+      - in: header
+        name: ncino-evault-signature
+        description: Base64-encoded HMAC-SHA256 signature of the raw request body, computed with the signing key configured on the webhook. Use it to verify the payload came from eVault and was not modified in transit.
+        schema:
+          type: string
+      requestBody:
+        description: Webhook event payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/webhook_event_callback_message'
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    webhook_event_callback_message:
+      type: object
+      description: Payload eVault sends as a POST to the configured webhook URL when a subscribed event fires. `org_id` and `event_type` are always present; the remaining identifier fields are included only when they are relevant to the event that fired. The body is signed — verify it using the `ncino-evault-signature` header (see the parameter on this callback).
+      required:
+      - org_id
+      - event_type
+      properties:
+        org_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: The guid of the org the event belongs to. Always present.
+        event_type:
+          $ref: '#/components/schemas/webhook_event_type'
+        enote_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event relates to an eNote.
+        transaction_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event relates to a MERS transaction.
+        audit_log_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event has an associated audit log.
+        document_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event relates to a document.
+        api_client_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event relates to an API client.
+        org_api_client:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event relates to an org API client.
+        user_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event was initiated by a user.
+        additional_info:
+          allOf:
+          - $ref: '#/components/schemas/additional_info'
+          description: Optional event-specific context. Included only when the event carries extra detail.
+      example:
+        org_id: 459f521f-f2fa-4230-a704-46147ac8as7e
+        event_type: upload_enote
+        enote_id: 8c1f0b2e-1a2b-4c3d-9e4f-5a6b7c8d9e0f
+        audit_log_id: 2b7c9d1e-3f4a-5b6c-7d8e-9f0a1b2c3d4e
+    guid:
+      type: string
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    additional_info:
+      type: string
+      nullable: true
+      example: null
+    webhook_event_type:
+      type: string
+      description: The event that fired, sent as the `event_type` field of the webhook payload. Values are the lowercased event keys. Subscribe to the events you want to receive via the `events` array when creating or editing a webhook configuration. A parent key (for example `change_data`, `change_status`, `connectivity`, `delivery`, `inquiry`, `registration`, `transfer`) can be subscribed to on its own to receive every event in that group.
+      enum:
+      - archive_document
+      - change_type
+      - delete_document
+      - download_doc
+      - edit_document
+      - reactivate_document
+      - upload_document
+      - add_enote_additional_data_point
+      - became_authoritative_copy
+      - delete_enote_additional_data_point
+      - dtd_validation
+      - data_validation
+      - inquiry_validation
+      - manual_archive
+      - released_authoritative_copy
+      - tamperseal_validation
+      - update_enote_additional_data_point
+      - upload_enote
+      - view_enote_presentation
+      - view_enote_xml
+      - view_enote_data
+      - change_data
+      - add_document
+      - add_secured_party
+      - assumption
+      - modification_electronic
+      - modification_paper
+      - release_secured_party
+      - reverse_secured_party
+      - update_rightsholders
+      - change_data_notification
+      - change_status
+      - assumption_reversal
+      - charged_off
+      - charged_off_reversal
+      - converted_to_paper
+      - converted_to_paper_reversal
+      - document_reversal
+      - modification_reversal
+      - paid_off
+      - paid_off_reversal
+      - paper_replacement
+      - paper_replacement_reversal
+      - registration_reversal
+      - transferred_to_proprietary_registry
+      - transferred_to_proprietary_registry_reversal
+      - change_status_notification
+      - connectivity
+      - edelivery_connectivity
+      - eregistry_connectivity
+      - edelivery_connectivity_notification
+      - eregistry_connectivity_notification
+      - controller_history
+      - delivery
+      - delivery_accepted
+      - delivery_approved
+      - delivery_canceled
+      - delivery_disapproved
+      - delivery_distributed
+      - delivery_expired
+      - delivery_initiated
+      - delivery_rejected
+      - delivery_accepted_notification
+      - delivery_approved_notification
+      - delivery_disapproved_notification
+      - delivery_distributed_notification
+      - delivery_expired_notification
+      - delivery_initiated_notification
+      - delivery_rejected_notification
+      - inquiry
+      - contact_inquiry
+      - member_inquiry
+      - registration
+      - registration_notification
+      - resend_notifications
+      - transfer
+      - transfer_accepted
+      - transfer_completed
+      - transfer_expired
+      - transfer_initiated
+      - transfer_rejected
+      - transfer_reset
+      - transfer_completed_notification
+      - transfer_expired_notification
+      - transfer_initiated_notification
+      - transfer_rejected_notification
+      example: upload_enote
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'JWT access token used to authorize every API request. Send it as `Authorization: Bearer <access_token>`. Tokens are issued by the token endpoint (POST https://evault.ncino.com/oauth/auth_token) and expire after the `expires_in` seconds returned there (default 3600); request a new token or exchange the refresh token once it expires.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic credentials used only by the token endpoint (POST /oauth/auth_token). The username is your API client_id and the password is your client_secret, sent as `Authorization: Basic base64(client_id:client_secret)`.'

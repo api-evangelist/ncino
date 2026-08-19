@@ -1,0 +1,216 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ncino Subscriptions API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve all of a webhook's subscription records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/webhooks/:webhook_id/subscriptions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve all of a <<glossary:webhook>>'s subscription records."
+        },
+        {
+          "info": {
+            "name": "Create a subscription for a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/webhooks/:webhook_id/subscriptions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a subscription for a <<glossary:webhook>>"
+        },
+        {
+          "info": {
+            "name": "Retrieve a webhook's subscription record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/webhooks/:webhook_id/subscriptions/:webhook_subscription_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID."
+              },
+              {
+                "name": "webhook_subscription_id",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve a <<glossary:webhook>>'s subscription record."
+        },
+        {
+          "info": {
+            "name": "Update a webhook's subscription record",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/webhooks/:webhook_id/subscriptions/:webhook_subscription_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID."
+              },
+              {
+                "name": "webhook_subscription_id",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will update a <<glossary:webhook>>'s subscription record."
+        },
+        {
+          "info": {
+            "name": "Delete a webhook's subscription record",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/webhooks/:webhook_id/subscriptions/:webhook_subscription_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID."
+              },
+              {
+                "name": "webhook_subscription_id",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:webhook>>'s subscription record (i.e. unsubscribes a webhook from an event)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,254 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Team Member Assignments API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Team Member Assignments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve team member assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/team_members/:team_member_id/assignments",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "assignment_type",
+                "value": "",
+                "type": "query",
+                "description": "Assignment type enum key by which to filter assignments (i.e. all branches to which a team member may be assigned)."
+              },
+              {
+                "name": "team_member_id",
+                "value": "",
+                "type": "path",
+                "description": "Team member ID."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve <<glossary:team member>> assignments."
+        },
+        {
+          "info": {
+            "name": "Create a team member assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/users/team_members/:team_member_id/assignments",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "team_member_id",
+                "value": "",
+                "type": "path",
+                "description": "Team member ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will create a <<glossary:team member>> assignment."
+        },
+        {
+          "info": {
+            "name": "List available assignments for a team member",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/team_members/:team_member_id/available_assignments/:assignment_type",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "assignment_type",
+                "value": "",
+                "type": "path",
+                "description": "Assignment type enum key by which to filter available assignments (i.e. all available branches to which a team member may be assigned)."
+              },
+              {
+                "name": "team_member_id",
+                "value": "",
+                "type": "path",
+                "description": "Team member ID."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will list available assignments for a <<glossary:team member>>. Assigning a team member to another resource provides them access to that resource's loans and the ability to interact with those <<glossary:loan>>s.\nAssignments are restricted by the team member's placement within the organization and possible setting configuration."
+        },
+        {
+          "info": {
+            "name": "Retrieve a team member assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/team_members/:team_member_id/assignments/:account_assignment_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "Assignment ID."
+              },
+              {
+                "name": "team_member_id",
+                "value": "",
+                "type": "path",
+                "description": "Team member ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve a <<glossary:team member>> assignment."
+        },
+        {
+          "info": {
+            "name": "Delete a team member assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/users/team_members/:team_member_id/assignments/:account_assignment_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "account_assignment_id",
+                "value": "",
+                "type": "path",
+                "description": "Assignment ID."
+              },
+              {
+                "name": "team_member_id",
+                "value": "",
+                "type": "path",
+                "description": "Team member ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:team member>> assignment."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

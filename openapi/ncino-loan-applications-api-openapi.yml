@@ -1,0 +1,4594 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Loan Applications API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Loan Applications
+  description: Endpoints pertaining to loan applications
+paths:
+  /loan_applications:
+    post:
+      tags:
+      - Loan Applications
+      operationId: loan_applications-create
+      parameters:
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '201':
+          description: Created loan application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '409':
+          description: Loan application already exists for borrower
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '412':
+          description: No default loan officer set for organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        Create a <<glossary:loan application>>. Param keys with `_INDEX` should replace `_INDEX` with a number 1-5 for each entity being verified (e.g. `vogg_gift_amount_1` for first gift, `vogg_gift_amount_2` for second gift).'
+      summary: 🚧 Create a loan application record (BETA)
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanApplicationPostBody'
+    get:
+      tags:
+      - Loan Applications
+      operationId: loan_applications-index
+      parameters:
+      - name: borrower_external_customer_identifier
+        description: External customer identifier for the borrower, by which to filter loan applications.
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: coborrower_external_customer_identifier
+        description: External customer identifier for the coborrower, by which to filter loan applications.
+        required: false
+        in: query
+        schema:
+          type: string
+      - name: is_active
+        description: Filter loan applications by active status (default true).
+        required: false
+        in: query
+        schema:
+          type: boolean
+      - name: loan_id
+        description: Loan ID by which to filter loan applications (if loan has been created).
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: loan_officer_id
+        description: <<glossary:Loan officer>> ID by which to filter loan applications.
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: org_id
+        description: Organization (company, region, or branch) ID by which to filter loan applications.
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - name: user_borrower_id
+        description: User borrower ID by which to filter loan applications.
+        required: false
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/CreatedAfter'
+      - $ref: '#/components/parameters/CreatedBefore'
+      - $ref: '#/components/parameters/UpdatedAfter'
+      - $ref: '#/components/parameters/UpdatedBefore'
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanApplicationPagination'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        Retrieve all <<glossary:loan application>>s'
+      summary: 🚧 Retrieve all loan application records (BETA)
+  /loan_applications/{loan_application_id}:
+    get:
+      tags:
+      - Loan Applications
+      operationId: loan_applications-show
+      parameters:
+      - name: loan_application_id
+        description: loan_application ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanApplication.Detail'
+            application/xml:
+              schema:
+                type: string
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        Retrieve a <<glossary:loan application>>. Param keys with `_INDEX` will have `_INDEX` replaced with a number 1-5 for each entity being verified (e.g. `vogg_gift_amount_1` for first gift, `vogg_gift_amount_2` for second gift).
+
+
+        > 🙇 Heads up!
+
+        Supplying the `Accept` header as `application/xml` will return the loan application in ILAD format (MISMO 3.4).'
+      summary: 🚧 Retrieve a loan application (BETA)
+    patch:
+      tags:
+      - Loan Applications
+      operationId: loan_applications-update
+      parameters:
+      - name: loan_application_id
+        description: Loan application ID
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully updated loan application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        Update a <<glossary:loan application>>. Param keys with `_INDEX` should replace `_INDEX` with a number 1-5 for each entity being verified (e.g. `vogg_gift_amount_1` for first gift, `vogg_gift_amount_2` for second gift).
+
+
+        > 📌 Replacing indexed key series
+
+        Use `lists_to_update` to replace indexed key series.
+
+        Keys are the value prefix (e.g. `global_asset_type` for keys like `global_asset_type_1`, `global_asset_type_2`).
+
+        All existing keys matching `{prefix}_{number}` are removed and replaced with the provided values.
+
+        Each prefix is processed independently. Pass an empty hash to remove all keys for that prefix.'
+      summary: 🚧 Update a loan application (BETA)
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanApplicationPatchBody'
+    delete:
+      tags:
+      - Loan Applications
+      operationId: loan_applications-destroy
+      parameters:
+      - name: loan_application_id
+        description: loan application ID
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully deleted loan application
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        Delete a <<glossary:loan application>>'
+      summary: 🚧 Delete a loan application (BETA)
+  /loan_applications/{loan_application_id}/actions:
+    post:
+      tags:
+      - Loan Applications
+      operationId: loan_applications-actions
+      parameters:
+      - name: loan_application_id
+        description: loan application ID
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '201':
+          description: Created (CONVERT_TO_LOAN)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '204':
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '409':
+          description: Resource already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '412':
+          description: Resource is in an invalid state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorSet'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: '> 🚧 Under construction
+
+        > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
+
+
+        This endpoint allows a variety of actions to be taken on a <<glossary:loan application>>.
+
+
+        > 📌 Available actions
+
+        **DEACTIVATE** - Deactivate a loan application
+
+        **ACTIVATE** - Activate a loan application
+
+        **SHARE_APP** - send share app email to loan borrower
+
+        **SUBMIT** - Submits a loan application
+
+        **REJECT** - Rejects a loan application
+
+        **REASSIGN_LO** - assign new <<glossary:loan officer>> to a loan application
+
+        **CONVERT_TO_LOAN** - Convert a loan application to a loan'
+      summary: 🚧 Perform action on a loan application (BETA)
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/ShareApp'
+              - $ref: '#/components/schemas/DeactivateLoanApplication'
+              - $ref: '#/components/schemas/ActivateLoanApplication'
+              - $ref: '#/components/schemas/SubmitLoanApplication'
+              - $ref: '#/components/schemas/RejectLoanApplication'
+              - $ref: '#/components/schemas/ReassignLoanOfficer'
+              - $ref: '#/components/schemas/ConvertToLoan'
+              discriminator:
+                propertyName: action
+                mapping:
+                  SHARE_APP: '#/components/schemas/ShareApp'
+                  DEACTIVATE: '#/components/schemas/DeactivateLoanApplication'
+                  ACTIVATE: '#/components/schemas/ActivateLoanApplication'
+                  SUBMIT: '#/components/schemas/SubmitLoanApplication'
+                  REJECT: '#/components/schemas/RejectLoanApplication'
+                  REASSIGN_LO: '#/components/schemas/ReassignLoanOfficer'
+                  CONVERT_TO_LOAN: '#/components/schemas/ConvertToLoan'
+components:
+  responses:
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  schemas:
+    Suffixes:
+      type: string
+      enum:
+      - ''
+      - Jr.
+      - Sr.
+      - II
+      - III
+      - IV
+      - V
+      description: Suffixes a borrower declares on an application.
+    LoanApplicationPatchBody:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplicationBody'
+      description: The available properties for updating a loan application record
+      minProperties: 1
+    GenderTypes:
+      type: string
+      enum:
+      - Male
+      - Female
+      - I do not wish to provide this information
+      description: Types of gender a borrower declares on an application.
+    LoanApplicationBody:
+      type: object
+      properties:
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Borrower's first name. Including first_name and last_name enables prospect creation and CRM sync.
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Borrower's last name. Including first_name and last_name enables prospect creation and CRM sync.
+        additional_real_estate_owned:
+          type:
+          - boolean
+          - 'null'
+          description: Whether additional real estate is owned.
+        address:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Borrower's street.
+        alimony_amount:
+          type:
+          - integer
+          - 'null'
+          description: Amount of alimony paid by the borrower.
+        asian_origin_other:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Specifies other Asian origin if applicable.
+        assets1:
+          type:
+          - integer
+          - 'null'
+          description: Checking and savings account(s) amount.
+        assets2:
+          type:
+          - integer
+          - 'null'
+          description: Additional asset(s) amount.
+        assets_retirement:
+          type:
+          - integer
+          - 'null'
+          description: Borrower's retirement assets amount.
+        borrower_bankruptcy_types:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/BankruptcyTypes'
+          description: Types of bankruptcies declared by the borrower.
+        borrower_cell_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Borrower's cell phone number.
+        borrower_citizenship_country:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Borrower's country of citizenship.
+        borrower_citizenship_status:
+          allOf:
+          - $ref: '#/components/schemas/CitizenshipTypes'
+          description: Borrower's citizenship status.
+        borrower_contact_work_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Borrower's work phone number.
+        borrower_conveyed_title_in_lieu_of_forclosure:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the borrower has conveyed a title in lieu of foreclosure.
+        borrower_domestic_relationship_other:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Specifies other domestic relationships for the borrower.
+        borrower_domestic_relationship_state:
+          oneOf:
+          - $ref: '#/components/schemas/StateCode'
+          - $ref: '#/components/schemas/EmptyString'
+          description: U.S. state where the borrower's domestic relationship is recognized.
+        borrower_domestic_relationship_type:
+          allOf:
+          - $ref: '#/components/schemas/DomesticRelationshipTypes'
+          description: Type of domestic relationship.
+        borrower_external_customer_identifier:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: External customer identifier for the borrower, persisted on the borrower's own AppUser record.
+        borrower_family_or_business_affiliation_with_seller:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has a family or business relationship with the seller.
+        borrower_home_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Borrower's home phone number.
+        borrower_military_details:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MilitaryDetailTypes'
+          description: Details about the borrower's military service (e.g. currently on active duty, surviving spouse).
+        borrower_military_service:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the borrower has military service history.
+        borrower_military_service_expiration:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Expiration date of borrower's military service if on active duty.
+        borrower_mobile_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Borrower's mobile phone number.
+        borrower_non_spouse_property_rights:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the borrower has property rights with a non-spouse.
+        borrower_other_obtained_or_borrowed_money_amount:
+          type:
+          - integer
+          - 'null'
+          description: Amount of money borrowed or obtained from another source.
+        borrower_other_property_lien:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has a lien on another property.
+        borrower_other_undisclosed_mortgage_closing_on_or_before:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has an undisclosed mortgage closing on or before a certain date.
+        borrower_other_undisclosed_new_credit:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has undisclosed new credit.
+        borrower_pre_forclosure_or_short_sale:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has undergone pre-foreclosure or a short sale.
+        borrower_second_employer_still_employed:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower is still employed at their second employer.
+        borrower_share_info_authorization:
+          type:
+          - boolean
+          - 'null'
+          description: Authorization for borrower information sharing.
+        borrower_two_years_at_current_address:
+          type:
+          - integer
+          - 'null'
+          description: How long the borrower has lived at the current address.
+        borrower_voe_employment_is_self_employed_1:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower is self-employed in VOE employment.
+        branch_of_service:
+          allOf:
+          - $ref: '#/components/schemas/ServiceBranchTypes'
+          description: Borrower's branch of military service.
+        charm_acknowledgments:
+          type:
+          - boolean
+          - 'null'
+          description: Whether CHARM acknowledgments are signed (e.g. have they received a booklet?).
+        city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Borrower's city.
+        co_borrower_verification_of_income_and_employment:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower’s income and employment verification is complete.
+        coborrower_address:
+          type:
+          - string
+          - 'null'
+          description: Coborrower's street.
+        coborrower_address_same_as_borrower:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower's address is the same as borrower's.
+        coborrower_asian_origin_other:
+          allOf:
+          - $ref: '#/components/schemas/AsianOriginTypes'
+          description: Specifies other Asian origin for coborrower.
+        coborrower_bankruptcy_types:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/BankruptcyTypes'
+          description: Types of bankruptcies declared by the coborrower.
+        coborrower_branch_of_service:
+          allOf:
+          - $ref: '#/components/schemas/ServiceBranchTypes'
+          description: Coborrower’s branch of military service.
+        coborrower_cell_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Coborrower’s cell phone number.
+        coborrower_citizenship_country:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Coborrower’s country of citizenship.
+        coborrower_citizenship_status:
+          allOf:
+          - $ref: '#/components/schemas/CitizenshipTypes'
+          description: Coborrower’s citizenship status.
+        coborrower_city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Coborrower’s city.
+        coborrower_contact_work_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Coborrower’s work phone number.
+        coborrower_conveyed_title_in_lieu_of_forclosure:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has conveyed title in lieu of foreclosure.
+        coborrower_credit_authorization:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has authorized credit checks.
+        coborrower_dependents_age:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+          description: Ages of coborrower’s dependents.
+        coborrower_dob:
+          type:
+          - string
+          - 'null'
+          maxLength: 10
+          description: Coborrower’s date of birth (MM-DD-YYYY).
+        coborrower_domestic_relationship_other:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Specifies other domestic relationships for coborrower.
+        coborrower_domestic_relationship_state:
+          oneOf:
+          - $ref: '#/components/schemas/StateCode'
+          - $ref: '#/components/schemas/EmptyString'
+          description: U.S. state where the coborrower's domestic relationship is recognized.
+        coborrower_domestic_relationship_type:
+          allOf:
+          - $ref: '#/components/schemas/DomesticRelationshipTypes'
+          description: Type of domestic relationship for coborrower (e.g. Civil Union, Domestic Partnership).
+        coborrower_econsent:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has provided eConsent.
+        coborrower_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          maxLength: 255
+          description: Coborrower’s email address.
+        coborrower_employer_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Coborrower’s employer name.
+        coborrower_employer_years:
+          type:
+          - integer
+          - 'null'
+          description: Number of years coborrower has been with current employer.
+        coborrower_employment_status:
+          allOf:
+          - $ref: '#/components/schemas/EmploymentStatusTypes'
+          description: Coborrower’s employment status.
+        coborrower_ethnicity:
+          allOf:
+          - $ref: '#/components/schemas/EthnicityTypes'
+          description: Coborrower’s ethnicity.
+        coborrower_ethnicity_latino:
+          allOf:
+          - $ref: '#/components/schemas/LatinEthnicityTypes'
+          description: Coborrower's type of Hispanic or Latino origin.
+        coborrower_external_customer_identifier:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: External customer identifier for the coborrower, persisted on the coborrower's own AppUser record.
+        coborrower_family_or_business_affiliation_with_seller:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has an affiliation with the seller.
+        coborrower_first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Coborrower’s first name.
+        coborrower_gender:
+          allOf:
+          - $ref: '#/components/schemas/GenderTypes'
+          description: Coborrower’s gender.
+        coborrower_has_alimony:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower pays alimony.
+        coborrower_has_bankruptcy:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has declared bankruptcy.
+        coborrower_has_delinquent_debt:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has delinquent debt.
+        coborrower_has_foreclosure:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has had a foreclosure.
+        coborrower_has_obligations:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has financial obligations.
+        coborrower_has_outstanding_judgements:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has outstanding judgments.
+        coborrower_has_ownership_interest:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has ownership interest in a property.
+        coborrower_is_comaker_or_endorser:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower is a co-maker or endorser on a loan.
+        coborrower_is_down_payment_borrowed:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower’s down payment is borrowed.
+        coborrower_is_firsttimer:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower is a first-time homebuyer.
+        coborrower_is_permanent_resident:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower is a permanent resident.
+        coborrower_is_primary_residence:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the coborrower will occupy the property as a primary residence.
+        coborrower_is_self_employed:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower is self-employed.
+        coborrower_is_us_citizen:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower is a U.S. citizen.
+        coborrower_language_preference:
+          allOf:
+          - $ref: '#/components/schemas/Languages'
+          description: Coborrower’s preferred language.
+        coborrower_language_preference_other:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Other language preference specified by coborrower.
+        coborrower_last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Coborrower’s last name.
+        coborrower_mailing_address:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Coborrower’s mailing street.
+        coborrower_mailing_city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Coborrower’s mailing city.
+        coborrower_mailing_same_as_current:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower’s mailing address is the same as current.
+        coborrower_mailing_state:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Coborrower’s mailing state.
+        coborrower_mailing_unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          description: Coborrower’s mailing unit number.
+        coborrower_mailing_zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Coborrower’s mailing zip code.
+        coborrower_marital_status:
+          allOf:
+          - $ref: '#/components/schemas/MartialStatuses'
+          description: Coborrower’s marital status.
+        coborrower_middle_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Coborrower’s middle name.
+        coborrower_military_details:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/MilitaryDetailTypes'
+          description: Details regarding coborrower’s military service.
+        coborrower_military_service:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has military service history.
+        coborrower_military_service_expiration:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Expiration date of coborrower’s military service if on active duty.
+        coborrower_monthly_income:
+          type:
+          - integer
+          - 'null'
+          description: Coborrower’s monthly income.
+        coborrower_non_spouse_property_rights:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has property rights with a non-spouse.
+        coborrower_number_dependents:
+          type:
+          - integer
+          - 'null'
+          description: Number of dependents of the coborrower.
+        coborrower_other_hispanic_or_latino_origin:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Specifies other Hispanic or Latino origin for coborrower.
+        coborrower_other_obtained_or_borrowed_money_amount:
+          type:
+          - integer
+          - 'null'
+          description: Amount of money borrowed or obtained from another source by coborrower.
+        coborrower_other_property_lien:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has a lien on another property.
+        coborrower_other_undisclosed_mortgage_closing_on_or_before:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has an undisclosed mortgage closing on or before a certain date.
+        coborrower_other_undisclosed_new_credit:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has undisclosed new credit.
+        coborrower_pacific_islander:
+          allOf:
+          - $ref: '#/components/schemas/PacificIslanderOriginTypes'
+          description: Type of Pacific Islander coborrower identifies as.
+        coborrower_pacific_islander_other:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Specifies other Pacific Islander origin for coborrower.
+        coborrower_party_to_lawsuit:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower is a party to a lawsuit.
+        coborrower_pre_forclosure_or_short_sale:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has undergone pre-foreclosure or a short sale.
+        coborrower_previous_property_title_declaration:
+          allOf:
+          - $ref: '#/components/schemas/TitleDeclarationTypes'
+          description: Previous property title declaration for coborrower.
+        coborrower_previous_property_type_declaration:
+          allOf:
+          - $ref: '#/components/schemas/PropertyDeclarationTypes'
+          description: Previous property type declaration for coborrower.
+        coborrower_property_months:
+          type:
+          - integer
+          - 'null'
+          description: Number of months coborrower has owned the property.
+        coborrower_property_own:
+          allOf:
+          - $ref: '#/components/schemas/OwnResidenceTypes'
+          description: How the coborrower owns the property.
+        coborrower_property_years:
+          type:
+          - integer
+          - 'null'
+          description: Number of years coborrower has owned the property.
+        coborrower_race:
+          allOf:
+          - $ref: '#/components/schemas/RaceTypes'
+          description: Coborrower’s race.
+        coborrower_race_american_indian_other:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Specifies other American Indian origin for coborrower.
+        coborrower_race_asian:
+          allOf:
+          - $ref: '#/components/schemas/AsianOriginTypes'
+          description: Type of Asian origin the coborrower identifies as.
+        coborrower_rent_payment:
+          type:
+          - integer
+          - 'null'
+          description: Monthly rent payment by coborrower.
+        coborrower_share_info_authorization:
+          type:
+          - boolean
+          - 'null'
+          description: Authorization for coborrower’s information sharing.
+        coborrower_ssn:
+          type:
+          - string
+          - 'null'
+          format: ssn
+          description: Coborrower’s Social Security Number.
+        coborrower_state:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Coborrower’s state of residence.
+        coborrower_suffix:
+          allOf:
+          - $ref: '#/components/schemas/Suffixes'
+          description: Coborrower’s name suffix.
+        coborrower_time_same_as_borrower:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower has the same time at the current address as borrower.
+        coborrower_two_years_at_current_address:
+          type:
+          - integer
+          - 'null'
+          description: How long the coborrower has lived at the current address.
+        coborrower_type_of_service:
+          allOf:
+          - $ref: '#/components/schemas/MilitaryServiceTypes'
+          description: Type of military service in which the coborrower is involved.
+        coborrower_unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          description: Coborrower’s unit number.
+        coborrower_voe_employment_is_self_employed_1:
+          type:
+          - boolean
+          - 'null'
+          description: Whether coborrower is self-employed in VOE employment.
+        coborrower_zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Coborrower’s zip code.
+        credit_auth_method:
+          allOf:
+          - $ref: '#/components/schemas/CreditAuthMethods'
+          description: Method of credit authorization.
+        credit_authorization:
+          type:
+          - boolean
+          - 'null'
+          description: Authorization for credit check.
+        dependents_age:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+          description: Ages of dependents.
+        desired_monthly_payment:
+          type:
+          - integer
+          - 'null'
+          description: Desired monthly payment.
+        dob:
+          type:
+          - string
+          - 'null'
+          maxLength: 10
+          description: Borrower's date of birth (MM-DD-YYYY).
+        down_payment:
+          type:
+          - integer
+          - 'null'
+          description: Down payment amount.
+        down_payment_amount:
+          type:
+          - integer
+          - 'null'
+          description: Exact down payment amount.
+        down_payment_pct:
+          type:
+          - integer
+          - 'null'
+          description: Percentage of down payment.
+        down_payment_source:
+          allOf:
+          - $ref: '#/components/schemas/DownPaymentSources'
+          description: Source of down payment.
+        econsent:
+          type:
+          - boolean
+          - 'null'
+          description: Borrower’s electronic consent.
+        employer_address:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Employer's street.
+        employer_city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Employer's city.
+        employer_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Name of employer.
+        employer_state:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Employer's state.
+        employer_years:
+          type:
+          - integer
+          - 'null'
+          description: Years employed at current employer.
+        employer_zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Employer's zip code.
+        employment_status:
+          allOf:
+          - $ref: '#/components/schemas/EmploymentStatusTypes'
+          description: Borrower’s employment status.
+        estimated_property_value:
+          type:
+          - integer
+          - 'null'
+          description: Estimated value of the property.
+        ethnicity:
+          allOf:
+          - $ref: '#/components/schemas/EthnicityTypes'
+          description: Borrower’s ethnicity.
+        ethnicity_latino:
+          allOf:
+          - $ref: '#/components/schemas/LatinEthnicityTypes'
+          description: Borrower's type of Hispanic or Latino origin.
+        gender:
+          allOf:
+          - $ref: '#/components/schemas/GenderTypes'
+          description: Borrower’s gender.
+        has_alimony:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower pays alimony.
+        has_bankruptcy:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has declared bankruptcy.
+        has_coborrower:
+          type:
+          - boolean
+          - 'null'
+          description: Whether application has a coborrower.
+        has_delinquent_debt:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has delinquent debt.
+        has_foreclosure:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has had a foreclosure.
+        has_obligations:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has other financial obligations.
+        has_outstanding_judgements:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has outstanding judgments.
+        has_ownership_interest:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has ownership interest in a property.
+        is_comaker_or_endorser:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower is a co-maker or endorser.
+        is_down_payment_borrowed:
+          type:
+          - boolean
+          - 'null'
+          description: Whether down payment is borrowed.
+        is_firsttimer:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower is a first-time homebuyer.
+        is_permanent_resident:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower is a permanent resident.
+        is_primary_residence:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the borrower will occupy the property as a primary residence.
+        is_self_employed:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower is self-employed.
+        is_us_citizen:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower is a U.S. citizen.
+        is_veteran:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower has veteran status.
+        language_preference:
+          allOf:
+          - $ref: '#/components/schemas/Languages'
+          description: Borrower’s preferred language.
+        language_preference_other:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Other language preference specified by borrower.
+        loan_amount:
+          type:
+          - integer
+          - 'null'
+          description: Loan amount requested.
+        loan_property_info__refinance_info:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Loan and refinance information.
+        loan_purpose:
+          allOf:
+          - $ref: '#/components/schemas/LoanPurposeTypes'
+          description: Purpose of the loan.
+        mailing_address:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Borrower’s mailing address.
+        mailing_city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Borrower’s mailing city.
+        mailing_same_as_current:
+          type:
+          - boolean
+          - 'null'
+          description: Whether mailing address is the same as current.
+        mailing_state:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Borrower’s mailing state.
+        mailing_unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          description: Borrower’s mailing unit number.
+        mailing_zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Borrower’s mailing zip code.
+        marital_status:
+          allOf:
+          - $ref: '#/components/schemas/MartialStatuses'
+          description: Borrower’s marital status.
+        middle_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Borrower’s middle name.
+        monthly_income:
+          type:
+          - integer
+          - 'null'
+          description: Borrower’s monthly income.
+        monthly_liabilities:
+          type:
+          - integer
+          - 'null'
+          description: Borrower’s monthly liabilities.
+        number_dependents:
+          type:
+          - integer
+          - 'null'
+          description: Number of dependents of the borrower.
+        occupancy_type:
+          allOf:
+          - $ref: '#/components/schemas/OccupancyTypes'
+          description: Occupancy type for the property.
+        other_hispanic_or_latino_origin:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Specifies other Hispanic or Latino origin.
+        owns_other_property:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower owns another property.
+        pacific_islander:
+          allOf:
+          - $ref: '#/components/schemas/PacificIslanderOriginTypes'
+          description: Type of Pacific Islander a borrower identifies as.
+        pacific_islander_other:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Specifies other Pacific Islander origin.
+        party_to_lawsuit:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower is a party to a lawsuit.
+        previous_property_title_declaration:
+          allOf:
+          - $ref: '#/components/schemas/TitleDeclarationTypes'
+          description: Previous property title declaration.
+        previous_property_type_declaration:
+          allOf:
+          - $ref: '#/components/schemas/PropertyDeclarationTypes'
+          description: Previous property type declaration.
+        property_city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: City where the property is located.
+        property_months:
+          type:
+          - integer
+          - 'null'
+          description: Number of months borrower has owned the property.
+        property_own:
+          allOf:
+          - $ref: '#/components/schemas/OwnResidenceTypes'
+          description: How the borrower owns the property.
+        property_state:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: State where the property is located.
+        property_street:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Street address of the property.
+        property_type:
+          allOf:
+          - $ref: '#/components/schemas/PropertyTypes'
+          description: Type of property.
+        property_unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          description: Unit number of the property.
+        property_years:
+          type:
+          - integer
+          - 'null'
+          description: Number of years borrower has owned the property.
+        property_zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip code of the property.
+        purchase_price:
+          type:
+          - integer
+          - 'null'
+          description: Purchase price of the property.
+        race:
+          allOf:
+          - $ref: '#/components/schemas/RaceTypes'
+          description: Borrower’s race.
+        race_american_indian_other:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Specifies other American Indian origin.
+        race_asian:
+          allOf:
+          - $ref: '#/components/schemas/AsianOriginTypes'
+          description: Type of Asian origin the borrower identifies as.
+        referral_company_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Name of the referral company.
+        referral_name:
+          allOf:
+          - $ref: '#/components/schemas/ReferralTypes'
+          description: Type of the referral person.
+        refinance_current_address:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Current address for refinance.
+        refinance_purpose:
+          allOf:
+          - $ref: '#/components/schemas/RefinancePurposeTypes'
+          description: Purpose of refinancing.
+        rent_payment:
+          type:
+          - integer
+          - 'null'
+          description: Monthly rent payment.
+        rental_property_city:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: City of the rental property.
+        rental_property_state:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: State of the rental property.
+        rental_property_street:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Street address of the rental property.
+        rental_property_unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          description: Unit number of the rental property.
+        rental_property_zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip code of the rental property.
+        school_years:
+          type:
+          - integer
+          - 'null'
+          description: Number of years borrower attended school.
+        servicer_credit_authorization:
+          type:
+          - boolean
+          - 'null'
+          description: Whether servicer credit authorization is provided.
+        ssn:
+          type:
+          - string
+          - 'null'
+          format: ssn
+          description: Borrower’s Social Security Number.
+        state:
+          oneOf:
+          - $ref: '#/components/schemas/StateCode'
+          - $ref: '#/components/schemas/EmptyString'
+          description: U.S. state where borrower resides.
+        suffix:
+          allOf:
+          - $ref: '#/components/schemas/Suffixes'
+          description: Borrower’s name suffix.
+        type_of_credit:
+          allOf:
+          - $ref: '#/components/schemas/CreditTypes'
+          description: Type of credit requested.
+        type_of_property:
+          allOf:
+          - $ref: '#/components/schemas/PropertyIntendedUseTypes'
+          description: Type of property being purchased or refinanced.
+        type_of_service:
+          allOf:
+          - $ref: '#/components/schemas/MilitaryServiceTypes'
+          description: Type of military service in which the borrower is involved.
+        under_contract:
+          type:
+          - boolean
+          - 'null'
+          description: Whether property is under contract.
+        unit_number:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          description: Unit number of the property.
+        verification_of_assets:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower’s assets have been verified.
+        verification_of_income_and_employment:
+          type:
+          - boolean
+          - 'null'
+          description: Whether borrower’s income and employment have been verified.
+        zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Borrower’s zip code.
+        borrower_voe_employment_category_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/EmploymentTypes'
+          description: Type of employment being verified on the borrower (e.g. Self-employed, Employed by a business).
+        borrower_voe_employment_ownership_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/EmploymentOwnershipTypes'
+          description: Declaration of ownership for employment being verified on the borrower (e.g. I have a share of 25%).
+        borrower_voe_to_name_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Name of employer being verified on borrower.
+        borrower_voe_to_address_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Street of borrower's employer's address.
+        borrower_voe_to_unit_type_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/UnitTypes'
+          description: Unit type of borrower's employer's address.
+        borrower_voe_to_unit_number_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+          description: Unit number of borrower's employer's address.
+        borrower_voe_to_city_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: City borrower's employer resides in.
+        borrower_voe_to_state_INDEX:
+          oneOf:
+          - $ref: '#/components/schemas/StateCode'
+          - $ref: '#/components/schemas/EmptyString'
+          description: U.S. state borrower's employer resides in.
+        borrower_voe_to_zip_INDEX:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip code borrower's employer resides in.
+        borrower_voe_to_phone_INDEX:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Phone number for the borrower's employer.
+        borrower_voe_employer_type_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Position or title borrower holds/held at employer.
+        borrower_voe_employment_date_hired_INDEX:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date the borrower was employed at employer.
+        borrower_voe_employment_is_current_INDEX:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the borrower is still employer at employer.
+        borrower_voe_employment_date_terminated_INDEX:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date the borrower finished working for employer.
+        borrower_voe_self_employment_monthly_income_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Income borrower reports if self-employed.
+        borrower_voe_income_base_pay_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Amount of base pay from borrower's employer.
+        borrower_voe_income_base_pay_INDEX_hours:
+          type:
+          - integer
+          - 'null'
+          description: Amount of base pay hours from borrower's employer.
+        borrower_additional_income_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Additional income amount from borrower's employer.
+        borrower_voe_income_overtime_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Overtime amount from borrower's employer.
+        borrower_voe_income_commissions_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Commissions amount from borrower's employer.
+        borrower_voe_income_bonus_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Bonus amount from borrower's employer.
+        borrower_voe_employment_line_of_work_years_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Number of years borrower has been in line of work.
+        borrower_voe_employment_line_of_work_months_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Number of months borrower has been in line of work.
+        borrower_vor_residence_address_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Street of residence being verified on borrower.
+        borrower_vor_residence_unit_number_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+          description: Unit number of residence being verified on borrower.
+        borrower_vor_residence_city_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: City of residence being verified on borrower.
+        borrower_vor_residence_state_INDEX:
+          oneOf:
+          - $ref: '#/components/schemas/StateCode'
+          - $ref: '#/components/schemas/EmptyString'
+          description: U.S. state of residence being verified on borrower.
+        borrower_vor_residence_zip_INDEX:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip of residence being verified on borrower.
+        borrower_vor_residence_years_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Number of years at residence being verified on borrower.
+        borrower_vor_residence_months_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Number of months at residence being verified on borrower.
+        borrower_vor_residence_own_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/OwnResidenceTypes'
+          description: Ownership status of residence being verified on borrower (e.g. Own, Rent).
+        coborrower_voe_employment_category_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/EmploymentTypes'
+          description: Type of employment being verified on the coborrower (e.g. Self-employed, Employed by a business).
+        coborrower_voe_employment_ownership_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/EmploymentOwnershipTypes'
+          description: Declaration of ownership for employment being verified on the coborrower (e.g. I have a share of 25%).
+        coborrower_voe_to_name_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Name of employer being verified on coborrower.
+        coborrower_voe_to_address_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Street of coborrower's employer's address.
+        coborrower_voe_to_unit_type_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/UnitTypes'
+          description: Unit type of coborrower's employer's address.
+        coborrower_voe_to_unit_number_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+          description: Unit number of coborrower's employer's address.
+        coborrower_voe_to_city_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: City coborrower's employer resides in.
+        coborrower_voe_to_state_INDEX:
+          oneOf:
+          - $ref: '#/components/schemas/StateCode'
+          - $ref: '#/components/schemas/EmptyString'
+          description: U.S. state coborrower's employer resides in.
+        coborrower_voe_to_zip_INDEX:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip code coborrower's employer resides in.
+        coborrower_voe_to_phone_INDEX:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Phone number for the coborrower's employer.
+        coborrower_voe_employer_type_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Position or title coborrower holds/held at employer.
+        coborrower_voe_employment_date_hired_INDEX:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date the coborrower was employed at employer.
+        coborrower_voe_employment_is_current_INDEX:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the coborrower is still employer at employer.
+        coborrower_voe_employment_date_terminated_INDEX:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date the coborrower finished working for employer.
+        coborrower_voe_self_employment_monthly_income_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Income coborrower reports if self-employed.
+        coborrower_voe_income_base_pay_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Amount of base pay from coborrower's employer.
+        coborrower_voe_income_base_pay_INDEX_hours:
+          type:
+          - integer
+          - 'null'
+          description: Amount of base pay hours from coborrower's employer.
+        coborrower_additional_income_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Additional income amount from coborrower's employer.
+        coborrower_voe_income_overtime_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Overtime amount from coborrower's employer.
+        coborrower_voe_income_commissions_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Commissions amount from coborrower's employer.
+        coborrower_voe_income_bonus_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Bonus amount from coborrower's employer.
+        coborrower_line_of_work_info_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Details about coborrower's line of work.
+        coborrower_voe_employment_line_of_work_years_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Number of years coborrower has been in line of work.
+        coborrower_voe_employment_line_of_work_months_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Number of years coborrower has been in line of work.
+        coborrower_vor_residence_address_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Street of residence being verified on coborrower.
+        coborrower_vor_residence_unit_number_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+          description: Unit number of residence being verified on coborrower.
+        coborrower_vor_residence_city_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: City of residence being verified on coborrower.
+        coborrower_vor_residence_state_INDEX:
+          oneOf:
+          - $ref: '#/components/schemas/StateCode'
+          - $ref: '#/components/schemas/EmptyString'
+          description: U.S. state of residence being verified on coborrower.
+        coborrower_vor_residence_zip_INDEX:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip of residence being verified on coborrower.
+        coborrower_vor_residence_years_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Number of years at residence being verified on borrower.
+        coborrower_vor_residence_months_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Number of months at residence being verified on borrower.
+        coborrower_vor_residence_own_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/OwnResidenceTypes'
+          description: Ownership status of residence being verified on coborrower.
+        vod_to_name_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Financial institution name.
+        vod_for_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/ApplicantTypes'
+          description: Who is on the account at the financial institution.
+        vogg_gift_asset_type_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/GiftTypes'
+          description: Type of gift (e.g. Gift of cash, grant).
+        vogg_gift_applicant_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/ApplicantTypes'
+          description: Applicant tied to gift.
+        vogg_gift_deposited_INDEX:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the gift has been deposited.
+        vogg_gift_amount_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Amount of the gift.
+        vogg_gift_source_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/GiftSourceTypes'
+          description: Source of the gift.
+        other_assets_and_credits_type_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/AdditionalAssetTypes'
+          description: Type of another asset.
+        other_assets_and_credits_value_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Value of another asset.
+        other_assets_and_credits_owner_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/ApplicantTypes'
+          description: Owner of another asset.
+        other_liabilities_and_expenses_type_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/AdditionalLiabilityTypes'
+          description: Type of other liability (e.g. Alimony, Child Support).
+        other_liabilities_and_expenses_amount_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Amount of other liability.
+        other_liabilities_and_expenses_applicant_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/ApplicantTypes'
+          description: Applicant tied to liability (e.g. Borrower, Coborrower).
+        vom_address_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Street of mortgage being verified.
+        vom_unit_number_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 20
+          description: Unit number of mortgage being verified.
+        vom_city_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: City of mortgage being verified.
+        vom_state_INDEX:
+          oneOf:
+          - $ref: '#/components/schemas/StateCode'
+          - $ref: '#/components/schemas/EmptyString'
+          description: U.S. state of mortgage being verified.
+        vom_zip_INDEX:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip of mortgage being verified.
+        vom_market_value_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Market value of mortgage being verified.
+        vom_mortgage_balance_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Balance of mortgage being verified.
+        vom_type_of_property_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/MortgagePropertyTypes'
+          description: Type of property tied to mortgage being verified.
+        vom_date_acquired_INDEX:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Date acquired for mortgage being verified.
+        vom_mortgage_loan_INDEX:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          description: Loan amount of mortgage being verified.
+        vom_mortgage_payment_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Payment of mortgage being verified.
+        vom_property_used_as_INDEX:
+          allOf:
+          - $ref: '#/components/schemas/MortgagePropertyUsedAsTypes'
+          description: Purpose property is used as for mortgage being verified (e.g. Primary Residence, Investment Property).
+        vom_rental_income_INDEX:
+          type:
+          - integer
+          - 'null'
+          description: Income from property if rented of mortgage being verified.
+      description: The available properties for creating and modifying a loan application record
+    BankruptcyTypes:
+      type: string
+      enum:
+      - Chapter 7
+      - Chapter 11
+      - Chapter 12
+      - Chapter 13
+      description: Types of bankruptcy a borrower declares on an application.
+    PropertyTypes:
+      type: string
+      enum:
+      - ''
+      - Single Family
+      - Condo
+      - Multi-Unit Property
+      - Townhome
+      - Cooperative
+      - Detached Condo
+      - PUD
+      - Manufactured Home
+      - High Rise Condominium
+      description: Types of properties a borrower declares on an application.
+    LoanApplication.Preview:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplication'
+      - type: object
+        properties:
+          has_coborrower:
+            type:
+            - boolean
+            - 'null'
+            description: Whether application has a coborrower.
+      description: Loan application model (Preview)
+    TitleDeclarationTypes:
+      type: string
+      enum:
+      - ''
+      - Sole Ownership
+      - Joint With Spouse
+      - Joint With Other Than Spouse
+      description: Types of title declaration a borrower declares on an application.
+    LoanApplicationAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - SHARE_APP
+          - DEACTIVATE
+          - ACTIVATE
+          - SUBMIT
+          - REJECT
+          - REASSIGN_LO
+          - CONVERT_TO_LOAN
+          description: Action to perform
+      required:
+      - action
+      description: Available properties for a loan application action.
+      additionalProperties: false
+    AsianOriginTypes:
+      type: string
+      enum:
+      - Asian Indian
+      - Chinese
+      - Filipino
+      - Japanese
+      - Korean
+      - Vietnamese
+      - Other Asian
+      description: Types of Asian origin a borrower declares on an application.
+    LoanApplicationPostBody:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplicationBody'
+      - type: object
+        properties:
+          email:
+            type: string
+            maxLength: 255
+            description: Borrower's email.
+          loan_officer_id:
+            type:
+            - string
+            - 'null'
+            format: uuid
+            description: <<glossary:Loan officer>> ID.
+        required:
+        - email
+      description: The available properties for creating a loan application record. To enable prospect creation and CRM sync, include first_name and last_name along with email.
+    StateCode:
+      type: string
+      enum:
+      - AA
+      - AE
+      - AK
+      - AL
+      - AP
+      - AR
+      - AS
+      - AZ
+      - CA
+      - CO
+      - CT
+      - DC
+      - DE
+      - FL
+      - FM
+      - GA
+      - GU
+      - HI
+      - IA
+      - ID
+      - IL
+      - IN
+      - KS
+      - KY
+      - LA
+      - MA
+      - MD
+      - ME
+      - MH
+      - MI
+      - MN
+      - MO
+      - MP
+      - MS
+      - MT
+      - NC
+      - ND
+      - NE
+      - NH
+      - NJ
+      - NM
+      - NV
+      - NY
+      - OH
+      - OK
+      - OR
+      - PA
+      - PR
+      - PW
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VA
+      - VI
+      - VT
+      - WA
+      - WI
+      - WV
+      - WY
+      description: State abbreviated code.
+    GiftTypes:
+      type: string
+      enum:
+      - ''
+      - Gift of Cash
+      - Gift of Property Equity
+      - Grant
+      description: Types of gifts a borrower declares on an application.
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    Languages:
+      type: string
+      enum:
+      - ''
+      - English
+      - Chinese
+      - Korean
+      - Spanish
+      - Tagalog
+      - Vietnamese
+      - Other
+      - I do not wish to respond
+      description: Languages a borrower declares on an application.
+    CitizenshipTypes:
+      type: string
+      enum:
+      - ''
+      - U.S. Citizen
+      - Permanent Resident Alien
+      - Non Permanent Resident Alien
+      description: Types of citizenship a borrower declares on an application.
+    MortgagePropertyUsedAsTypes:
+      type: string
+      enum:
+      - ''
+      - Primary Residence
+      - Second Home
+      - Investment Property
+      description: How a borrower uses a mortgage property.
+    ServiceBranchTypes:
+      type: string
+      enum:
+      - ''
+      - Air Force
+      - Army
+      - Coast Guard
+      - Marine
+      - Navy
+      - Other
+      description: Types of service branches a borrower declares on an application.
+    PropertyIntendedUseTypes:
+      type: string
+      enum:
+      - ''
+      - Primary Residence
+      - Secondary Residence
+      - Investment
+      description: Types of properties a borrower declares they intend to use it for on an application.
+    MilitaryDetailTypes:
+      type: string
+      enum:
+      - Currently serving on active duty
+      - Currently retired, discharged, or separated from service
+      - Only period of service was a non-activated member of the Reserve or National Guard
+      - Surviving spouse
+      description: Types of military details a borrower declares on an application.
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    MortgagePropertyTypes:
+      type: string
+      enum:
+      - ''
+      - Single Family
+      - Condominium
+      - Townhouse
+      - Cooperative
+      - 2 to 4 Units
+      - Multi Family
+      - Mobile Home
+      - Commercial
+      - Home And Business Combined
+      - Mixed Use
+      - Farm
+      - Land
+      description: Types of mortgage properties a borrower declares on an application.
+    ActivateLoanApplication:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplicationAction'
+      description: Available properties for activating a loan application.
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    RejectLoanApplication:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplicationAction'
+      - type: object
+        properties:
+          message:
+            type: string
+            description: message to send to loan application user.
+        additionalProperties: false
+      description: Available properties for rejecting loan application.
+    DeactivateLoanApplication:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplicationAction'
+      description: Available properties for deactivating a loan application.
+    UnitTypes:
+      type: string
+      enum:
+      - ''
+      - Apartment
+      - Basement
+      - Building
+      - Condo
+      - Department
+      - Floor
+      - Front
+      - Hangar
+      - Key
+      - Lobby
+      - Lot
+      - Lower
+      - Office
+      - Penthouse
+      - Pier
+      - Rear
+      - Room
+      - Side
+      - Space
+      - Stop
+      - Suite
+      - Trailer
+      - Unit
+      - Upper
+      description: Types of residence units a borrower declares on an application.
+    LoanPurposeTypes:
+      type: string
+      enum:
+      - ''
+      - Purchase
+      - Refinance
+      - Cash-Out Refinance
+      - Construction
+      - Home Equity Line of Credit
+      - Home Equity Loan
+      description: Types of loan purposes a borrower declares on an application.
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    CreditTypes:
+      type: string
+      enum:
+      - ''
+      - Individual Credit
+      - Joint Credit
+      description: Types of credit a borrower declares on an application.
+    DomesticRelationshipTypes:
+      type: string
+      enum:
+      - ''
+      - Civil Union
+      - Domestic Partnership
+      - Registered Reciprocal Beneficiary Relationship
+      - Other
+      description: Types of domestic relationship a borrower declares on an application.
+    EmptyString:
+      type: string
+      enum:
+      - ''
+      description: An empty string.
+    RaceTypes:
+      type: string
+      enum:
+      - American Indian or Alaska Native
+      - Asian
+      - Black or African American
+      - Native Hawaiian or Other Pacific Islander
+      - White
+      - I do not wish to provide this information
+      description: Types of race a borrower declares on an application.
+    LoanApplicationPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/LoanApplication.Preview'
+        required:
+        - contents
+    LatinEthnicityTypes:
+      type: string
+      enum:
+      - Mexican
+      - Puerto Rican
+      - Cuban
+      - Other Hispanic or Latino
+      description: Types of latin ethnicity a borrower declares on an application.
+    EmploymentStatusTypes:
+      type: string
+      enum:
+      - ''
+      - Currently employed
+      - Retired
+      - Not currently employed
+      description: Types of employment status a borrower declares on an application.
+    AdditionalLiabilityTypes:
+      type: string
+      enum:
+      - ''
+      - Alimony
+      - Child Support
+      - Job Related Expenses
+      - Separate Maintenance Expense
+      - Other
+      description: Types of additional liabilities a borrower declares on an application.
+    EthnicityTypes:
+      type: string
+      enum:
+      - Not Hispanic or Latino
+      - Hispanic or Latino
+      - Information not provided
+      description: Types of ethnicity a borrower declares on an application.
+    MilitaryServiceTypes:
+      type: string
+      enum:
+      - ''
+      - Regular Military
+      - Reserves
+      - National Guard
+      description: Types of military service a borrower declares on an application.
+    ConvertToLoan:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplicationAction'
+      - type: object
+        properties:
+          loan_number:
+            type: string
+            minLength: 1
+            maxLength: 255
+            description: Loan number to set on the created loan.
+        required:
+        - loan_number
+        additionalProperties: false
+      description: Available properties for converting a loan application to a loan.
+    MartialStatuses:
+      type: string
+      enum:
+      - ''
+      - Married
+      - Separated
+      - Unmarried
+      description: Martial statuses a borrower declares on an application.
+    OccupancyTypes:
+      type: string
+      enum:
+      - Owner Occupied
+      - Non-Owner Occupied
+      description: Types of occupancy a borrower declares on an application.
+    CreditAuthMethods:
+      type: string
+      enum:
+      - ''
+      - Phone
+      - Face to Face
+      - Internet
+      - Mail
+      description: Methods in which a borrower gives credit authorization on an application.
+    ApplicantTypes:
+      type: string
+      enum:
+      - ''
+      - Borrower
+      - Co-Borrower
+      - Both
+      description: Applicant types of a borrower on an application.
+    ReferralTypes:
+      type: string
+      enum:
+      - ''
+      - Builder
+      - Family
+      - Friends
+      - Internet
+      - Realtor
+      - Other
+      description: Types of referral a borrower declares on an application.
+    OwnResidenceTypes:
+      type: string
+      enum:
+      - ''
+      - Own
+      - Rent
+      - Do not currently pay rent
+      description: Types of residential ownership a borrower declares on an application.
+    AdditionalAssetTypes:
+      type: string
+      enum:
+      - ''
+      - Automobile (FHA/VA)
+      - Boat (FHA/VA)
+      - Cash On Hand
+      - Net Worth Of Business Owned (FHA/VA)
+      - Pending Net Sale Proceeds From Real Estate Assets
+      - Proceeds From Sale Of Non Real Estate Asset
+      - Proceeds From Secured Loan
+      - Proceeds From Unsecured Loan
+      - Recreational Vehicle (FHA/VA)
+      - Severance Package (FHA/VA)
+      - Other
+      description: Types of additional assets a borrower declares on an application.
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    EmploymentOwnershipTypes:
+      type: string
+      enum:
+      - ''
+      - I have an ownership share of 25% or more
+      - I have an ownership share of less than 25%
+      description: Types of employment ownership a borrower declares on an application.
+    ShareApp:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplicationAction'
+      description: Available properties for sharing app.
+    EmploymentTypes:
+      type: string
+      enum:
+      - ''
+      - Self-employed
+      - Employed by a business
+      - Independent contractor
+      description: Types of employment a borrower declares on an application.
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    LoanApplication.Detail:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplication'
+      - type: object
+        properties:
+          alimony_amount:
+            type:
+            - integer
+            - 'null'
+            description: Amount of alimony paid by the borrower.
+          asian_origin:
+            type:
+            - string
+            - 'null'
+            description: Type of Asian origin borrower identifies as.
+          asian_origin_other:
+            type:
+            - string
+            - 'null'
+            description: Specifies other Asian origin if applicable.
+          assets1:
+            type:
+            - integer
+            - 'null'
+            description: Checking and savings account(s) amount.
+          assets2:
+            type:
+            - integer
+            - 'null'
+            description: Additional asset(s) amount.
+          assets_retirement:
+            type:
+            - integer
+            - 'null'
+            description: Borrower's retirement assets amount.
+          borrower_bankruptcy_types:
+            type:
+            - array
+            - 'null'
+            items:
+              type: string
+            description: Types of bankruptcies declared by the borrower.
+          borrower_cell_phone:
+            type:
+            - string
+            - 'null'
+            format: phone
+            description: Borrower's cell phone number.
+          borrower_citizenship_country:
+            type:
+            - string
+            - 'null'
+            description: Borrower's country of citizenship.
+          borrower_citizenship_status:
+            type:
+            - string
+            - 'null'
+            description: Borrower's citizenship status.
+          borrower_contact_work_phone:
+            type:
+            - string
+            - 'null'
+            format: phone
+            description: Borrower's work phone number.
+          borrower_conveyed_title_in_lieu_of_forclosure:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the borrower has conveyed a title in lieu of foreclosure.
+          borrower_domestic_relationship_other:
+            type:
+            - string
+            - 'null'
+            description: Specifies other domestic relationships for the borrower.
+          borrower_domestic_relationship_state:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: U.S. state where the borrower's domestic relationship is recognized.
+          borrower_domestic_relationship_type:
+            type:
+            - string
+            - 'null'
+            description: Type of domestic relationship.
+          borrower_family_or_business_affiliation_with_seller:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has a family or business relationship with the seller.
+          borrower_home_phone:
+            type:
+            - string
+            - 'null'
+            format: phone
+            description: Borrower's home phone number.
+          borrower_military_details:
+            type:
+            - array
+            - 'null'
+            items:
+              type: string
+            description: Details about the borrower's military service.
+          borrower_military_service:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the borrower has military service history.
+          borrower_military_service_expiration:
+            type:
+            - string
+            - 'null'
+            description: Expiration date of borrower's military service if on active duty.
+          borrower_mobile_phone:
+            type:
+            - string
+            - 'null'
+            format: phone
+            description: Borrower's mobile phone number.
+          borrower_non_spouse_property_rights:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the borrower has property rights with a non-spouse.
+          borrower_other_obtained_or_borrowed_money_amount:
+            type:
+            - integer
+            - 'null'
+            description: Amount of money borrowed or obtained from another source.
+          borrower_other_property_lien:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has a lien on another property.
+          borrower_other_undisclosed_mortgage_closing_on_or_before:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has an undisclosed mortgage closing on or before a certain date.
+          borrower_other_undisclosed_new_credit:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has undisclosed new credit.
+          borrower_pre_forclosure_or_short_sale:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has undergone pre-foreclosure or a short sale.
+          borrower_second_employer_still_employed:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower is still employed at their second employer.
+          borrower_share_info_authorization:
+            type:
+            - boolean
+            - 'null'
+            description: Authorization for borrower information sharing.
+          borrower_two_years_at_current_address:
+            type:
+            - integer
+            - 'null'
+            description: How long the borrower has lived at the current address.
+          borrower_voe_employment_is_self_employed_1:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower is self-employed in VOE employment.
+          branch_of_service:
+            type:
+            - string
+            - 'null'
+            description: Borrower's branch of military service.
+          charm_acknowledgments:
+            type:
+            - boolean
+            - 'null'
+            description: Whether CHARM acknowledgments are signed (e.g. have they received a booklet?).
+          co_borrower_verification_of_income_and_employment:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower’s income and employment verification is complete.
+          coborrower_address:
+            type:
+            - string
+            - 'null'
+            description: Coborrower's address.
+          coborrower_address_same_as_borrower:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower's address is the same as borrower's.
+          coborrower_asian_origin:
+            type:
+            - string
+            - 'null'
+            description: Type of Asian origin coborrower identifies as.
+          coborrower_asian_origin_other:
+            type:
+            - string
+            - 'null'
+            description: Specifies other Asian origin for coborrower.
+          coborrower_bankruptcy_types:
+            type:
+            - array
+            - 'null'
+            items:
+              type: string
+            description: '] Types of bankruptcies declared by the coborrower.'
+          coborrower_branch_of_service:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s branch of military service.
+          coborrower_cell_phone:
+            type:
+            - string
+            - 'null'
+            format: phone
+            description: Coborrower’s cell phone number.
+          coborrower_citizenship_country:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s country of citizenship.
+          coborrower_citizenship_status:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s citizenship status.
+          coborrower_city:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s city.
+          coborrower_contact_work_phone:
+            type:
+            - string
+            - 'null'
+            format: phone
+            description: Coborrower’s work phone number.
+          coborrower_conveyed_title_in_lieu_of_forclosure:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has conveyed title in lieu of foreclosure.
+          coborrower_credit_authorization:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has authorized credit checks.
+          coborrower_dependents_age:
+            type:
+            - string
+            - 'null'
+            description: Ages of coborrower’s dependents.
+          coborrower_dob:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s date of birth.
+          coborrower_domestic_relationship_other:
+            type:
+            - string
+            - 'null'
+            description: Specifies other domestic relationships for coborrower.
+          coborrower_domestic_relationship_state:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: U.S. state where the coborrower's domestic relationship is recognized.
+          coborrower_domestic_relationship_type:
+            type:
+            - string
+            - 'null'
+            description: Type of domestic relationship for coborrower.
+          coborrower_econsent:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has provided eConsent.
+          coborrower_email:
+            type:
+            - string
+            - 'null'
+            format: email
+            description: Coborrower’s email address.
+          coborrower_employer_name:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s employer name.
+          coborrower_employer_years:
+            type:
+            - integer
+            - 'null'
+            description: Number of years coborrower has been with current employer.
+          coborrower_employment_status:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s employment status.
+          coborrower_ethnicity:
+            oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            description: Coborrower’s ethnicity.
+          coborrower_ethnicity_latino:
+            oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            description: Coborrower's type of Hispanic or Latino origin.
+          coborrower_family_or_business_affiliation_with_seller:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has an affiliation with the seller.
+          coborrower_first_name:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s first name.
+          coborrower_gender:
+            oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            description: Coborrower’s gender.
+          coborrower_has_alimony:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower pays alimony.
+          coborrower_has_bankruptcy:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has declared bankruptcy.
+          coborrower_has_delinquent_debt:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has delinquent debt.
+          coborrower_has_foreclosure:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has had a foreclosure.
+          coborrower_has_obligations:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has financial obligations.
+          coborrower_has_outstanding_judgements:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has outstanding judgments.
+          coborrower_has_ownership_interest:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has ownership interest in a property.
+          coborrower_is_comaker_or_endorser:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower is a co-maker or endorser on a loan.
+          coborrower_is_down_payment_borrowed:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower’s down payment is borrowed.
+          coborrower_is_firsttimer:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower is a first-time homebuyer.
+          coborrower_is_permanent_resident:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower is a permanent resident.
+          coborrower_is_primary_residence:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the coborrower will occupy the property as a primary residence.
+          coborrower_is_self_employed:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower is self-employed.
+          coborrower_is_us_citizen:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower is a U.S. citizen.
+          coborrower_language_preference:
+            oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            description: Coborrower’s preferred language.
+          coborrower_language_preference_other:
+            type:
+            - string
+            - 'null'
+            description: Other language preference specified by coborrower.
+          coborrower_last_name:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s last name.
+          coborrower_mailing_address:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s mailing street.
+          coborrower_mailing_city:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s mailing city.
+          coborrower_mailing_same_as_current:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower’s mailing address is the same as current.
+          coborrower_mailing_state:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s mailing state.
+          coborrower_mailing_unit_number:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s mailing unit number.
+          coborrower_mailing_zip:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s mailing zip code.
+          coborrower_marital_status:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s marital status.
+          coborrower_middle_name:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s middle name.
+          coborrower_military_details:
+            type:
+            - array
+            - 'null'
+            items:
+              type: string
+            description: Details regarding coborrower’s military service.
+          coborrower_military_service:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has military service history.
+          coborrower_military_service_expiration:
+            type:
+            - string
+            - 'null'
+            description: Expiration date of coborrower’s military service if on active duty.
+          coborrower_monthly_income:
+            type:
+            - integer
+            - 'null'
+            description: Coborrower’s monthly income.
+          coborrower_non_spouse_property_rights:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has property rights with a non-spouse.
+          coborrower_number_dependents:
+            type:
+            - integer
+            - 'null'
+            description: Number of dependents of the coborrower.
+          coborrower_other_hispanic_or_latino_origin:
+            type:
+            - string
+            - 'null'
+            description: Specifies other Hispanic or Latino origin for coborrower.
+          coborrower_other_obtained_or_borrowed_money_amount:
+            type:
+            - integer
+            - 'null'
+            description: Amount of money borrowed or obtained from another source by coborrower.
+          coborrower_other_property_lien:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has a lien on another property.
+          coborrower_other_undisclosed_mortgage_closing_on_or_before:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has an undisclosed mortgage closing on or before a certain date.
+          coborrower_other_undisclosed_new_credit:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has undisclosed new credit.
+          coborrower_pacific_islander:
+            type:
+            - string
+            - 'null'
+            description: Type of Pacific Islander origin coborrower identifies as.
+          coborrower_pacific_islander_other:
+            type:
+            - string
+            - 'null'
+            description: Specifies other Pacific Islander origin for coborrower.
+          coborrower_party_to_lawsuit:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower is a party to a lawsuit.
+          coborrower_pre_forclosure_or_short_sale:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has undergone pre-foreclosure or a short sale.
+          coborrower_previous_property_title_declaration:
+            type:
+            - string
+            - 'null'
+            description: Previous property title declaration for coborrower.
+          coborrower_previous_property_type_declaration:
+            type:
+            - string
+            - 'null'
+            description: Previous property type declaration for coborrower.
+          coborrower_property_months:
+            type:
+            - integer
+            - 'null'
+            description: Number of months coborrower has owned the property.
+          coborrower_property_own:
+            type:
+            - string
+            - 'null'
+            description: How the coborrower owns the property.
+          coborrower_property_years:
+            type:
+            - integer
+            - 'null'
+            description: Number of years coborrower has owned the property.
+          coborrower_provide_demographics:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the coborrower consented to provide demographic information.
+          coborrower_race:
+            oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            description: Coborrower’s race.
+          coborrower_race_asian:
+            type:
+            - string
+            - 'null'
+            description: Type of Asian origin the coborrower identifies as.
+          coborrower_race_american_indian_other:
+            type:
+            - string
+            - 'null'
+            description: Specifies other American Indian origin for coborrower.
+          coborrower_rent_payment:
+            type:
+            - integer
+            - 'null'
+            description: Monthly rent payment by coborrower.
+          coborrower_share_info_authorization:
+            type:
+            - boolean
+            - 'null'
+            description: Authorization for coborrower’s information sharing.
+          coborrower_ssn:
+            type:
+            - string
+            - 'null'
+            format: ssn
+            description: Coborrower’s Social Security Number.
+          coborrower_state:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s state of residence.
+          coborrower_suffix:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s name suffix.
+          coborrower_time_same_as_borrower:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower has the same time at the current address as borrower.
+          coborrower_two_years_at_current_address:
+            type:
+            - integer
+            - 'null'
+            description: How long the coborrower has lived at the current address.
+          coborrower_type_of_service:
+            type:
+            - string
+            - 'null'
+            description: Type of military service in which the coborrower is involved.
+          coborrower_unit_number:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s unit number.
+          coborrower_voe_employment_is_self_employed_1:
+            type:
+            - boolean
+            - 'null'
+            description: Whether coborrower is self-employed in VOE employment.
+          coborrower_zip:
+            type:
+            - string
+            - 'null'
+            description: Coborrower’s zip code.
+          credit_auth_method:
+            type:
+            - string
+            - 'null'
+            description: Method of credit authorization.
+          credit_authorization:
+            type:
+            - boolean
+            - 'null'
+            description: Authorization for credit check.
+          dependents_age:
+            type:
+            - string
+            - 'null'
+            description: Ages of dependents.
+          desired_monthly_payment:
+            type:
+            - integer
+            - 'null'
+            description: Desired monthly payment.
+          down_payment:
+            type:
+            - integer
+            - 'null'
+            description: Down payment amount.
+          down_payment_amount:
+            type:
+            - integer
+            - 'null'
+            description: Exact down payment amount.
+          down_payment_pct:
+            type:
+            - integer
+            - 'null'
+            description: Percentage of down payment.
+          down_payment_source:
+            type:
+            - string
+            - 'null'
+            description: Source of down payment.
+          econsent:
+            type:
+            - boolean
+            - 'null'
+            description: Borrower’s electronic consent.
+          employer_address:
+            type:
+            - string
+            - 'null'
+            description: Employer's street.
+          employer_city:
+            type:
+            - string
+            - 'null'
+            description: Employer's city.
+          employer_name:
+            type:
+            - string
+            - 'null'
+            description: Name of employer.
+          employer_state:
+            type:
+            - string
+            - 'null'
+            description: Employer's state.
+          employer_years:
+            type:
+            - integer
+            - 'null'
+            description: Years employed at current employer.
+          employer_zip:
+            type:
+            - string
+            - 'null'
+            description: Employer's zip code.
+          employment_status:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s employment status.
+          estimated_property_value:
+            type:
+            - integer
+            - 'null'
+            description: Estimated value of the property.
+          ethnicity:
+            oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            description: Borrower’s ethnicity.
+          ethnicity_latino:
+            oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            description: Borrower's type of Hispanic or Latino origin.
+          gender:
+            oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            description: Borrower’s gender.
+          has_alimony:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower pays alimony.
+          has_bankruptcy:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has declared bankruptcy.
+          has_delinquent_debt:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has delinquent debt.
+          has_foreclosure:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has had a foreclosure.
+          has_obligations:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has other financial obligations.
+          has_outstanding_judgements:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has outstanding judgments.
+          has_ownership_interest:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has ownership interest in a property.
+          is_comaker_or_endorser:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower is a co-maker or endorser.
+          is_down_payment_borrowed:
+            type:
+            - boolean
+            - 'null'
+            description: Whether down payment is borrowed.
+          is_firsttimer:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower is a first-time homebuyer.
+          is_permanent_resident:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower is a permanent resident.
+          is_primary_residence:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the borrower will occupy the property as a primary residence.
+          is_self_employed:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower is self-employed.
+          is_us_citizen:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower is a U.S. citizen.
+          is_veteran:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower has veteran status.
+          language_preference:
+            oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            description: Borrower’s preferred language.
+          language_preference_other:
+            type:
+            - string
+            - 'null'
+            description: Other language preference specified by borrower.
+          loan_property_info__refinance_info:
+            type:
+            - string
+            - 'null'
+            description: Loan and refinance information.
+          loan_purpose:
+            type:
+            - string
+            - 'null'
+            description: Purpose of the loan.
+          mailing_address:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s mailing address.
+          mailing_city:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s mailing city.
+          mailing_same_as_current:
+            type:
+            - boolean
+            - 'null'
+            description: Whether mailing address is the same as current.
+          mailing_state:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s mailing state.
+          mailing_unit_number:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s mailing unit number.
+          mailing_zip:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s mailing zip code.
+          middle_name:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s middle name.
+          monthly_income:
+            type:
+            - integer
+            - 'null'
+            description: Borrower’s monthly income.
+          monthly_liabilities:
+            type:
+            - integer
+            - 'null'
+            description: Borrower’s monthly liabilities.
+          number_dependents:
+            type:
+            - integer
+            - 'null'
+            description: Number of dependents of the borrower.
+          other_hispanic_or_latino_origin:
+            type:
+            - string
+            - 'null'
+            description: Specifies other Hispanic or Latino origin.
+          owns_other_property:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower owns another property.
+          pacific_islander:
+            type:
+            - string
+            - 'null'
+            description: Type of Pacific Islander origin borrower identifies as.
+          pacific_islander_other:
+            type:
+            - string
+            - 'null'
+            description: Specifies other Pacific Islander origin.
+          party_to_lawsuit:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower is a party to a lawsuit.
+          previous_property_title_declaration:
+            type:
+            - string
+            - 'null'
+            description: Previous property title declaration.
+          previous_property_type_declaration:
+            type:
+            - string
+            - 'null'
+            description: Previous property type declaration.
+          property_months:
+            type:
+            - integer
+            - 'null'
+            description: Number of months borrower has owned the property.
+          property_own:
+            type:
+            - string
+            - 'null'
+            description: How the borrower owns the property.
+          property_years:
+            type:
+            - integer
+            - 'null'
+            description: Number of years borrower has owned the property.
+          provide_demographics:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the borrower consented to provide demographic information.
+          race:
+            oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+            description: Borrower’s race.
+          race_asian:
+            type:
+            - string
+            - 'null'
+            description: Type of Asian origin the borrower identifies as.
+          race_american_indian_other:
+            type:
+            - string
+            - 'null'
+            description: Specifies other American Indian origin.
+          referral_company_name:
+            type:
+            - string
+            - 'null'
+            description: Name of the referral company.
+          referral_name:
+            type:
+            - string
+            - 'null'
+            description: Type of the referral person.
+          refinance_current_address:
+            type:
+            - string
+            - 'null'
+            description: Current address for refinance.
+          refinance_purpose:
+            type:
+            - string
+            - 'null'
+            description: Purpose of refinancing.
+          rent_payment:
+            type:
+            - integer
+            - 'null'
+            description: Monthly rent payment.
+          rental_property_city:
+            type:
+            - string
+            - 'null'
+            description: City of the rental property.
+          rental_property_state:
+            type:
+            - string
+            - 'null'
+            description: State of the rental property.
+          rental_property_street:
+            type:
+            - string
+            - 'null'
+            description: Street address of the rental property.
+          rental_property_unit_number:
+            type:
+            - string
+            - 'null'
+            description: Unit number of the rental property.
+          rental_property_zip:
+            type:
+            - string
+            - 'null'
+            description: Zip code of the rental property.
+          school_years:
+            type:
+            - integer
+            - 'null'
+            description: Number of years borrower attended school.
+          servicer_credit_authorization:
+            type:
+            - boolean
+            - 'null'
+            description: Whether servicer credit authorization is provided.
+          ssn:
+            type:
+            - string
+            - 'null'
+            format: ssn
+            description: Borrower’s Social Security Number.
+          type_of_credit:
+            type:
+            - string
+            - 'null'
+            description: Type of credit requested.
+          type_of_property:
+            type:
+            - string
+            - 'null'
+            description: Type of property being purchased or refinanced.
+          type_of_service:
+            type:
+            - string
+            - 'null'
+            description: Type of military service in which the borrower is involved.
+          under_contract:
+            type:
+            - boolean
+            - 'null'
+            description: Whether property is under contract.
+          verification_of_assets:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower’s assets have been verified.
+          verification_of_income_and_employment:
+            type:
+            - boolean
+            - 'null'
+            description: Whether borrower’s income and employment have been verified.
+          borrower_voe_employment_category_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Type of employment being verified on the borrower.
+          borrower_voe_employment_ownership_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Declaration of ownership for employment being verified on the borrower.
+          borrower_voe_to_name_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Name of employer being verified on borrower.
+          borrower_voe_to_address_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Street of borrower's employer's address.
+          borrower_voe_to_unit_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Unit type of borrower's employer's address.
+          borrower_voe_to_unit_number_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Unit number of borrower's employer's address.
+          borrower_voe_to_city_INDEX:
+            type:
+            - string
+            - 'null'
+            description: City borrower's employer resides in.
+          borrower_voe_to_state_INDEX:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: U.S. state borrower's employer resides in.
+          borrower_voe_to_zip_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Zip code borrower's employer resides in.
+          borrower_voe_to_phone_INDEX:
+            type:
+            - string
+            - 'null'
+            format: phone
+            description: Phone number for the borrower's employer.
+          borrower_voe_employer_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Position or title borrower holds/held at employer.
+          borrower_voe_employment_date_hired_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Date the borrower was employed at employer.
+          borrower_voe_employment_is_current_INDEX:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the borrower is still employer at employer.
+          borrower_voe_employment_date_terminated_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Date the borrower finished working for employer.
+          borrower_voe_self_employment_monthly_income_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Income borrower reports if self-employed.
+          borrower_voe_income_base_pay_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Amount of base pay from borrower's employer.
+          borrower_voe_income_base_pay_INDEX_hours:
+            type:
+            - integer
+            - 'null'
+            description: Amount of base pay hours from borrower's employer.
+          borrower_additional_income_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Additional income amount from borrower's employer.
+          borrower_voe_income_overtime_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Overtime amount from borrower's employer.
+          borrower_voe_income_commissions_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Commissions amount from borrower's employer.
+          borrower_voe_income_bonus_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Bonus amount from borrower's employer.
+          borrower_voe_employment_line_of_work_years_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Number of years borrower has been in line of work.
+          borrower_voe_employment_line_of_work_months_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Number of months borrower has been in line of work.
+          borrower_vor_residence_address_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Street of residence being verified on borrower.
+          borrower_vor_residence_unit_number_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Unit number of residence being verified on borrower.
+          borrower_vor_residence_city_INDEX:
+            type:
+            - string
+            - 'null'
+            description: City of residence being verified on borrower.
+          borrower_vor_residence_state_INDEX:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: U.S. state of residence being verified on borrower.
+          borrower_vor_residence_zip_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Zip of residence being verified on borrower.
+          borrower_vor_residence_years_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Number of years at residence being verified on borrower.
+          borrower_vor_residence_months_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Number of months at residence being verified on borrower.
+          borrower_vor_residence_own_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Ownership status of residence being verified on borrower.
+          coborrower_voe_employment_category_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Type of employment being verified on the coborrower.
+          coborrower_voe_employment_ownership_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Declaration of ownership for employment being verified on the coborrower.
+          coborrower_voe_to_name_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Name of employer being verified on coborrower.
+          coborrower_voe_to_address_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Street of coborrower's employer's address.
+          coborrower_voe_to_unit_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Unit type of coborrower's employer's address.
+          coborrower_voe_to_unit_number_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Unit number of coborrower's employer's address.
+          coborrower_voe_to_city_INDEX:
+            type:
+            - string
+            - 'null'
+            description: City coborrower's employer resides in.
+          coborrower_voe_to_state_INDEX:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: U.S. state coborrower's employer resides in.
+          coborrower_voe_to_zip_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Zip code coborrower's employer resides in.
+          coborrower_voe_to_phone_INDEX:
+            type:
+            - string
+            - 'null'
+            format: phone
+            description: Phone number for the coborrower's employer.
+          coborrower_voe_employer_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Position or title coborrower holds/held at employer.
+          coborrower_voe_employment_date_hired_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Date the coborrower was employed at employer.
+          coborrower_voe_employment_is_current_INDEX:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the coborrower is still employer at employer.
+          coborrower_voe_employment_date_terminated_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Date the coborrower finished working for employer.
+          coborrower_voe_self_employment_monthly_income_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Income coborrower reports if self-employed.
+          coborrower_voe_income_base_pay_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Amount of base pay from coborrower's employer.
+          coborrower_voe_income_base_pay_INDEX_hours:
+            type:
+            - integer
+            - 'null'
+            description: Amount of base pay hours from coborrower's employer.
+          coborrower_additional_income_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Additional income amount from coborrower's employer.
+          coborrower_voe_income_overtime_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Overtime amount from coborrower's employer.
+          coborrower_voe_income_commissions_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Commissions amount from coborrower's employer.
+          coborrower_voe_income_bonus_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Bonus amount from coborrower's employer.
+          coborrower_line_of_work_info_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Details about coborrower's line of work.
+          coborrower_voe_employment_line_of_work_years_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Number of years coborrower has been in line of work.
+          coborrower_voe_employment_line_of_work_months_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Number of years coborrower has been in line of work.
+          coborrower_vor_residence_address_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Street of residence being verified on coborrower.
+          coborrower_vor_residence_unit_number_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Unit number of residence being verified on coborrower.
+          coborrower_vor_residence_city_INDEX:
+            type:
+            - string
+            - 'null'
+            description: City of residence being verified on coborrower.
+          coborrower_vor_residence_state_INDEX:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: U.S. state of residence being verified on coborrower.
+          coborrower_vor_residence_zip_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Zip of residence being verified on coborrower.
+          coborrower_vor_residence_years_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Number of years at residence being verified on borrower.
+          coborrower_vor_residence_months_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Number of months at residence being verified on borrower.
+          coborrower_vor_residence_own_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Ownership status of residence being verified on coborrower.
+          detailed_other_income_INDEX_description:
+            type:
+            - string
+            - 'null'
+            description: Source of additional income.
+          vod_to_name_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Financial institution name.
+          vod_for_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Who is on the account at the financial institution.
+          vod_account_one_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Type of account to be verified.
+          vod_account_one_number_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Account number to be verified.
+          vod_account_one_market_value_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Value of account to be verified.
+          vod_account_two_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Type of account to be verified.
+          vod_account_two_number_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Account number to be verified.
+          vod_account_two_market_value_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Value of account to be verified.
+          vod_account_three_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Type of account to be verified.
+          vod_account_three_number_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Account number to be verified.
+          vod_account_three_market_value_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Value of account to be verified.
+          vod_account_four_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Type of account to be verified.
+          vod_account_four_number_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Account number to be verified.
+          vod_account_four_market_value_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Value of account to be verified.
+          vogg_gift_asset_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Type of gift.
+          vogg_gift_applicant_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Applicant tied to gift.
+          vogg_gift_deposited_INDEX:
+            type:
+            - boolean
+            - 'null'
+            description: Whether the gift has been deposited.
+          vogg_gift_amount_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Amount of the gift.
+          vogg_gift_source_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Source of the gift.
+          other_assets_and_credits_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Type of another asset.
+          other_assets_and_credits_value_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Value of another asset.
+          other_assets_and_credits_owner_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Owner of another asset.
+          other_liabilities_and_expenses_type_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Type of other liability (e.g. Alimony, Child Support).
+          other_liabilities_and_expenses_amount_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Amount of other liability.
+          other_liabilities_and_expenses_applicant_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Applicant tied to liability (e.g. Borrower, Coborrower).
+          vom_address_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Street of mortgage being verified.
+          vom_unit_number_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Unit number of mortgage being verified.
+          vom_city_INDEX:
+            type:
+            - string
+            - 'null'
+            description: City of mortgage being verified.
+          vom_state_INDEX:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: U.S. state of mortgage being verified.
+          vom_zip_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Zip of mortgage being verified.
+          vom_market_value_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Market value of mortgage being verified.
+          vom_mortgage_balance_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Balance of mortgage being verified.
+          vom_type_of_property_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Type of property tied to mortgage being verified.
+          vom_date_acquired_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Date acquired for mortgage being verified.
+          vom_mortgage_loan_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Loan amount of mortgage being verified.
+          vom_mortgage_payment_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Payment of mortgage being verified.
+          vom_property_used_as_INDEX:
+            type:
+            - string
+            - 'null'
+            description: Purpose property is used as for mortgage being verified (e.g. Primary Residence, Investment Property).
+          vom_rental_income_INDEX:
+            type:
+            - integer
+            - 'null'
+            description: Income from property if rented of mortgage being verified.
+          custom_fields:
+            type:
+            - object
+            - 'null'
+            description: Additional custom fields that are not defined in the standard loan application schema.
+      description: Loan application model (Detail)
+    GiftSourceTypes:
+      type: string
+      enum:
+      - ''
+      - Community Nonprofit
+      - Employer
+      - Federal Agency
+      - Institutional
+      - Lender
+      - Local Agency
+      - Non Parent Relative
+      - Parent
+      - Relative
+      - Religious Nonprofit
+      - State Agency
+      - Unrelated Friend
+      - Unmarried Partner
+      - Other
+      description: Sources of gifts a borrower declares on an application.
+    PacificIslanderOriginTypes:
+      type: string
+      enum:
+      - Native Hawaiian
+      - Guamanian or Chamorro
+      - Samoan
+      - Other Pacific Islander
+      description: Types of Pacific Islander origin a borrower declares on an application.
+    ReassignLoanOfficer:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplicationAction'
+      - type: object
+        properties:
+          loan_officer_id:
+            type: string
+            format: uuid
+            description: new <<glossary:loan officer>> guid to assign loan application to.
+        required:
+        - loan_officer_id
+        additionalProperties: false
+      description: Available properties for assigning new <<glossary:loan officer>> to loan application.
+    PropertyDeclarationTypes:
+      type: string
+      enum:
+      - ''
+      - Sole Ownership
+      - Joint With Spouse
+      - Joint With Other Than Spouse
+      description: Types of property declaration a borrower declares on an application.
+    LoanApplication:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          first_name:
+            type:
+            - string
+            - 'null'
+            description: Borrower's first name.
+          last_name:
+            type:
+            - string
+            - 'null'
+            description: Borrower's last name.
+          email:
+            type:
+            - string
+            - 'null'
+            description: Borrower's email.
+          loan_officer_name:
+            type:
+            - string
+            - 'null'
+            description: <<glossary:Loan officer>>'s name.
+          loan_officer_email:
+            type:
+            - string
+            - 'null'
+            description: <<glossary:Loan officer>>'s email.
+          created_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the loan application was created.
+          updated_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the loan application was last modified.
+          is_active:
+            type: boolean
+            description: Whether the loan application is active.
+          is_submitted:
+            type: boolean
+            description: Whether the loan application has been submitted.
+          address:
+            type:
+            - string
+            - 'null'
+            description: Borrower's street.
+          borrower_external_customer_identifier:
+            type:
+            - string
+            - 'null'
+            maxLength: 255
+            description: External customer identifier for the borrower, supplied by an enterprise integrator (e.g. FI Customer Number). No format validation is applied.
+          city:
+            type:
+            - string
+            - 'null'
+            description: Borrower's city.
+          coborrower_external_customer_identifier:
+            type:
+            - string
+            - 'null'
+            maxLength: 255
+            description: External customer identifier for the coborrower, supplied by an enterprise integrator. No format validation is applied.
+          dob:
+            type:
+            - string
+            - 'null'
+            description: Borrower's date of birth.
+          marital_status:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s marital status.
+          occupancy_type:
+            type:
+            - string
+            - 'null'
+            description: Occupancy type for the property.
+          property_city:
+            type:
+            - string
+            - 'null'
+            description: City where the property is located.
+          property_state:
+            type:
+            - string
+            - 'null'
+            description: State where the property is located.
+          property_street:
+            type:
+            - string
+            - 'null'
+            description: Street address of the property.
+          property_type:
+            type:
+            - string
+            - 'null'
+            description: Type of property.
+          property_unit_number:
+            type:
+            - string
+            - 'null'
+            description: Unit number of the property.
+          property_zip:
+            type:
+            - string
+            - 'null'
+            description: Zip code of the property.
+          purchase_price:
+            type:
+            - integer
+            - 'null'
+            description: Purchase price of the property
+          state:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: U.S. state where borrower resides.
+          suffix:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s name suffix.
+          unit_number:
+            type:
+            - string
+            - 'null'
+            description: Unit number of the property.
+          zip:
+            type:
+            - string
+            - 'null'
+            description: Borrower’s zip code.
+      description: Loan application model
+    RefinancePurposeTypes:
+      type: string
+      enum:
+      - ''
+      - Cash-Out Debt Consolidation
+      - Cash-Out Home Improvement
+      - Cash-Out Limited
+      - Cash-Out Other
+      - Cash-Out Original Lender
+      - Change In Rate/Term
+      - No Cash-Out Other
+      - No Cash-Out FHA Streamlined Refinance
+      - No Cash-Out Streamlined Refinance
+      - No Cash-Out Original Lender
+      description: Types of refinance purposes a borrower declares on an application.
+    SubmitLoanApplication:
+      allOf:
+      - $ref: '#/components/schemas/LoanApplicationAction'
+      description: Available properties for submitting a loan application.
+    DownPaymentSources:
+      type: string
+      enum:
+      - ''
+      - Checking/Savings
+      - Retirement Funds
+      - Gift Funds
+      - Stocks And Bonds
+      - Net Proceeds From Sale
+      - Earnest Money
+      - Equity On Subject Property
+      - Other Type Of Down Payment
+      description: Down payment sources a borrower declares on an application.
+  parameters:
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+  headers:
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

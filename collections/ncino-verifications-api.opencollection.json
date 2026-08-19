@@ -1,0 +1,187 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Verifications API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Verifications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve all verification records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/services/verifications",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_borrower_id",
+                "value": "",
+                "type": "query",
+                "description": "Loan borrower id reports belong to."
+              },
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "query",
+                "description": "Loan id reports belong to."
+              },
+              {
+                "name": "report_type",
+                "value": "",
+                "type": "query",
+                "description": "Verification report type by which to filter verification reports."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve all <<glossary:verification>> records for the provided loan or <<glossary:loan borrower>>.\n\n> 🙇 Heads up!\nRequires Verifications v2 feature be enabled."
+        },
+        {
+          "info": {
+            "name": "Download a verification report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/services/verifications/:verification_id/report.:format",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "path",
+                "description": "Format of the report to download."
+              },
+              {
+                "name": "verification_id",
+                "value": "",
+                "type": "path",
+                "description": "Verification ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will download a <<glossary:verification>> report into either .pdf or .json format.\n\n> 🙇 Heads up!\nRequires Verifications v2 feature be enabled."
+        },
+        {
+          "info": {
+            "name": "Retrieve a verification record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/services/verifications/:verification_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "verification_id",
+                "value": "",
+                "type": "path",
+                "description": "Verification ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve a <<glossary:verification>> record for the provided loan or <<glossary:loan borrower>>.\n\n> 🙇 Heads up!\nRequires Verifications v2 feature be enabled."
+        },
+        {
+          "info": {
+            "name": "Perform action on a verification record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/services/verifications/:verification_id/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "verification_id",
+                "value": "",
+                "type": "path",
+                "description": "Verification ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows a variety of actions to be taken on a <<glossary:verification>> record.\n\n> 📌 Available actions\n**REFRESH_VERIFICATION** - refresh a verification record for the <<glossary:loan borrower>>\n\n> 🙇 Heads up!\nRequires Verifications v2 feature be enabled."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

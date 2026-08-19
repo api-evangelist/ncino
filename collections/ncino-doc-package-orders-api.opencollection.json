@@ -1,0 +1,197 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Doc Package Orders API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Doc Package Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "🚧 List doc package orders for a loan (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/doc_package_orders",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "doc_vendor",
+                "value": "",
+                "type": "query",
+                "description": "Filter by document vendor."
+              },
+              {
+                "name": "doc_vendor_order_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by vendor order ID."
+              },
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan GUID."
+              },
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by order group ID. Use to poll all orders created by a single create request."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will retrieve all doc package orders for a <<glossary:loan>>."
+        },
+        {
+          "info": {
+            "name": "🚧 Create doc package orders for a loan (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/doc_package_orders",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan GUID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will create a <<glossary:doc package order>> for each borrower pair on a <<glossary:loan>>\nand process them asynchronously. Poll the index endpoint with the returned\n`order_group_id` to track status."
+        },
+        {
+          "info": {
+            "name": "🚧 Retry failed doc package orders for a loan (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/doc_package_orders",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan GUID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will retry all failed <<glossary:doc package order>> for a given order group on a\n<<glossary:loan>>. Optionally, a subset of doc package order IDs can be passed to retry only\nthose specific orders. Poll the index endpoint with the returned `order_group_id`\nto track status."
+        },
+        {
+          "info": {
+            "name": "🚧 Retrieve a doc package order (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loans/:loan_id/doc_package_orders/:doc_package_order_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "doc_package_order_id",
+                "value": "",
+                "type": "path",
+                "description": "Doc package order GUID."
+              },
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan GUID."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will retrieve a single doc package order for a <<glossary:loan>>."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

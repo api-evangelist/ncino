@@ -1,0 +1,181 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan Officer Aliases API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Officer Aliases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve loan officer aliases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/aliases",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve <<glossary:loan officer>> <<glossary:alias>>es."
+        },
+        {
+          "info": {
+            "name": "Create a loan officer alias",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/aliases",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will create a new <<glossary:loan officer>> <<glossary:alias>> in nCino Mortgage.\n\n> 🙇 Heads up!\n**Alias cannot be used to log in to the nCino Mortgage platform.**"
+        },
+        {
+          "info": {
+            "name": "Retrieve a loan officer alias",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/aliases/:alias_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "alias_id",
+                "value": "",
+                "type": "path",
+                "description": "Alias ID."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve an <<glossary:alias>> for the given <<glossary:loan officer>>."
+        },
+        {
+          "info": {
+            "name": "Delete a loan officer alias",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/aliases/:alias_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "alias_id",
+                "value": "",
+                "type": "path",
+                "description": "Alias ID."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete an <<glossary:alias>> for the given <<glossary:loan officer>>."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,657 @@
+openapi: 3.2.0
+info:
+  title: nCino Mortgage Company Milestones API
+  description: API framework built from the ground up to be more a robust, forward thinking solution with tools to support our developer community
+  version: '1.0'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://api.ncinomortgage.com
+  description: Production server
+security:
+- OAuth2: []
+tags:
+- name: Company Milestones
+  description: Endpoints pertaining to company milestones
+paths:
+  /companies/{company_id}/milestones:
+    post:
+      tags:
+      - Company Milestones
+      operationId: company_milestones-create
+      parameters:
+      - name: company_id
+        description: Company ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '201':
+          description: Successfully created milestone
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceCreated'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will create a <<glossary:milestone>> for the given <<glossary:company>>.
+      summary: Create a company milestone
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MilestoneCreateBody'
+    get:
+      tags:
+      - Company Milestones
+      operationId: company_milestones-index
+      parameters:
+      - name: company_id
+        description: Company ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/CreatedAfter'
+      - $ref: '#/components/parameters/CreatedBefore'
+      - $ref: '#/components/parameters/UpdatedAfter'
+      - $ref: '#/components/parameters/UpdatedBefore'
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MilestonePagination'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: 'This endpoint retrieves all <<glossary:milestone>> for the given <<glossary:company>>.
+
+
+        To reorder these milestones, use the `/companies/{company_id}/actions` endpoint.'
+      summary: Retrieve all company milestones
+  /companies/{company_id}/milestones/{milestone_id}:
+    get:
+      tags:
+      - Company Milestones
+      operationId: company_milestones-show
+      parameters:
+      - name: company_id
+        description: Company ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: milestone_id
+        description: Milestone ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Milestone'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will retrieve a <<glossary:milestone>> for the given <<glossary:company>>.
+      summary: Retrieve a company milestone record
+    patch:
+      tags:
+      - Company Milestones
+      operationId: company_milestones-update
+      parameters:
+      - name: company_id
+        description: Company ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: milestone_id
+        description: Milestone ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully updated milestone
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint updates a <<glossary:milestone>> for the given <<glossary:company>>.
+      summary: Updates a company milestone
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MilestoneUpdateBody'
+    delete:
+      tags:
+      - Company Milestones
+      operationId: company_milestones-destroy
+      parameters:
+      - name: company_id
+        description: Company ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - name: milestone_id
+        description: Milestone ID.
+        required: true
+        in: path
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/ApiVersionHeader'
+      responses:
+        '204':
+          description: Successfully deleted milestone
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoContent'
+          headers:
+            X-Api-Version:
+              $ref: '#/components/headers/ApiVersionResponseHeader'
+            X-Api-Supported-Versions:
+              $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      description: This endpoint will delete a <<glossary:milestone>> from the given <<glossary:company>>.
+      summary: Delete a company milestone
+components:
+  schemas:
+    MilestoneCreateBody:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Milestone name.
+        description:
+          type: string
+          minLength: 1
+          maxLength: 65536
+          description: Milestone description.
+        remote_name:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 30
+          minItems: 1
+          description: Milestone remote name(s).
+        messages:
+          allOf:
+          - $ref: '#/components/schemas/MilestoneMessagesRequestBody'
+          description: Milestone message templates.
+        document_uploads_allowed:
+          type: boolean
+          description: Whether document uploads are allowed for milestone (defaults to true).
+        is_viewable:
+          type: boolean
+          description: Whether the milestone is viewable in the LOS (defaults to true).
+        notify_borrower:
+          type: boolean
+          description: Whether the borrower is notified for loan changes in milestone (defaults to false).
+      required:
+      - name
+      - description
+      - remote_name
+      description: Available properties for creating a milestone
+      additionalProperties: false
+    MilestoneUpdateBody:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Milestone name.
+        description:
+          type: string
+          minLength: 1
+          maxLength: 65536
+          description: Milestone description.
+        remote_name:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 30
+          minItems: 1
+          description: Milestone remote name(s).
+        messages:
+          allOf:
+          - $ref: '#/components/schemas/MilestoneMessagesRequestBody'
+          description: Milestone message templates.
+        document_uploads_allowed:
+          type: boolean
+          description: Whether document uploads are allowed for milestone (defaults to true).
+        is_viewable:
+          type: boolean
+          description: Whether the milestone is viewable in the LOS (defaults to true).
+        notify_borrower:
+          type: boolean
+          description: Whether the borrower is notified for loan changes in milestone (defaults to false).
+      description: Available properties for updating a milestone
+      additionalProperties: false
+      minProperties: 1
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    MilestonePagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Milestone'
+        required:
+        - contents
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    MilestoneMessagesRequestBody:
+      type: object
+      properties:
+        partner:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Partner message template.
+        client:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Client message template.
+        originator:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Originator message template.
+      description: Properties available for a milestone's messages.
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    Milestone:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          name:
+            type: string
+            description: Milestone name.
+          created_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Timestamp of when the milestone was created.
+          updated_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Timestamp of when the milestone was last updated.
+          description:
+            type: string
+            description: Milestone description.
+          remote_name:
+            type: array
+            items:
+              type: string
+            description: Milestone remote name(s).
+          messages:
+            allOf:
+            - $ref: '#/components/schemas/MilestoneMessages'
+            description: Milestone message templates.
+          document_uploads_allowed:
+            type: boolean
+            description: Whether document uploads are allowed for milestone.
+          is_viewable:
+            type: boolean
+            description: Whether the milestone is viewable in the LOS.
+          notify_borrower:
+            type: boolean
+            description: Whether the borrower is notified for loan changes in milestone.
+        required:
+        - name
+        additionalProperties: false
+      description: Milestone model
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    MilestoneMessages:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          partner:
+            type:
+            - string
+            - 'null'
+            description: Partner message template.
+          client:
+            type:
+            - string
+            - 'null'
+            description: Client message template.
+          originator:
+            type:
+            - string
+            - 'null'
+            description: Originator message template.
+        additionalProperties: false
+      description: Milestone message templates model
+  responses:
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0 Access Token (Default)
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes: {}

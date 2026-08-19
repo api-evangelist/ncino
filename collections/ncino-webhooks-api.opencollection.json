@@ -1,0 +1,321 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ncino Webhooks API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve all webhook records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://evault.ncino.com/api/webhooks",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint will retrieve all <<glossary:webhook>> records."
+        },
+        {
+          "info": {
+            "name": "Create a new webhook record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/webhooks",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint will create a new <<glossary:webhook>> record."
+        },
+        {
+          "info": {
+            "name": "Create a webhook configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://evault.ncino.com/api/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a <Glossary>webhook</Glossary> — a URL eVault calls when subscribed <Glossary>webhook event</Glossary>s fire — with its <Glossary>signing key</Glossary> and the set of events it subscribes to."
+        },
+        {
+          "info": {
+            "name": "Get a webhook configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://evault.ncino.com/api/webhooks/:webhook_id",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for a webhook configuration"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves a <Glossary>webhook</Glossary> configuration, including the <Glossary>webhook event</Glossary>s it subscribes to."
+        },
+        {
+          "info": {
+            "name": "Edit a webhook configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/webhooks/:webhook_id",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates an existing <Glossary>webhook</Glossary> configuration's name, URL, <Glossary>signing key</Glossary>, enabled state, or subscribed events."
+        },
+        {
+          "info": {
+            "name": "Update a webhook record",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://evault.ncino.com/api/webhooks/:webhook_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint will update a <<glossary:webhook>> record."
+        },
+        {
+          "info": {
+            "name": "Delete a webhook configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://evault.ncino.com/api/webhooks/:webhook_id",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a <Glossary>webhook</Glossary> configuration."
+        },
+        {
+          "info": {
+            "name": "Update a webhook configuration's active status",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/webhooks/:webhook_id/active-status",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Enables or disables a <Glossary>webhook</Glossary> configuration."
+        },
+        {
+          "info": {
+            "name": "Test a webhook configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/webhooks/:webhook_id/test",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sends a test event to a <Glossary>webhook</Glossary>'s configured URL and reports whether delivery succeeded."
+        },
+        {
+          "info": {
+            "name": "Perform test event on a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/webhooks/:webhook_id/test_events",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Use this endpoint to test events being sent to your <<glossary:webhook>>."
+        },
+        {
+          "info": {
+            "name": "Perform action on a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/webhooks/:webhook_id/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "",
+                "type": "path",
+                "description": "Webhook ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "> 📌 Available actions\n  **ENABLE** - Activate webhook\n  **DISABLE** - Deactivate webhook\n  **TEST** - Test webhook connection to URL\n  **CHANGE_URL** - Change URL for webhook"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

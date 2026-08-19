@@ -1,0 +1,212 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan Officers API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Officers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve all loan officers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/loan_officers",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Email by which to filter loan officers."
+              },
+              {
+                "name": "is_active",
+                "value": "",
+                "type": "query",
+                "description": "Active status by which to filter loan officers."
+              },
+              {
+                "name": "is_admin",
+                "value": "",
+                "type": "query",
+                "description": "Admin status by which to filter loan officers."
+              },
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "query",
+                "description": "Organization (<<glossary:company>>, <<glossary:region>>, or <<glossary:branch>>) ID by which to filter loan officers."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve all <<glossary:loan officer>>s."
+        },
+        {
+          "info": {
+            "name": "Create a loan officer record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/users/loan_officers",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will create a <<glossary:loan officer>> record."
+        },
+        {
+          "info": {
+            "name": "Retrieve a loan officer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve a <<glossary:loan officer>>."
+        },
+        {
+          "info": {
+            "name": "Update a loan officer",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will update a <<glossary:loan officer>>."
+        },
+        {
+          "info": {
+            "name": "Perform action on a loan officer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows a variety of actions to be taken on a <<glossary:loan officer>>.\n\n> 📌 Available actions\n  **PROMOTE** - Promote loan officer to organization admin\n  **DEMOTE** - Demote loan officer from organization admin\n  **ENABLE** - Activate loan officer\n  **DISABLE** - Deactivate loan officer\n  **SEND_WELCOME_EMAIL** - Send a welcome email to loan officer\n  **CHANGE_ORG** - Move loan officer to a different organization"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

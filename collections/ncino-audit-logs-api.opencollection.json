@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino eVault Audit Logs API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Audit Logs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get an audit log",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://evault.ncino.com/api/:environment/audit-logs/:audit_log_id",
+            "params": [
+              {
+                "name": "audit_log_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for an audit log"
+              }
+            ]
+          },
+          "docs": "Retrieves a single <Glossary>audit log</Glossary> entry by its guid."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

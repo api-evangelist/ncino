@@ -1,0 +1,120 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan Officer Loan Doc Tasks API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Officer Loan Doc Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "🚧 Retrieve all loan doc tasks across a loan officer's loans (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/loan_doc_tasks",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "closing_date_end",
+                "value": "",
+                "type": "query",
+                "description": "Only include tasks whose parent loan closes on or before this date."
+              },
+              {
+                "name": "closing_date_start",
+                "value": "",
+                "type": "query",
+                "description": "Only include tasks whose parent loan closes on or after this date."
+              },
+              {
+                "name": "doc_type",
+                "value": "",
+                "type": "query",
+                "description": "Doc type by which to filter loan doc tasks."
+              },
+              {
+                "name": "loan_borrower_id",
+                "value": "",
+                "type": "query",
+                "description": "Loan Borrower ID by which to filter loan doc tasks."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              },
+              {
+                "name": "resolved",
+                "value": "",
+                "type": "query",
+                "description": "Filter by completion status. `true` returns completed tasks, `false` returns unresolved tasks."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieves all loan doc <<glossary:task>>s across loans the <<glossary:loan officer>> owns."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

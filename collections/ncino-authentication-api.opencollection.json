@@ -1,0 +1,106 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ncino Authentication API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate or refresh an auth token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/oauth/auth_token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Exchanges API client credentials for a JWT access token. Authenticate with HTTP Basic using your client_id (username) and client_secret (password). Use grant_type `authorization_code` with the `code` issued for your <Glossary>OrgApiClient</Glossary> to obtain the first token, or grant_type `refresh_token` with a previously issued <Glossary>refresh token</Glossary> to renew one. The returned `access_token` is used as the Bearer token on all other endpoints."
+        },
+        {
+          "info": {
+            "name": "Retrieve access token information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://evault.ncino.com/api/oauth/token",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "This endpoint will retrieve <<glossary:access token>> information."
+        },
+        {
+          "info": {
+            "name": "Initiate authentication workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/oauth/token",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate the <<glossary:authentication workflow>> using supported grant types."
+        },
+        {
+          "info": {
+            "name": "Perform an action on access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://evault.ncino.com/api/oauth/token/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will perform an action on an <<glossary:access token>>.\n\n> 📌 Available actions\n  **REVOKE** - Revoke an existing access token\n  **INTROSPECT** - Introspect an access token"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

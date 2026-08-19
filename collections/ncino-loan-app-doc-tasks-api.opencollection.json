@@ -1,0 +1,263 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan App Doc Tasks API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan App Doc Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "🚧 Retrieve all loan doc tasks belonging to the loan application (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loan_applications/:loan_application_id/loan_doc_tasks",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "doc_type",
+                "value": "",
+                "type": "query",
+                "description": "Doc type by which to filter loan doc tasks."
+              },
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              },
+              {
+                "name": "loan_borrower_id",
+                "value": "",
+                "type": "query",
+                "description": "Loan borrower ID by which to filter loan doc tasks."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieves a list of loan doc tasks on a loan."
+        },
+        {
+          "info": {
+            "name": "Create a loan doc task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loan_applications/:loan_application_id/loan_doc_tasks",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will create a loan doc task for a loan."
+        },
+        {
+          "info": {
+            "name": "🚧 Retrieve a loan doc task (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loan_applications/:loan_application_id/loan_doc_tasks/:loan_doc_task_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              },
+              {
+                "name": "loan_doc_task_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan doc task ID."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will retrieve a single loan doc <<glossary:task>>."
+        },
+        {
+          "info": {
+            "name": "🚧 Update a loan doc task (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ncinomortgage.com/loan_applications/:loan_application_id/loan_doc_tasks/:loan_doc_task_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              },
+              {
+                "name": "loan_doc_task_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan doc task ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will update a loan doc <<glossary:task>>."
+        },
+        {
+          "info": {
+            "name": "🚧 Delete a loan doc task (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/loan_applications/:loan_application_id/loan_doc_tasks/:loan_doc_task_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              },
+              {
+                "name": "loan_doc_task_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan doc task ID."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint will delete a loan doc <<glossary:task>>."
+        },
+        {
+          "info": {
+            "name": "Mark a loan doc task as complete",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loan_applications/:loan_application_id/loan_doc_tasks/:loan_doc_task_id/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID."
+              },
+              {
+                "name": "loan_doc_task_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan doc task ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows a variety of actions to be taken on a <<glossary:loan doc task>>.\n\n> 📌 Available actions\n  **MARK_AS_COMPLETE** - Mark a loan doc task as complete"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -32,18 +32,17 @@ authorization:
   - external
   bearer_methods_supported:
   - header
-  token_binding: user-scoped (tied to the authenticated individual, not a shared service
-    account)
+  token_binding: user-scoped (tied to the authenticated individual, not a shared service account)
   authorization_server_metadata: https://ncinomortgage.com/.well-known/oauth-authorization-server
 introspection:
   tools_list_probed: true
   http_status: 401
   response: '{"jsonrpc":"2.0","error":{"code":-32000,"message":"Unauthorized"},"id":null}'
   www_authenticate: Bearer resource_metadata="https://ncinomortgage.com/mcp/<server>/.well-known/oauth-protected-resource"
-  note: Live tools/list is auth-gated, so per-tool inputSchema requires an authenticated
-    session. The tool names and descriptions below are taken verbatim from the published
-    connector documentation; their real input contracts are the parameters and request
-    bodies of the backing REST operations recorded in mcp/ncino-tool-crosswalk.yml.
+  note: Live tools/list is auth-gated, so per-tool inputSchema requires an authenticated session. The
+    tool names and descriptions below are taken verbatim from the published connector documentation; their
+    real input contracts are the parameters and request bodies of the backing REST operations recorded
+    in mcp/ncino-tool-crosswalk.yml.
 access_controls:
   role_based: results respect the same role-based permissions as the web application
   data_isolation: company-scoped
@@ -51,27 +50,26 @@ access_controls:
 tools:
 - server: ncino-mortgage-lo
   name: run_aus
-  description: Submit a loan application to Desktop Underwriter or Loan Product Advisor;
-    returns finding status asynchronously
+  description: Submit a loan application to Desktop Underwriter or Loan Product Advisor; returns finding
+    status asynchronously
 - server: ncino-mortgage-lo
   name: fetch_aus_history
-  description: Retrieve the AUS order log including status, recommendation, provider
-    and submission details
+  description: Retrieve the AUS order log including status, recommendation, provider and submission details
 - server: ncino-mortgage-lo
   name: list_loans
-  description: Retrieve paginated loan records with optional filters (org, officer,
-    borrower, type, purpose, active status)
+  description: Retrieve paginated loan records with optional filters (org, officer, borrower, type, purpose,
+    active status)
 - server: ncino-mortgage-lo
   name: get_loan
   description: Fetch a single loan by ID
 - server: ncino-mortgage-lo
   name: create_loan
-  description: Establish a new loan record with officer, number, type, purpose, amount,
-    dates, rates and property info
+  description: Establish a new loan record with officer, number, type, purpose, amount, dates, rates and
+    property info
 - server: ncino-mortgage-lo
   name: update_loan
-  description: Modify loan details including terms, rates, occupancy, buyer status,
-    comments and property data
+  description: Modify loan details including terms, rates, occupancy, buyer status, comments and property
+    data
 - server: ncino-mortgage-lo
   name: list_loan_borrowers
   description: Display paginated borrowers on a specified loan
@@ -80,8 +78,7 @@ tools:
   description: Retrieve an individual borrower record
 - server: ncino-mortgage-lo
   name: create_loan_borrower
-  description: Add a borrower with name, contact, marital status, DOB, SSN and address
-    details
+  description: Add a borrower with name, contact, marital status, DOB, SSN and address details
 - server: ncino-mortgage-lo
   name: update_loan_borrower
   description: Modify borrower personal and contact information
@@ -123,8 +120,8 @@ tools:
   description: Dispatch an invitation email to a partner
 - server: ncino-mortgage-admin
   name: list_loan_officers
-  description: Retrieve paginated loan officers with optional filtering by organization,
-    email, admin status or active status
+  description: Retrieve paginated loan officers with optional filtering by organization, email, admin
+    status or active status
 - server: ncino-mortgage-admin
   name: get_loan_officer
   description: Fetch a single loan officer by ID
@@ -148,8 +145,7 @@ tools:
   description: Reactivate a disabled loan officer
 - server: ncino-mortgage-admin
   name: change_loan_officer_org
-  description: Transfer a loan officer to a different organization (company, region
-    or branch)
+  description: Transfer a loan officer to a different organization (company, region or branch)
 - server: ncino-mortgage-admin
   name: send_loan_officer_welcome_email
   description: Dispatch a welcome email to a loan officer
@@ -240,3 +236,10 @@ tools:
 - server: ncino-mortgage-admin
   name: get_job
   description: Check the status of an asynchronous operation by job ID
+deployment:
+  mode: remote
+  endpoint: https://ncinomortgage.com/mcp/lo
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census

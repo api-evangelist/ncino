@@ -1,0 +1,64 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: nCino eVault Connectivity API
+  description: All routes are currently in development and should be treated as such.
+servers:
+- url: https://evault.ncino.com/api
+  description: Production server
+security:
+- bearerAuth: []
+tags:
+- name: Connectivity
+paths:
+  /connectivity-check:
+    get:
+      summary: Verifies API connectivity
+      description: Lightweight connection/health check. Requires a valid <Glossary>bearer token</Glossary> but no specific permission — a 200 response confirms the caller's credentials are valid and can reach the eVault API. No environment segment or identifiers are needed.
+      tags:
+      - Connectivity
+      responses:
+        '200':
+          description: The connection is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/connectivity_check_response'
+        '401':
+          $ref: '#/paths/~1webhooks/put/responses/401'
+components:
+  schemas:
+    connectivity_check_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+        warnings:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+        data:
+          type: object
+          properties:
+            status:
+              type: string
+              example: ok
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'JWT access token used to authorize every API request. Send it as `Authorization: Bearer <access_token>`. Tokens are issued by the token endpoint (POST https://evault.ncino.com/oauth/auth_token) and expire after the `expires_in` seconds returned there (default 3600); request a new token or exchange the refresh token once it expires.'
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic credentials used only by the token endpoint (POST /oauth/auth_token). The username is your API client_id and the password is your client_secret, sent as `Authorization: Basic base64(client_id:client_secret)`.'

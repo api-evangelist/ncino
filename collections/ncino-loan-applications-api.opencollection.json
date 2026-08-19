@@ -1,0 +1,255 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan Applications API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "🚧 Retrieve all loan application records (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loan_applications",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "borrower_external_customer_identifier",
+                "value": "",
+                "type": "query",
+                "description": "External customer identifier for the borrower, by which to filter loan applications."
+              },
+              {
+                "name": "coborrower_external_customer_identifier",
+                "value": "",
+                "type": "query",
+                "description": "External customer identifier for the coborrower, by which to filter loan applications."
+              },
+              {
+                "name": "is_active",
+                "value": "",
+                "type": "query",
+                "description": "Filter loan applications by active status (default true)."
+              },
+              {
+                "name": "loan_id",
+                "value": "",
+                "type": "query",
+                "description": "Loan ID by which to filter loan applications (if loan has been created)."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "query",
+                "description": "<<glossary:Loan officer>> ID by which to filter loan applications."
+              },
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "query",
+                "description": "Organization (company, region, or branch) ID by which to filter loan applications."
+              },
+              {
+                "name": "user_borrower_id",
+                "value": "",
+                "type": "query",
+                "description": "User borrower ID by which to filter loan applications."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieve all <<glossary:loan application>>s"
+        },
+        {
+          "info": {
+            "name": "🚧 Create a loan application record (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loan_applications",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nCreate a <<glossary:loan application>>. Param keys with `_INDEX` should replace `_INDEX` with a number 1-5 for each entity being verified (e.g. `vogg_gift_amount_1` for first gift, `vogg_gift_amount_2` for second gift)."
+        },
+        {
+          "info": {
+            "name": "🚧 Retrieve a loan application (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/loan_applications/:loan_application_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "loan_application ID."
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nRetrieve a <<glossary:loan application>>. Param keys with `_INDEX` will have `_INDEX` replaced with a number 1-5 for each entity being verified (e.g. `vogg_gift_amount_1` for first gift, `vogg_gift_amount_2` for second gift).\n\n> 🙇 Heads up!\nSupplying the `Accept` header as `application/xml` will return the l"
+        },
+        {
+          "info": {
+            "name": "🚧 Update a loan application (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/loan_applications/:loan_application_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan application ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nUpdate a <<glossary:loan application>>. Param keys with `_INDEX` should replace `_INDEX` with a number 1-5 for each entity being verified (e.g. `vogg_gift_amount_1` for first gift, `vogg_gift_amount_2` for second gift).\n\n> 📌 Replacing indexed key series\nUse `lists_to_update` to replace indexed key series.\nKe"
+        },
+        {
+          "info": {
+            "name": "🚧 Delete a loan application (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/loan_applications/:loan_application_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "loan application ID"
+              }
+            ]
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nDelete a <<glossary:loan application>>"
+        },
+        {
+          "info": {
+            "name": "🚧 Perform action on a loan application (BETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/loan_applications/:loan_application_id/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_application_id",
+                "value": "",
+                "type": "path",
+                "description": "loan application ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "> 🚧 Under construction\n> **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.\n\nThis endpoint allows a variety of actions to be taken on a <<glossary:loan application>>.\n\n> 📌 Available actions\n**DEACTIVATE** - Deactivate a loan application\n**ACTIVATE** - Activate a loan application\n**SHARE_APP** - send share app email to loan borrower\n**SUBMIT** - Submits a loan application\n**REJECT** -"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

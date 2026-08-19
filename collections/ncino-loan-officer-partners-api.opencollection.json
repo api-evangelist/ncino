@@ -1,0 +1,263 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan Officer Partners API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Officer Partners",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve all partners for a loan officer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/partners",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "accepted_invite",
+                "value": "",
+                "type": "query",
+                "description": "Accepted invite status by which to filter partners."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Email by which to filter partners."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to retrieve."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "The number of records returned in each page."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created after to be returned."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be created before to be returned."
+              },
+              {
+                "name": "updated_after",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated after to be returned."
+              },
+              {
+                "name": "updated_before",
+                "value": "",
+                "type": "query",
+                "description": "The date which a resource must be updated before to be returned."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve all <<glossary:partner>>s for a <<glossary:loan officer>>."
+        },
+        {
+          "info": {
+            "name": "Create a partner record for a loan officer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/partners",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will create a <<glossary:partner>> for a <<glossary:loan officer>>."
+        },
+        {
+          "info": {
+            "name": "Retrieve a loan officer's partner",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/partners/:partner_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              },
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will retrieve a <<glossary:loan officer>>'s <<glossary:partner>>."
+        },
+        {
+          "info": {
+            "name": "Update a loan officer's partner",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/partners/:partner_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              },
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will updates a <<glossary:loan officer>>'s <<glossary:partner>> record. Only partners can update their email address.\n\n> 🙇 Heads up!\n**In order to update their email address, please have the partner log into the nCino Mortgage application and update their profile.**"
+        },
+        {
+          "info": {
+            "name": "Delete a loan officer's partner",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/partners/:partner_id",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              },
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:loan officer>>'s <<glossary:partner>>."
+        },
+        {
+          "info": {
+            "name": "Perform action on a loan officer's partner",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/partners/:partner_id/actions",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              },
+              {
+                "name": "partner_id",
+                "value": "",
+                "type": "path",
+                "description": "Partner ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint allows a variety of actions to be taken on a <<glossary:partner>>.\n\n> 📌 Available actions\n  **SEND_INVITE** - Send an invite to a partner\n  **ENABLE** - Enable partner\n  **DISABLE** - Disable partner"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

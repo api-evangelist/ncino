@@ -1,0 +1,95 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "nCino Mortgage Loan Officer Images API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Loan Officer Images",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update a loan officer's image",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/images/:image_key",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "image_key",
+                "value": "",
+                "type": "path",
+                "description": "Image to be updated."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint will upload images for a <<glossary:loan officer>>. Supported images with their corresponding image_keys, file types and dimensions are listed in the table below.\n\n> 🙇 Heads up!\n**All image file uploads should be base64 encoded.**\n<table border=1px cellpadding=5px>\n\t<tr>\n\t\t<th>Image Key</th>\n\t\t<th>Supported File Types</th>\n\t\t<th>Image Dimensions</th>\n\t</tr>\n\t<tr>\n\t\t<td>profile</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>192x192"
+        },
+        {
+          "info": {
+            "name": "Delete a loan officer's image",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ncinomortgage.com/users/loan_officers/:loan_officer_id/images/:image_key",
+            "headers": [
+              {
+                "name": "X-Api-Version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "image_key",
+                "value": "",
+                "type": "path",
+                "description": "Image to be deleted."
+              },
+              {
+                "name": "loan_officer_id",
+                "value": "",
+                "type": "path",
+                "description": "Loan officer ID."
+              }
+            ]
+          },
+          "docs": "This endpoint will delete a <<glossary:loan officer>>'s image."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
