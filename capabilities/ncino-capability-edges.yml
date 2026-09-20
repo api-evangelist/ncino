@@ -1,0 +1,248 @@
+slug: ncino
+provider: nCino
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 24
+edges:
+- tag: Loan Application (Nested)
+  spec_file: ncino-loan-application-nested-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.9
+  evidence: 'GET /loan_applications/nested/{loan_application_id}  Retrieve a specific loan application
+    by ID; schemas: LoanApplicationNested, Liability, Income, Expense, Asset'
+  reason: Directly exposes the mortgage loan application record with its financial detail — credit application
+    intake and origination.
+- tag: Loan Applications
+  spec_file: ncino-loan-applications-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.9
+  evidence: POST /loan_applications "Create a loan application record"; schemas SubmitLoanApplication,
+    RejectLoanApplication, ReassignLoanOfficer
+  reason: Direct CRUD plus submit/reject actions on mortgage loan applications — credit application intake
+    and origination workflow.
+- tag: Role Permissions
+  spec_file: ncino-role-permissions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /roles/{role_id}/permissions  role_permissions-create  Assign permissions to a role
+  reason: Role-based permission assignment within the platform — access control administration, which
+    is Identity & Access Management, not a banking business capability.
+- tag: Role Users
+  spec_file: ncino-role-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /roles/{role_id}/users  role_users-create  Assign users to a role
+  reason: Assigning and removing users from roles is access provisioning — Identity & Access Management.
+- tag: Subscriptions
+  spec_file: ncino-subscriptions-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.85
+  evidence: POST /webhooks/{webhook_id}/subscriptions  subscriptions-create  Create a subscription for
+    a webhook; schema WebhookSubscription, WebhookEventName
+  reason: Despite the commercially loaded tag name, these operations manage outbound webhook event subscriptions
+    — platform event delivery, i.e. webhook & event subscription management, not customer subscriptions/billing.
+- tag: Roles
+  spec_file: ncino-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: GET /roles/{role_id}  roles-show  Retrieve a role, including its enabled permissions
+  reason: Lifecycle of role records and their enabled permissions is authorisation model administration
+    — Identity & Access Management.
+- tag: Loan App Doc Tasks
+  spec_file: ncino-loan-app-doc-tasks-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.8
+  evidence: 'Create a loan doc task ... Mark a loan doc task as complete; schemas: LoanDocTask, LoanDocDefinitionTypes'
+  reason: Document task lifecycle attached to a mortgage loan application — the condition/document collection
+    step of credit origination workflows.
+- tag: Loan Application (Nested) Assets
+  spec_file: ncino-loan-application-nested-assets-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.8
+  evidence: GET /loan_applications/nested/{loan_application_id}/assets  Retrieve all assets (BETA); AssetCollectionCreateBody
+  reason: Applicant asset records captured under a mortgage loan application — origination data capture,
+    not fixed-asset accounting.
+- tag: Loan Application (Nested) Borrower Incomes
+  spec_file: ncino-loan-application-nested-borrower-incomes-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.8
+  evidence: Creates one or more income records for the borrower. (BETA)
+  reason: Borrower income capture on a loan application is part of credit application intake/origination
+    in a mortgage lending platform.
+- tag: Loan Application (Nested) Co-borrower Incomes
+  spec_file: ncino-loan-application-nested-co-borrower-incomes-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.8
+  evidence: Creates one or more income records for the co-borrower. (BETA)
+  reason: Co-borrower income records on a mortgage loan application — credit origination data capture.
+- tag: Loan Application (Nested) Expenses
+  spec_file: ncino-loan-application-nested-expenses-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.8
+  evidence: POST /loan_applications/nested/{loan_application_id}/expenses  Creates one or more expense
+    records (BETA)
+  reason: Applicant expense records under a loan application are origination intake data for underwriting,
+    not corporate expense accounting.
+- tag: Loans
+  spec_file: ncino-loans-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.8
+  evidence: POST /loans 'Create a loan'; schemas LoanApplication, ActivateLoan, DeactivateLoan, ReassignLo,
+    Property
+  reason: Core mortgage loan file CRUD with LoanApplication, Property and activation/reassignment actions
+    — mortgage origination file lifecycle. Some overlap with loan servicing, but LoanApplication and RON
+    eligibility point to origination.
+- tag: Loan Application Borrowers
+  spec_file: ncino-loan-application-borrowers-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.78
+  evidence: GET /loan_applications/{loan_application_id}/borrowers "Retrieve all loan application borrowers";
+    schemas SetPrimaryBorrower, OrderVerification
+  reason: Manages the borrower parties attached to a mortgage loan application (set primary borrower,
+    link/disconnect, order verification) — origination workflow of a lending platform.
+- tag: Loan App Borrower Task Reminders
+  spec_file: ncino-loan-app-borrower-task-reminders-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.75
+  evidence: POST /loan_applications/{loan_application_id}/borrower_task_reminders  Send a borrower task
+    reminder (BETA)
+  reason: Reminders chasing borrower tasks on a mortgage loan application are part of the origination
+    workflow / application intake process in a lending platform.
+- tag: Loan Application (Nested) Liabilities
+  spec_file: ncino-loan-application-nested-liabilities-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.75
+  evidence: POST /loan_applications/nested/{loan_application_id}/liabilities  "Creates one or more liability
+    records"; schema LiabilityCreateBody
+  reason: Borrower liability records captured as part of a mortgage loan application on a lending origination
+    platform — application intake data, i.e. credit origination. Could arguably sit under underwriting/financial
+    spreading, hence not full confidence.
+- tag: Loan Borrower Verifications
+  spec_file: ncino-loan-borrower-verifications-api-openapi.yml
+  capability_id: BC-1320
+  capability_id_l1: BC-1320
+  capability_name: Credit & Lending Management
+  confidence: 0.72
+  evidence: GET /loans/borrowers/{borrower_id}/verifications "Retrieve all loan borrower verification
+    records"; schema VerificationReportType
+  reason: Borrower verification reports (e.g. income/employment/asset verification) in a mortgage lending
+    platform sit within credit & lending; evidence is thin on whether this is origination intake or underwriting
+    decisioning, so only the L1 is asserted.
+- tag: Loan Borrowers
+  spec_file: ncino-loan-borrowers-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.72
+  evidence: POST /loans/{loan_id}/borrowers "Create a loan borrower record"; schemas SetPrimaryBorrower,
+    OrderVerification
+  reason: Borrower party records attached to a mortgage loan, with verification ordering — origination-side
+    data management on a lending platform. Some chance this belongs to loan servicing, so moderate confidence.
+- tag: User Permissions
+  spec_file: ncino-user-permissions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: GET /users/{user_id}/permissions — "Retrieve all permissions held by a user, resolved across
+    all assigned roles"
+  reason: The operations resolve user permissions across assigned roles — access-rights administration
+    within the platform, i.e. Identity & Access Management, not a lending business capability. Mapped
+    at moderate confidence because it is a read-only entitlement lookup surface.
+- tag: Company State Licenses
+  spec_file: ncino-company-state-licenses-api-openapi.yml
+  capability_id: BC-130.10
+  capability_id_l1: BC-130
+  capability_name: Regulatory Compliance Management
+  confidence: 0.7
+  evidence: GET /companies/{company_id}/state_licenses 'Retrieve all company state licenses'; schemas
+    StateLicense, NationwideCode, StateCode
+  reason: Maintains the lender's state mortgage lending licences (state code, NMLS nationwide code) —
+    holding and evidencing licences mandated by sector regulation maps to Regulatory Compliance Management.
+- tag: Loan App Custom Form Requests
+  spec_file: ncino-loan-app-custom-form-requests-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.7
+  evidence: POST /loan_applications/{loan_application_id}/custom_form_requests  Create a custom form request
+    (BETA)
+  reason: Requesting forms from an applicant against a loan application is credit application intake/origination
+    workflow rather than servicing.
+- tag: Loan App Inquiry Tasks
+  spec_file: ncino-loan-app-inquiry-tasks-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.7
+  evidence: POST /loan_applications/{loan_application_id}/inquiry_tasks  Create an inquiry task (BETA)
+  reason: Inquiry tasks raised on a loan application form part of the origination intake and follow-up
+    workflow in this mortgage lending platform.
+- tag: Loan Doc Tasks
+  spec_file: ncino-loan-doc-tasks-api-openapi.yml
+  capability_id: BC-1320.10
+  capability_id_l1: BC-1320
+  capability_name: Credit Origination Management
+  confidence: 0.7
+  evidence: POST /loans/{loan_id}/loan_doc_tasks "Create a loan doc task"; "Mark a loan doc task as complete";
+    schema LoanDocDefinitionTypes
+  reason: Document-request tasks against a mortgage loan drive the document collection stage of loan origination
+    workflows; generic task semantics keep confidence moderate.
+- tag: Loan Documents
+  spec_file: ncino-loan-documents-api-openapi.yml
+  capability_id: BC-1320
+  capability_id_l1: BC-1320
+  capability_name: Credit & Lending Management
+  confidence: 0.7
+  evidence: GET /loans/{loan_id}/documents "List documents for a loan"; "Download a document"
+  reason: Read-only access to documents belonging to a mortgage loan on a lending platform — clearly within
+    credit & lending, but the operations do not say whether they serve origination or servicing, so no
+    L2 asserted.
+- tag: User Roles
+  spec_file: ncino-user-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /users/{user_id}/roles — "Retrieve all roles assigned to a user"
+  reason: Role assignment retrieval for platform users is access management (IAM), not a banking product
+    capability. Confidence moderate given the thin, single-operation surface.
