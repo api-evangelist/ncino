@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 24
+edge_count: 27
 edges:
 - tag: Loan Application (Nested)
   spec_file: ncino-loan-application-nested-api-openapi.yml
@@ -33,6 +33,18 @@ edges:
     RejectLoanApplication, ReassignLoanOfficer
   reason: Direct CRUD plus submit/reject actions on mortgage loan applications — credit application intake
     and origination workflow.
+- tag: Webhooks
+  spec_file: ncino-webhooks-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.88
+  evidence: PUT /webhooks 'Create a webhook configuration'; POST /webhooks/{webhook_id}/test_events 'Perform
+    test event on a webhook'; schemas 'webhook_event_group', 'LoanUpdatedTestEvent0'
+  reason: Full lifecycle of outbound webhook subscriptions — create, list, edit, delete, activate/deactivate,
+    and test-fire event deliveries with defined event groups and event schemas. This is exactly the Webhook
+    & Event Subscription Management sub-capability of the developer platform/API ecosystem.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: Role Permissions
   spec_file: ncino-role-permissions-api-openapi.yml
   capability_id: BC-620.20
@@ -177,6 +189,18 @@ edges:
     OrderVerification
   reason: Borrower party records attached to a mortgage loan, with verification ordering — origination-side
     data management on a lending platform. Some chance this belongs to loan servicing, so moderate confidence.
+- tag: Permissions
+  spec_file: ncino-permissions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: GET /permissions 'Retrieve all permissions (BETA)'; GET /permissions/templates/{template_key}
+    'Retrieve the permissions included in a given default role template'
+  reason: Read-only exposure of permission catalogue and default role templates is access-rights/role
+    administration, which sits under Identity & Access Management. Only two read operations, so not maximal
+    confidence.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: User Permissions
   spec_file: ncino-user-permissions-api-openapi.yml
   capability_id: BC-620.20
@@ -237,6 +261,17 @@ edges:
   reason: Read-only access to documents belonging to a mortgage loan on a lending platform — clearly within
     credit & lending, but the operations do not say whether they serve origination or servicing, so no
     L2 asserted.
+- tag: Region State Licenses
+  spec_file: ncino-region-state-licenses-api-openapi.yml
+  capability_id: BC-130.10
+  capability_id_l1: BC-130
+  capability_name: Regulatory Compliance Management
+  confidence: 0.7
+  evidence: POST /regions/{region_id}/state_licenses  Create a region's state license; schemas StateLicense,
+    StateCode, NationwideCode
+  reason: Maintains state (NMLS-style) mortgage licensing records per region — tracking licences required
+    to originate in each state is sector-specific regulatory compliance record-keeping.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: User Roles
   spec_file: ncino-user-roles-api-openapi.yml
   capability_id: BC-620.20
