@@ -67,7 +67,7 @@ paths:
         > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
 
 
-        Retrieves all liabilities in a <<glossary:loan application>>.'
+        Retrieves all liabilities in a >.'
       summary: 🚧 Retrieve all liabilities (BETA)
     post:
       tags:
@@ -318,39 +318,59 @@ paths:
       summary: 🚧 Delete a specific liability record. (BETA)
 components:
   schemas:
-    ResourceCollectionCreated:
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    Liability:
       allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
+      - $ref: '#/components/schemas/LiabilityCreateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: A single liability record.
+    LiabilityItemUpdateBody:
+      allOf:
+      - $ref: '#/components/schemas/LiabilityUpdateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: Body for updating a liability record. Aside from the ID, pass only the fields to update.
+      minProperties: 2
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
           contents:
             type: array
             items:
               type: object
-            description: Array of created resources.
+            description: The contents for the collection.
         required:
         - contents
         additionalProperties: false
-      description: 'Generic base class for returning multiple created resources with their full
-
-        representations. Extend this class and specify the item type via cattr_reader,
-
-        similar to AbstractPagination.'
-    LiabilityPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Liability'
-        required:
-        - contents
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
     Error:
       type: object
       properties:
@@ -396,59 +416,6 @@ components:
       - _self
       - _type
       additionalProperties: false
-    LiabilityCollectionCreateBody:
-      type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/LiabilityCreateBody'
-          description: Array of records to create.
-      required:
-      - records
-      description: Body for creating multiple liability records.
-      additionalProperties: false
-    LiabilityCreateBody:
-      type: object
-      properties:
-        type:
-          type: string
-          description: This liability's type.
-        balance:
-          type: integer
-          description: This liability's balance.
-        owner:
-          type: string
-          description: 'The borrower responsible for this liability: "Borrower", "Co-borrower", or "Both".'
-      description: Body for creating a new liability record.
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    Liability:
-      allOf:
-      - $ref: '#/components/schemas/LiabilityCreateBody'
-      - type: object
-        properties:
-          _id:
-            type: string
-            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
-        required:
-        - _id
-      description: A single liability record.
     LiabilityUpdateBody:
       type: object
       properties:
@@ -463,30 +430,33 @@ components:
           description: 'The borrower responsible for this liability: "Borrower", "Co-borrower", or "Both".'
       description: Body for updating a liability record. Pass only the fields to update.
       minProperties: 1
-    AbstractPagination:
+    LiabilityPagination:
       allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
+      - $ref: '#/components/schemas/AbstractPagination'
       - type: object
         properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    LiabilityItemUpdateBody:
-      allOf:
-      - $ref: '#/components/schemas/LiabilityUpdateBody'
-      - type: object
-        properties:
-          _id:
-            type: string
-            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Liability'
         required:
-        - _id
-      description: Body for updating a liability record. Aside from the ID, pass only the fields to update.
-      minProperties: 2
+        - contents
+    LiabilityCollectionCreateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/LiabilityCreateBody'
+          description: Array of records to create.
+      required:
+      - records
+      description: Body for creating multiple liability records.
+      additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
     LiabilityCollectionUpdateBody:
       type: object
       properties:
@@ -499,19 +469,24 @@ components:
       - records
       description: Body for updating multiple liability records.
       additionalProperties: false
-    AbstractCollection:
+    ResourceCollectionCreated:
       allOf:
-      - $ref: '#/components/schemas/AbstractModel'
+      - $ref: '#/components/schemas/AbstractCollection'
       - type: object
         properties:
           contents:
             type: array
             items:
               type: object
-            description: The contents for the collection.
+            description: Array of created resources.
         required:
         - contents
         additionalProperties: false
+      description: 'Generic base class for returning multiple created resources with their full
+
+        representations. Extend this class and specify the item type via cattr_reader,
+
+        similar to AbstractPagination.'
     LiabilityCollection:
       allOf:
       - $ref: '#/components/schemas/ResourceCollectionCreated'
@@ -526,62 +501,31 @@ components:
         - contents
         additionalProperties: false
       description: Collection of liability records. Returned when creating multiple records.
-  responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    LiabilityCreateBody:
+      type: object
+      properties:
+        type:
+          type: string
+          description: This liability's type.
+        balance:
+          type: integer
+          description: This liability's balance.
+        owner:
+          type: string
+          description: 'The borrower responsible for this liability: "Borrower", "Co-borrower", or "Both".'
+      description: Body for creating a new liability record.
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
   parameters:
     ApiVersionHeader:
       name: X-Api-Version
@@ -605,14 +549,70 @@ components:
       schema:
         type: integer
   headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
     ApiVersionResponseHeader:
       description: API version.
       schema:
         type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   securitySchemes:
     OAuth2:
       type: oauth2

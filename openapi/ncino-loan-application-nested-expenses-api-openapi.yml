@@ -67,7 +67,7 @@ paths:
         > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
 
 
-        Retrieves all expenses in a <<glossary:loan application>>.'
+        Retrieves all expenses in a >.'
       summary: 🚧 Retrieve all expenses (BETA)
     post:
       tags:
@@ -318,18 +318,23 @@ paths:
       summary: 🚧 Delete a specific expense record. (BETA)
 components:
   schemas:
-    ExpenseCollectionUpdateBody:
+    ErrorSet:
       type: object
       properties:
-        records:
+        errors:
           type: array
           items:
-            $ref: '#/components/schemas/ExpenseItemUpdateBody'
-          description: Array of records to update.
+            $ref: '#/components/schemas/Error'
       required:
-      - records
-      description: Body for updating multiple expense records.
-      additionalProperties: false
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
     ExpenseCollection:
       allOf:
       - $ref: '#/components/schemas/ResourceCollectionCreated'
@@ -344,28 +349,47 @@ components:
         - contents
         additionalProperties: false
       description: Collection of expense records. Returned when creating multiple records.
-    ResourceCollectionCreated:
+    ExpenseItemUpdateBody:
       allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
+      - $ref: '#/components/schemas/ExpenseUpdateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: Body for updating an expense record. Aside from the ID, pass only the fields to update.
+      minProperties: 2
+    ExpenseCreateBody:
+      type: object
+      properties:
+        type:
+          type: string
+          description: This expense's type.
+        category:
+          type: string
+          description: This expense's category.
+        amount:
+          type: integer
+          description: The amount paid to this expense.
+        frequency:
+          type: string
+          description: The frequency at which this expense is paid.
+      description: Body for creating a new expense record.
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
           contents:
             type: array
             items:
               type: object
-            description: Array of created resources.
+            description: The contents for the collection.
         required:
         - contents
         additionalProperties: false
-      description: 'Generic base class for returning multiple created resources with their full
-
-        representations. Extend this class and specify the item type via cattr_reader,
-
-        similar to AbstractPagination.'
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
     Error:
       type: object
       properties:
@@ -395,6 +419,29 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
+    ExpenseCollectionCreateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseCreateBody'
+          description: Array of records to create.
+      required:
+      - records
+      description: Body for creating multiple expense records.
+      additionalProperties: false
+    Expense:
+      allOf:
+      - $ref: '#/components/schemas/ExpenseCreateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: A single expense record.
     AbstractModel:
       type: object
       properties:
@@ -410,6 +457,18 @@ components:
       required:
       - _self
       - _type
+      additionalProperties: false
+    ExpenseCollectionUpdateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseItemUpdateBody'
+          description: Array of records to update.
+      required:
+      - records
+      description: Body for updating multiple expense records.
       additionalProperties: false
     ExpenseUpdateBody:
       type: object
@@ -428,51 +487,28 @@ components:
           description: The frequency at which this expense is paid.
       description: Body for updating an expense record. Pass only the fields to update.
       minProperties: 1
-    ExpenseCollectionCreateBody:
+    NoContent:
       type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpenseCreateBody'
-          description: Array of records to create.
-      required:
-      - records
-      description: Body for creating multiple expense records.
+      properties: {}
       additionalProperties: false
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    ExpenseCreateBody:
-      type: object
-      properties:
-        type:
-          type: string
-          description: This expense's type.
-        category:
-          type: string
-          description: This expense's category.
-        amount:
-          type: integer
-          description: The amount paid to this expense.
-        frequency:
-          type: string
-          description: The frequency at which this expense is paid.
-      description: Body for creating a new expense record.
+    ResourceCollectionCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: Array of created resources.
+        required:
+        - contents
+        additionalProperties: false
+      description: 'Generic base class for returning multiple created resources with their full
+
+        representations. Extend this class and specify the item type via cattr_reader,
+
+        similar to AbstractPagination.'
     AbstractPagination:
       allOf:
       - $ref: '#/components/schemas/AbstractCollection'
@@ -496,98 +532,6 @@ components:
               $ref: '#/components/schemas/Expense'
         required:
         - contents
-    ExpenseItemUpdateBody:
-      allOf:
-      - $ref: '#/components/schemas/ExpenseUpdateBody'
-      - type: object
-        properties:
-          _id:
-            type: string
-            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
-        required:
-        - _id
-      description: Body for updating an expense record. Aside from the ID, pass only the fields to update.
-      minProperties: 2
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
-    Expense:
-      allOf:
-      - $ref: '#/components/schemas/ExpenseCreateBody'
-      - type: object
-        properties:
-          _id:
-            type: string
-            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
-        required:
-        - _id
-      description: A single expense record.
-  responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   parameters:
     ApiVersionHeader:
       name: X-Api-Version
@@ -611,14 +555,70 @@ components:
       schema:
         type: integer
   headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
     ApiVersionResponseHeader:
       description: API version.
       schema:
         type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   securitySchemes:
     OAuth2:
       type: oauth2

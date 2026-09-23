@@ -13,7 +13,7 @@ security:
 - OAuth2: []
 tags:
 - name: Branch State Licenses
-  description: Endpoints pertaining to <<glossary:branch>> <<glossary:state license>>s
+  description: Endpoints pertaining to > >s
 paths:
   /branches/{branch_id}/state_licenses:
     post:
@@ -51,7 +51,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will create a <<glossary:branch>> <<glossary:state license>>.
+      description: This endpoint will create a > >.
       summary: Create a branch state license
       requestBody:
         description: ''
@@ -106,7 +106,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will retrieve all <<glossary:branch>> <<glossary:state license>>s.
+      description: This endpoint will retrieve all > >s.
       summary: Retrieve all branch state licenses
   /branches/{branch_id}/state_licenses/{state_license_id}:
     patch:
@@ -151,7 +151,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will update a <<glossary:branch>> <<glossary:state license>>.
+      description: This endpoint will update a > >.
       summary: Update a branch state license
       requestBody:
         description: ''
@@ -201,7 +201,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will retrieve a <<glossary:branch>> <<glossary:state license>>.
+      description: This endpoint will retrieve a > >.
       summary: Retrieve a branch state license
     delete:
       tags:
@@ -245,101 +245,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will delete a <<glossary:branch>> <<glossary:state license>>.
+      description: This endpoint will delete a > >.
       summary: Delete a branch state license
 components:
   schemas:
-    StateLicensePagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/StateLicense'
-        required:
-        - contents
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    StateLicenseUpdateBody:
-      type: object
-      properties:
-        license_number:
-          type: string
-          minLength: 1
-          maxLength: 30
-          description: State license's number.
-        state_license_template_id:
-          type: string
-          format: uuid
-          description: State license's template ID. IDs can be found by retrieving a list of state license templates using the Company State License Template endpoints.
-      description: Available properties for updating a state license.
-      additionalProperties: false
-      minProperties: 1
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
     ErrorSet:
       type: object
       properties:
@@ -357,89 +266,6 @@ components:
           detail: Detailed message for the error
           _links:
             resource: contextual resource if applicable
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    StateLicenseCreateBody:
-      type: object
-      properties:
-        state:
-          allOf:
-          - $ref: '#/components/schemas/StateCode'
-          description: State license's state.
-        license_number:
-          type: string
-          minLength: 1
-          maxLength: 30
-          description: State license's number.
-        state_license_template_id:
-          type: string
-          format: uuid
-          description: State license's template ID. IDs can be found by retrieving a list of state license templates using the Company State License Template endpoints.
-      required:
-      - state
-      - license_number
-      description: Available properties for creating a state license.
-      additionalProperties: false
-    NationwideCode:
-      type: string
-      enum:
-      - US
-      description: Nationwide code.
-    StateLicense:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      - type: object
-        properties:
-          created_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: Timestamp of when the state license was created.
-          updated_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: Timestamp of when the state license was last updated.
-          state:
-            oneOf:
-            - $ref: '#/components/schemas/StateCode'
-            - $ref: '#/components/schemas/NationwideCode'
-            description: License's state. If it's "US", the state license is considered nationwide.
-          license_number:
-            type: string
-            description: State license's number.
-          license_message:
-            type:
-            - string
-            - 'null'
-            description: State license's message when displayed in UI.
-        additionalProperties: false
-      description: State license record
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
     StateCode:
       type: string
       enum:
@@ -506,78 +332,181 @@ components:
       - WV
       - WY
       description: State abbreviated code.
-  responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    StateLicensePagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/StateLicense'
+        required:
+        - contents
+    StateLicense:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          created_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Timestamp of when the state license was created.
+          updated_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Timestamp of when the state license was last updated.
+          state:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/NationwideCode'
+            description: License's state. If it's "US", the state license is considered nationwide.
+          license_number:
+            type: string
+            description: State license's number.
+          license_message:
+            type:
+            - string
+            - 'null'
+            description: State license's message when displayed in UI.
+        additionalProperties: false
+      description: State license record
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    StateLicenseCreateBody:
+      type: object
+      properties:
+        state:
+          allOf:
+          - $ref: '#/components/schemas/StateCode'
+          description: State license's state.
+        license_number:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: State license's number.
+        state_license_template_id:
+          type: string
+          format: uuid
+          description: State license's template ID. IDs can be found by retrieving a list of state license templates using the Company State License Template endpoints.
+      required:
+      - state
+      - license_number
+      description: Available properties for creating a state license.
+      additionalProperties: false
+    StateLicenseUpdateBody:
+      type: object
+      properties:
+        license_number:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: State license's number.
+        state_license_template_id:
+          type: string
+          format: uuid
+          description: State license's template ID. IDs can be found by retrieving a list of state license templates using the Company State License Template endpoints.
+      description: Available properties for updating a state license.
+      additionalProperties: false
+      minProperties: 1
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    NationwideCode:
+      type: string
+      enum:
+      - US
+      description: Nationwide code.
   parameters:
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
     UpdatedBefore:
       name: updated_before
       description: The date which a resource must be updated before to be returned.
@@ -586,6 +515,13 @@ components:
       schema:
         type: string
         format: date-time
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
     Page:
       name: page
       description: The page to retrieve.
@@ -616,15 +552,79 @@ components:
       schema:
         type: string
         format: date-time
-  headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
       schema:
         type: string
+        format: date-time
+  headers:
     ApiVersionResponseHeader:
       description: API version.
       schema:
         type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   securitySchemes:
     OAuth2:
       type: oauth2

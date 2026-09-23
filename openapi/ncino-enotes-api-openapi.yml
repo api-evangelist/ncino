@@ -15,7 +15,7 @@ paths:
     x-acl: enotes
     post:
       summary: Create an eNote
-      description: Creates a new <Glossary>eNote</Glossary> in eVault from the supplied borrower, property, and loan details along with the eNote document data (the eNote file and its PDF rendering).
+      description: Creates a new eNote in eVault from the supplied borrower, property, and loan details along with the eNote document data (the eNote file and its PDF rendering).
       tags:
       - Enotes
       parameters:
@@ -53,11 +53,13 @@ paths:
         '500':
           description: Error
           $ref: '#/paths/~1webhooks/put/responses/500'
+      operationId: postByEnvironmentEnotes
+      x-operation-id-source: derived
   /{environment}/enotes/{enote_id}:
     x-acl: enotes
     get:
       summary: Get an eNote
-      description: Retrieves the full details and current status of an <Glossary>eNote</Glossary> by its guid, including its registration status, named parties, and <Glossary>audit log</Glossary> entries.
+      description: Retrieves the full details and current status of an eNote by its guid, including its registration status, named parties, and audit log entries.
       operationId: getEnote
       tags:
       - Enotes
@@ -91,7 +93,7 @@ paths:
     x-acl: enotes
     get:
       summary: Get an eNote smartdoc
-      description: Retrieves the <Glossary>smartdoc</Glossary> (SMART Doc®) representation of an <Glossary>eNote</Glossary> by its guid.
+      description: Retrieves the smartdoc (SMART Doc®) representation of an eNote by its guid.
       operationId: getEnoteSmartdoc
       tags:
       - Enotes
@@ -120,7 +122,7 @@ paths:
     x-acl: enotes
     get:
       summary: Get an eNote pdf
-      description: Retrieves the PDF rendering of an <Glossary>eNote</Glossary> by its guid.
+      description: Retrieves the PDF rendering of an eNote by its guid.
       operationId: getEnotePdf
       tags:
       - Enotes
@@ -149,7 +151,7 @@ paths:
     x-acl: enotes
     get:
       summary: Get an eNote audit log
-      description: Retrieves the <Glossary>audit log</Glossary> for an <Glossary>eNote</Glossary> — the time-ordered record of events (registration, transfers, status changes, and so on) recorded against its <Glossary>electronic record</Glossary>.
+      description: Retrieves the audit log for an eNote — the time-ordered record of events (registration, transfers, status changes, and so on) recorded against its electronic record.
       operationId: getEnoteAuditLog
       tags:
       - Enotes
@@ -181,7 +183,7 @@ paths:
     x-acl: enotes
     post:
       summary: Upload a document to an eNote
-      description: Uploads one or more supporting documents (such as an appraisal or title policy) and attaches them to an <Glossary>eNote</Glossary>.
+      description: Uploads one or more supporting documents (such as an appraisal or title policy) and attaches them to an eNote.
       tags:
       - Enotes
       parameters:
@@ -224,60 +226,80 @@ paths:
         '500':
           description: Error
           $ref: '#/paths/~1webhooks/put/responses/500'
+      operationId: postByEnvironmentEnotesByEnoteIdDocumentsUpload
+      x-operation-id-source: derived
 components:
   schemas:
-    lien_type:
+    state:
       type: string
-      example: FirstLien
-    enotes_post:
-      type: object
-      required:
-      - lienType
-      - borrowerFirstName
-      - borrowerLastName
-      - streetAddress
-      - city
-      - state
-      - zip
-      - enoteData
-      - enoteDataFileType
-      - pdfData
-      properties:
-        lienType:
-          $ref: '#/components/schemas/lien_type'
-        borrowerFirstName:
-          $ref: '#/components/schemas/first_name'
-        borrowerLastName:
-          $ref: '#/components/schemas/last_name'
-        streetAddress:
-          $ref: '#/components/schemas/street'
-        city:
-          $ref: '#/components/schemas/city'
-        state:
-          $ref: '#/components/schemas/state'
-        zip:
-          $ref: '#/components/schemas/zip'
-        loanNumber:
-          $ref: '#/components/schemas/loan_number'
-        enoteData:
-          $ref: '#/components/schemas/base64'
-        enoteDataFileType:
-          $ref: '#/components/schemas/file_type'
-        pdfData:
-          $ref: '#/components/schemas/base64'
-    document_name:
-      type: string
-      example: Document 1
-    incoming:
-      type: boolean
-      example: false
-    first_name:
-      type: string
-      example: Simple
+      example: NV
     status:
       type: string
       nullable: true
       example: unregistered
+    last_name:
+      type: string
+      example: Nexus
+    active:
+      type: boolean
+      example: true
+    first_name:
+      type: string
+      example: Simple
+    assumed:
+      type: boolean
+      example: false
+    environment:
+      type: string
+      enum:
+      - stage
+      - production
+      example: stage
+      readOnly: true
+    audit_logs:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/guid'
+          eventType:
+            $ref: '#/components/schemas/event_type'
+          incoming:
+            $ref: '#/components/schemas/incoming'
+          status:
+            $ref: '#/components/schemas/status'
+          requestTimestamp:
+            $ref: '#/components/schemas/general_iso8601'
+          isSystem:
+            $ref: '#/components/schemas/is_system'
+          isTest:
+            $ref: '#/components/schemas/is_test'
+      example:
+      - id: 459f521f-f2fa-4230-a704-46147ac8as7e
+        eventType: connectivity
+        incoming: false
+        status: success
+        requestTimestamp: '2019-02-28T00:00:00Z'
+        isTest: false
+    document_type:
+      type: string
+      example: AppraisalReport
+    smartdoc_presented:
+      type: boolean
+      nullable: true
+      example: null
+    min:
+      type: string
+      example: 123456789012345680
+    document_name:
+      type: string
+      example: Document 1
+    loan_number:
+      type: string
+      example: 0292364
+    error_response:
+      type: object
     enotes-enote_guid-documents-upload_post:
       type: object
       required:
@@ -307,80 +329,44 @@ components:
                 $ref: '#/components/schemas/document_name'
               data:
                 $ref: '#/components/schemas/base64'
-    city_state_zip:
+    guid:
       type: string
-      example: Lehi, UT 84043
-    active:
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    tamperseal_last_validated_at:
+      type: string
+      nullable: true
+      example: null
+    tamperseal:
       type: boolean
-      example: true
-    content_type:
+      example: false
+    modified:
+      type: boolean
+      example: false
+    street:
       type: string
-      enum:
-      - application/pdf
-      - application/xml
-      example: application/pdf
-    loan_number:
-      type: string
-      example: 0292364
-    zip:
-      type: string
-      example: '12345'
-    default_success_response:
+      example: 123 SimpleNexus Ln
+    500_error_response:
       type: object
       properties:
         success:
           type: boolean
-          example: true
+          example: false
         errors:
           type: array
-          nullable: true
           items:
             type: string
-          example: null
+            example: Error message
         warnings:
           type: array
           nullable: true
-          items:
-            type: string
           example: null
-    file_type:
-      type: string
-      enum:
-      - application/zip
-      - application/xml
-      example: application/zip
+        data:
+          type: string
+          nullable: true
+          example: null
     city:
       type: string
       example: Lehi
-    is_system:
-      type: boolean
-      example: false
-    environment:
-      type: string
-      enum:
-      - stage
-      - production
-      example: stage
-      readOnly: true
-    last_name:
-      type: string
-      example: Nexus
-    modified:
-      type: boolean
-      example: false
-    smartdoc_presented:
-      type: boolean
-      nullable: true
-      example: null
-    document_type:
-      type: string
-      example: AppraisalReport
-    assumed:
-      type: boolean
-      example: false
-    guid:
-      type: string
-      example: 459f521f-f2fa-4230-a704-46147ac8as7e
     enote_response:
       type: object
       properties:
@@ -428,6 +414,94 @@ components:
           $ref: '#/components/schemas/general_iso8601'
         auditLogs:
           $ref: '#/components/schemas/audit_logs'
+    unregistered_reason:
+      type: string
+      nullable: true
+      example: null
+    base64:
+      type: string
+      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
+    city_state_zip:
+      type: string
+      example: Lehi, UT 84043
+    is_test:
+      type: boolean
+      example: true
+    file_type:
+      type: string
+      enum:
+      - application/zip
+      - application/xml
+      example: application/zip
+    enotes_post:
+      type: object
+      required:
+      - lienType
+      - borrowerFirstName
+      - borrowerLastName
+      - streetAddress
+      - city
+      - state
+      - zip
+      - enoteData
+      - enoteDataFileType
+      - pdfData
+      properties:
+        lienType:
+          $ref: '#/components/schemas/lien_type'
+        borrowerFirstName:
+          $ref: '#/components/schemas/first_name'
+        borrowerLastName:
+          $ref: '#/components/schemas/last_name'
+        streetAddress:
+          $ref: '#/components/schemas/street'
+        city:
+          $ref: '#/components/schemas/city'
+        state:
+          $ref: '#/components/schemas/state'
+        zip:
+          $ref: '#/components/schemas/zip'
+        loanNumber:
+          $ref: '#/components/schemas/loan_number'
+        enoteData:
+          $ref: '#/components/schemas/base64'
+        enoteDataFileType:
+          $ref: '#/components/schemas/file_type'
+        pdfData:
+          $ref: '#/components/schemas/base64'
+    zip:
+      type: string
+      example: '12345'
+    lien_type:
+      type: string
+      example: FirstLien
+    default_success_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+        warnings:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+    general_iso8601:
+      type: string
+      example: '2019-02-28T00:00:00Z'
+    is_system:
+      type: boolean
+      example: false
+    incoming:
+      type: boolean
+      example: false
     event_type:
       type: string
       enum:
@@ -538,61 +612,12 @@ components:
       - activate_org_api_clients
       - edit_org_api_client_permissions
       example: delivery_initiated
-    audit_logs:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            $ref: '#/components/schemas/guid'
-          eventType:
-            $ref: '#/components/schemas/event_type'
-          incoming:
-            $ref: '#/components/schemas/incoming'
-          status:
-            $ref: '#/components/schemas/status'
-          requestTimestamp:
-            $ref: '#/components/schemas/general_iso8601'
-          isSystem:
-            $ref: '#/components/schemas/is_system'
-          isTest:
-            $ref: '#/components/schemas/is_test'
-      example:
-      - id: 459f521f-f2fa-4230-a704-46147ac8as7e
-        eventType: connectivity
-        incoming: false
-        status: success
-        requestTimestamp: '2019-02-28T00:00:00Z'
-        isTest: false
-    min:
+    content_type:
       type: string
-      example: 123456789012345680
-    tamperseal_last_validated_at:
-      type: string
-      nullable: true
-      example: null
-    state:
-      type: string
-      example: NV
-    base64:
-      type: string
-      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
-    general_iso8601:
-      type: string
-      example: '2019-02-28T00:00:00Z'
-    street:
-      type: string
-      example: 123 SimpleNexus Ln
-    is_test:
-      type: boolean
-      example: true
-    tamperseal:
-      type: boolean
-      example: false
-    unregistered_reason:
-      type: string
-      nullable: true
-      example: null
+      enum:
+      - application/pdf
+      - application/xml
+      example: application/pdf
     smartdoc_version:
       type: string
       nullable: true

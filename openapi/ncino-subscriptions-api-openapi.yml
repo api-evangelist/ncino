@@ -16,9 +16,6 @@ tags:
   description: Endpoints pertaining to webhook subscriptions
 paths:
   /webhooks/{webhook_id}/subscriptions:
-    servers:
-    - url: https://api.ncinomortgage.com
-      description: Production server
     post:
       tags:
       - Subscriptions
@@ -65,7 +62,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: Create a subscription for a <<glossary:webhook>>
+      description: Create a subscription for a >
       summary: Create a subscription for a webhook
       requestBody:
         description: ''
@@ -114,12 +111,12 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will retrieve all of a <<glossary:webhook>>'s subscription records.
+      description: This endpoint will retrieve all of a >'s subscription records.
       summary: Retrieve all of a webhook's subscription records
-  /webhooks/{webhook_id}/subscriptions/{webhook_subscription_id}:
     servers:
     - url: https://api.ncinomortgage.com
       description: Production server
+  /webhooks/{webhook_id}/subscriptions/{webhook_subscription_id}:
     get:
       tags:
       - Subscriptions
@@ -162,7 +159,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will retrieve a <<glossary:webhook>>'s subscription record.
+      description: This endpoint will retrieve a >'s subscription record.
       summary: Retrieve a webhook's subscription record
     patch:
       tags:
@@ -217,7 +214,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will update a <<glossary:webhook>>'s subscription record.
+      description: This endpoint will update a >'s subscription record.
       summary: Update a webhook's subscription record
       requestBody:
         description: ''
@@ -267,82 +264,56 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will delete a <<glossary:webhook>>'s subscription record (i.e. unsubscribes a webhook from an event).
+      description: This endpoint will delete a >'s subscription record (i.e. unsubscribes a webhook from an event).
       summary: Delete a webhook's subscription record
+    servers:
+    - url: https://api.ncinomortgage.com
+      description: Production server
 components:
-  responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   schemas:
-    AbstractResourceModel:
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    WebhookSubscription:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          event:
+            allOf:
+            - $ref: '#/components/schemas/WebhookEventName'
+            description: Event that the webhook is subscribed to.
+        required:
+        - event
+        additionalProperties: false
+      description: Webhook subscription record
+    AbstractCollection:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
         required:
-        - id
+        - contents
         additionalProperties: false
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
     Error:
       type: object
       properties:
@@ -372,10 +343,6 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
     AbstractModel:
       type: object
       properties:
@@ -404,23 +371,33 @@ components:
       description: Available properties for creating or updating a webhook's subscription.
       additionalProperties: false
       minProperties: 1
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
+    WebhookSubscriptionPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebhookSubscription'
+        required:
+        - contents
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
     WebhookEventName:
       type: string
       enum:
@@ -460,6 +437,10 @@ components:
       - user_updated
       - verification_available
       description: Webhook event name.
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
     AbstractPagination:
       allOf:
       - $ref: '#/components/schemas/AbstractCollection'
@@ -472,59 +453,7 @@ components:
             type: integer
             description: The total number of items in the collection.
         additionalProperties: false
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
-    WebhookSubscription:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      - type: object
-        properties:
-          event:
-            allOf:
-            - $ref: '#/components/schemas/WebhookEventName'
-            description: Event that the webhook is subscribed to.
-        required:
-        - event
-        additionalProperties: false
-      description: Webhook subscription record
-    WebhookSubscriptionPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/WebhookSubscription'
-        required:
-        - contents
   parameters:
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
     UpdatedBefore:
       name: updated_before
       description: The date which a resource must be updated before to be returned.
@@ -533,6 +462,13 @@ components:
       schema:
         type: string
         format: date-time
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
     Page:
       name: page
       description: The page to retrieve.
@@ -563,15 +499,79 @@ components:
       schema:
         type: string
         format: date-time
-  headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
       schema:
         type: string
+        format: date-time
+  headers:
     ApiVersionResponseHeader:
       description: API version.
       schema:
         type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   securitySchemes:
     OAuth2:
       type: oauth2

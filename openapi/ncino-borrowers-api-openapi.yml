@@ -13,7 +13,7 @@ security:
 - OAuth2: []
 tags:
 - name: Borrowers
-  description: Endpoints pertaining to <<glossary:borrower account>>s in the nCino Mortgage platform
+  description: Endpoints pertaining to >s in the nCino Mortgage platform
 paths:
   /users/borrowers:
     post:
@@ -53,14 +53,14 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: 'This endpoint will create a <<glossary:borrower account>> in the platform.
+      description: 'This endpoint will create a > in the platform.
 
 
-        The borrower will use this information to register or log in to their account on the specified <<glossary:loan officer>>''s shared application.
+        The borrower will use this information to register or log in to their account on the specified >''s shared application.
 
         > 🙇 Heads up!
 
-        **This record is not to be confused with a <<glossary:loan borrower>> record,** which is directly associated with and created through a loan or loan application.'
+        **This record is not to be confused with a > record,** which is directly associated with and created through a loan or loan application.'
       summary: Create a borrower account
       requestBody:
         description: ''
@@ -125,7 +125,7 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: 'This endpoint will retrieve all <<glossary:borrower account>>s for the company.
+      description: 'This endpoint will retrieve all >s for the company.
 
 
         To filter the scope of records returned, leverage one or more of the query params found below. `Email` is a common parameter by which to filter.
@@ -169,7 +169,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will retrieve a single <<glossary:borrower account>>.
+      description: This endpoint will retrieve a single >.
       summary: Retrieve a borrower account
     patch:
       tags:
@@ -217,7 +217,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: 'This endpoint will update any data provided via body params on the <<glossary:borrower account>>. Only the body params listed maybe be used.
+      description: 'This endpoint will update any data provided via body params on the >. Only the body params listed maybe be used.
 
 
         Passing an empty body will result in a successful request but no changes in data.
@@ -267,7 +267,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: 'This endpoint will delete a <<glossary:borrower account>>.
+      description: 'This endpoint will delete a >.
 
 
         > 🙇 Heads up!
@@ -343,18 +343,18 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: 'This endpoint allows a variety of actions to be taken on a <<glossary:borrower account>>.
+      description: 'This endpoint allows a variety of actions to be taken on a >.
 
 
         > 📌 Available actions
 
         **SEND_WELCOME_EMAIL** - Resend welcome email
 
-        **REASSIGN_LO** - Reassign borrower account to a different loan officer. Applications for the indicated borrower account may be reassigned to the new <<glossary:loan officer>>.
+        **REASSIGN_LO** - Reassign borrower account to a different loan officer. Applications for the indicated borrower account may be reassigned to the new >.
 
         If existing applications are not reassigned or loan records are associated with the borrower account then a new borrower account will be created.
 
-        <<glossary:Partner>> information will be removed during the reassignment and will need to be reestablished through a borrower account update.
+        > information will be removed during the reassignment and will need to be reestablished through a borrower account update.
 
         To update the association of a loan officer and borrower account on a loan record, update the loan officer on the loan record.
 
@@ -384,6 +384,23 @@ paths:
                   REMOVE_PARTNER: '#/components/schemas/RemovePartnerUserBorrower'
 components:
   schemas:
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
     ReassignLoUserBorrower:
       allOf:
       - $ref: '#/components/schemas/UserBorrowerAction'
@@ -400,6 +417,10 @@ components:
         - loan_officer_id
         additionalProperties: false
       description: Available properties for reassigning an LO to a borrower account.
+    RemovePartnerUserBorrower:
+      allOf:
+      - $ref: '#/components/schemas/UserBorrowerAction'
+      description: Available properties for removing a partner from a borrower account.
     SendWelcomeEmailUserBorrower:
       allOf:
       - $ref: '#/components/schemas/UserBorrowerAction'
@@ -415,55 +436,6 @@ components:
               $ref: '#/components/schemas/UserBorrower'
         required:
         - contents
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
     UserBorrower:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -503,6 +475,63 @@ components:
         - email
         additionalProperties: false
       description: Borrower model
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    UserBorrowerAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - SEND_WELCOME_EMAIL
+          - REASSIGN_LO
+          - ASSIGN_PARTNER
+          - REMOVE_PARTNER
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a borrower account action.
+      additionalProperties: false
     AbstractModel:
       type: object
       properties:
@@ -519,42 +548,10 @@ components:
       - _self
       - _type
       additionalProperties: false
-    RemovePartnerUserBorrower:
+    ResourceCreated:
       allOf:
-      - $ref: '#/components/schemas/UserBorrowerAction'
-      description: Available properties for removing a partner from a borrower account.
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    UserBorrowerAction:
-      type: object
-      properties:
-        action:
-          type: string
-          enum:
-          - SEND_WELCOME_EMAIL
-          - REASSIGN_LO
-          - ASSIGN_PARTNER
-          - REMOVE_PARTNER
-          description: Action to perform.
-      required:
-      - action
-      description: Available properties for a borrower account action.
-      additionalProperties: false
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
     UserBorrowerPatchBody:
       type: object
       properties:
@@ -583,18 +580,35 @@ components:
       description: Available properties for updating a borrower account.
       additionalProperties: false
       minProperties: 1
-    AbstractPagination:
+    AbstractResourceModel:
       allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
         additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    AssignPartnerUserBorrower:
+      allOf:
+      - $ref: '#/components/schemas/UserBorrowerAction'
+      - type: object
+        properties:
+          partner_id:
+            type: string
+            format: uuid
+            description: Partner's ID to which the borrower account will be assigned.
+        required:
+        - partner_id
+        additionalProperties: false
+      description: Available properties for assigning a partner to a borrower account.
     UserBorrowerPostBody:
       type: object
       properties:
@@ -631,104 +645,19 @@ components:
       - email
       description: Available properties for creating a borrower account.
       additionalProperties: false
-    AbstractCollection:
+    AbstractPagination:
       allOf:
-      - $ref: '#/components/schemas/AbstractModel'
+      - $ref: '#/components/schemas/AbstractCollection'
       - type: object
         properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
         additionalProperties: false
-    AssignPartnerUserBorrower:
-      allOf:
-      - $ref: '#/components/schemas/UserBorrowerAction'
-      - type: object
-        properties:
-          partner_id:
-            type: string
-            format: uuid
-            description: Partner's ID to which the borrower account will be assigned.
-        required:
-        - partner_id
-        additionalProperties: false
-      description: Available properties for assigning a partner to a borrower account.
-  responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   parameters:
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
     UpdatedBefore:
       name: updated_before
       description: The date which a resource must be updated before to be returned.
@@ -737,6 +666,13 @@ components:
       schema:
         type: string
         format: date-time
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
     Page:
       name: page
       description: The page to retrieve.
@@ -767,15 +703,79 @@ components:
       schema:
         type: string
         format: date-time
-  headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
       schema:
         type: string
+        format: date-time
+  headers:
     ApiVersionResponseHeader:
       description: API version.
       schema:
         type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -14,7 +14,7 @@ paths:
   /connectivity-check:
     get:
       summary: Verifies API connectivity
-      description: Lightweight connection/health check. Requires a valid <Glossary>bearer token</Glossary> but no specific permission — a 200 response confirms the caller's credentials are valid and can reach the eVault API. No environment segment or identifiers are needed.
+      description: Lightweight connection/health check. Requires a valid bearer token but no specific permission — a 200 response confirms the caller's credentials are valid and can reach the eVault API. No environment segment or identifiers are needed.
       tags:
       - Connectivity
       responses:
@@ -26,6 +26,8 @@ paths:
                 $ref: '#/components/schemas/connectivity_check_response'
         '401':
           $ref: '#/paths/~1webhooks/put/responses/401'
+      operationId: getConnectivityCheck
+      x-operation-id-source: derived
 components:
   schemas:
     connectivity_check_response:
@@ -52,6 +54,8 @@ components:
             status:
               type: string
               example: ok
+    error_response:
+      type: object
   securitySchemes:
     bearerAuth:
       type: http

@@ -13,7 +13,7 @@ security:
 - OAuth2: []
 tags:
 - name: Company Images
-  description: Endpoints pertaining to <<glossary:company>> images
+  description: Endpoints pertaining to > images
 paths:
   /companies/{company_id}/images/{image_key}:
     put:
@@ -61,7 +61,59 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: "This endpoint will update a <<glossary:company>>'s image.\n\n<table border=1px cellpadding=5px>\n\t<tr>\n\t\t<th>image_key</th>\n\t\t<th>Supported File Types</th>\n\t\t<th>Image Dimensions</th>\n\t</tr>\n\t<tr>\n\t\t<td>logo</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>1000x313</td>\n\t</tr>\n\t<tr>\n\t\t<td>app_icon</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>100x100</td>\n\t</tr>\n\t<tr>\n\t\t<td>app_homepage_logo</td>\n\t\t<td>\n\t\t\t<ul>\n\t\t\t\t<li>.jpeg</li>\n\t\t\t\t<li>.jpg</li>\n\t\t\t\t<li>.png</li>\n\t\t\t</ul>\n\t\t</td>\n\t\t<td>208x32</td>\n\t</tr>\n</table>"
+      description: 'This endpoint will update a >''s image.
+
+
+        image_key
+
+        Supported File Types
+
+        Image Dimensions
+
+
+        logo
+
+
+        .jpeg
+
+
+        .jpg
+
+
+        .png
+
+
+        1000x313
+
+
+        app_icon
+
+
+        .jpeg
+
+
+        .jpg
+
+
+        .png
+
+
+        100x100
+
+
+        app_homepage_logo
+
+
+        .jpeg
+
+
+        .jpg
+
+
+        .png
+
+
+        208x32'
       summary: Update a company's image
       requestBody:
         description: ''
@@ -114,87 +166,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will delete a <<glossary:company>>'s image.
+      description: This endpoint will delete a >'s image.
       summary: Delete a company's image
 components:
-  responses:
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-  headers:
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
   schemas:
-    ImageUpdateBody:
-      type: object
-      properties:
-        file:
-          type: string
-          format: byte
-          description: Base64-encoded image data without metadata with a file type of [jpg, jpeg, png].
-      required:
-      - file
-      description: Available properties for updating an image.
-      additionalProperties: false
-      minProperties: 1
     ErrorSet:
       type: object
       properties:
@@ -212,10 +187,6 @@ components:
           detail: Detailed message for the error
           _links:
             resource: contextual resource if applicable
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
     Error:
       type: object
       properties:
@@ -245,12 +216,93 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ImageUpdateBody:
+      type: object
+      properties:
+        file:
+          type: string
+          format: byte
+          description: Base64-encoded image data without metadata with a file type of [jpg, jpeg, png].
+      required:
+      - file
+      description: Available properties for updating an image.
+      additionalProperties: false
+      minProperties: 1
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   parameters:
     ApiVersionHeader:
       name: X-Api-Version
       description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
       required: false
       in: header
+      schema:
+        type: string
+  headers:
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
       schema:
         type: string
   securitySchemes:

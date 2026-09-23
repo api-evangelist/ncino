@@ -13,7 +13,7 @@ security:
 - OAuth2: []
 tags:
 - name: Verifications
-  description: Endpoints pertaining to <<glossary:verification>>s
+  description: Endpoints pertaining to >s
 paths:
   /services/verifications:
     get:
@@ -68,7 +68,7 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: 'This endpoint will retrieve all <<glossary:verification>> records for the provided loan or <<glossary:loan borrower>>.
+      description: 'This endpoint will retrieve all > records for the provided loan or >.
 
 
         > 🙇 Heads up!
@@ -123,7 +123,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: 'This endpoint will download a <<glossary:verification>> report into either .pdf or .json format.
+      description: 'This endpoint will download a > report into either .pdf or .json format.
 
 
         > 🙇 Heads up!
@@ -166,7 +166,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: 'This endpoint will retrieve a <<glossary:verification>> record for the provided loan or <<glossary:loan borrower>>.
+      description: 'This endpoint will retrieve a > record for the provided loan or >.
 
 
         > 🙇 Heads up!
@@ -231,12 +231,12 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: 'This endpoint allows a variety of actions to be taken on a <<glossary:verification>> record.
+      description: 'This endpoint allows a variety of actions to be taken on a > record.
 
 
         > 📌 Available actions
 
-        **REFRESH_VERIFICATION** - refresh a verification record for the <<glossary:loan borrower>>
+        **REFRESH_VERIFICATION** - refresh a verification record for the >
 
 
         > 🙇 Heads up!
@@ -255,76 +255,28 @@ paths:
                 mapping:
                   REFRESH_VERIFICATION: '#/components/schemas/RefreshVerification'
 components:
-  headers:
-    ContentDispositionResponseHeader:
-      description: Additional information about response payload.
-      schema:
-        type: string
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
-  responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   schemas:
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    Verification:
+      allOf:
+      - $ref: '#/components/schemas/AbstractVerification'
+      description: Verification model
     RefreshVerification:
       allOf:
       - $ref: '#/components/schemas/VerificationAction'
@@ -339,22 +291,30 @@ components:
         - days_back
         additionalProperties: false
       description: Available properties for refreshing a verification for a loan borrower.
-    AbstractResourceModel:
+    VerificationPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Verification'
+        required:
+        - contents
+    AbstractCollection:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
         required:
-        - id
+        - contents
         additionalProperties: false
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
     Error:
       type: object
       properties:
@@ -384,10 +344,6 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
     AbstractModel:
       type: object
       properties:
@@ -404,94 +360,26 @@ components:
       - _self
       - _type
       additionalProperties: false
-    VerificationAction:
-      type: object
-      properties:
-        action:
-          type: string
-          enum:
-          - REFRESH_VERIFICATION
-          description: Action to perform.
-      required:
-      - action
-      description: Available properties for a verification action
-      additionalProperties: false
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    VerificationPagination:
+    ResourceCreated:
       allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Verification'
-        required:
-        - contents
-    VerificationReportType:
-      type: string
-      enum:
-      - BOTH
-      - DOC_VOI_MORTGAGE
-      - DVOE
-      - VOA
-      - VOAI
-      - VOA_HISTORY
-      - VOE
-      - VOE_MORTGAGE
-      - VOE_PAYROLL
-      - VOE_TRANSACTIONS
-      - VOI
-      - VOIE
-      - VOIE_MORTGAGE
-      - VOIE_PAYROLL
-      - VOIE_TX_VERIFY
-      description: Types of verification reports.
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    AbstractCollection:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractResourceModel:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
         required:
-        - contents
+        - id
         additionalProperties: false
-    Verification:
-      allOf:
-      - $ref: '#/components/schemas/AbstractVerification'
-      description: Verification model
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
     AbstractVerification:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -519,22 +407,50 @@ components:
         - report_type
         additionalProperties: false
       description: Abstract verification model
+    VerificationAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - REFRESH_VERIFICATION
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a verification action
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    VerificationReportType:
+      type: string
+      enum:
+      - BOTH
+      - DOC_VOI_MORTGAGE
+      - DVOE
+      - VOA
+      - VOAI
+      - VOA_HISTORY
+      - VOE
+      - VOE_MORTGAGE
+      - VOE_PAYROLL
+      - VOE_TRANSACTIONS
+      - VOI
+      - VOIE
+      - VOIE_MORTGAGE
+      - VOIE_PAYROLL
+      - VOIE_TX_VERIFY
+      description: Types of verification reports.
   parameters:
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
     UpdatedBefore:
       name: updated_before
       description: The date which a resource must be updated before to be returned.
@@ -543,6 +459,13 @@ components:
       schema:
         type: string
         format: date-time
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
     Page:
       name: page
       description: The page to retrieve.
@@ -573,6 +496,83 @@ components:
       schema:
         type: string
         format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+  headers:
+    ContentDispositionResponseHeader:
+      description: Additional information about response payload.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   securitySchemes:
     OAuth2:
       type: oauth2

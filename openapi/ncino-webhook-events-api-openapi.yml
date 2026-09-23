@@ -18,7 +18,7 @@ webhooks:
       summary: Webhook event notification
       tags:
       - Webhook Events
-      description: When a subscribed event fires, eVault sends a POST to the `url` configured on the <Glossary>webhook</Glossary>. Every event uses the same payload shape; the `event_type` field identifies which event fired and the identifier fields present depend on the event (see the schema). Verify the `ncino-evault-signature` header to confirm the payload's authenticity.
+      description: When a subscribed event fires, eVault sends a POST to the `url` configured on the webhook. Every event uses the same payload shape; the `event_type` field identifies which event fired and the identifier fields present depend on the event (see the schema). Verify the `ncino-evault-signature` header to confirm the payload's authenticity.
       parameters:
       - in: header
         name: ncino-evault-signature
@@ -36,63 +36,6 @@ webhooks:
           description: OK
 components:
   schemas:
-    webhook_event_callback_message:
-      type: object
-      description: Payload eVault sends as a POST to the configured webhook URL when a subscribed event fires. `org_id` and `event_type` are always present; the remaining identifier fields are included only when they are relevant to the event that fired. The body is signed — verify it using the `ncino-evault-signature` header (see the parameter on this callback).
-      required:
-      - org_id
-      - event_type
-      properties:
-        org_id:
-          allOf:
-          - $ref: '#/components/schemas/guid'
-          description: The guid of the org the event belongs to. Always present.
-        event_type:
-          $ref: '#/components/schemas/webhook_event_type'
-        enote_id:
-          allOf:
-          - $ref: '#/components/schemas/guid'
-          description: Included when the event relates to an eNote.
-        transaction_id:
-          allOf:
-          - $ref: '#/components/schemas/guid'
-          description: Included when the event relates to a MERS transaction.
-        audit_log_id:
-          allOf:
-          - $ref: '#/components/schemas/guid'
-          description: Included when the event has an associated audit log.
-        document_id:
-          allOf:
-          - $ref: '#/components/schemas/guid'
-          description: Included when the event relates to a document.
-        api_client_id:
-          allOf:
-          - $ref: '#/components/schemas/guid'
-          description: Included when the event relates to an API client.
-        org_api_client:
-          allOf:
-          - $ref: '#/components/schemas/guid'
-          description: Included when the event relates to an org API client.
-        user_id:
-          allOf:
-          - $ref: '#/components/schemas/guid'
-          description: Included when the event was initiated by a user.
-        additional_info:
-          allOf:
-          - $ref: '#/components/schemas/additional_info'
-          description: Optional event-specific context. Included only when the event carries extra detail.
-      example:
-        org_id: 459f521f-f2fa-4230-a704-46147ac8as7e
-        event_type: upload_enote
-        enote_id: 8c1f0b2e-1a2b-4c3d-9e4f-5a6b7c8d9e0f
-        audit_log_id: 2b7c9d1e-3f4a-5b6c-7d8e-9f0a1b2c3d4e
-    guid:
-      type: string
-      example: 459f521f-f2fa-4230-a704-46147ac8as7e
-    additional_info:
-      type: string
-      nullable: true
-      example: null
     webhook_event_type:
       type: string
       description: The event that fired, sent as the `event_type` field of the webhook payload. Values are the lowercased event keys. Subscribe to the events you want to receive via the `events` array when creating or editing a webhook configuration. A parent key (for example `change_data`, `change_status`, `connectivity`, `delivery`, `inquiry`, `registration`, `transfer`) can be subscribed to on its own to receive every event in that group.
@@ -184,6 +127,63 @@ components:
       - transfer_initiated_notification
       - transfer_rejected_notification
       example: upload_enote
+    additional_info:
+      type: string
+      nullable: true
+      example: null
+    webhook_event_callback_message:
+      type: object
+      description: Payload eVault sends as a POST to the configured webhook URL when a subscribed event fires. `org_id` and `event_type` are always present; the remaining identifier fields are included only when they are relevant to the event that fired. The body is signed — verify it using the `ncino-evault-signature` header (see the parameter on this callback).
+      required:
+      - org_id
+      - event_type
+      properties:
+        org_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: The guid of the org the event belongs to. Always present.
+        event_type:
+          $ref: '#/components/schemas/webhook_event_type'
+        enote_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event relates to an eNote.
+        transaction_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event relates to a MERS transaction.
+        audit_log_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event has an associated audit log.
+        document_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event relates to a document.
+        api_client_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event relates to an API client.
+        org_api_client:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event relates to an org API client.
+        user_id:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Included when the event was initiated by a user.
+        additional_info:
+          allOf:
+          - $ref: '#/components/schemas/additional_info'
+          description: Optional event-specific context. Included only when the event carries extra detail.
+      example:
+        org_id: 459f521f-f2fa-4230-a704-46147ac8as7e
+        event_type: upload_enote
+        enote_id: 8c1f0b2e-1a2b-4c3d-9e4f-5a6b7c8d9e0f
+        audit_log_id: 2b7c9d1e-3f4a-5b6c-7d8e-9f0a1b2c3d4e
+    guid:
+      type: string
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
   securitySchemes:
     bearerAuth:
       type: http

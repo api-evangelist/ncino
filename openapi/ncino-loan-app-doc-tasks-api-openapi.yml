@@ -13,7 +13,7 @@ security:
 - OAuth2: []
 tags:
 - name: Loan App Doc Tasks
-  description: Endpoints pertaining to loan doc <<glossary:task>>s
+  description: Endpoints pertaining to loan doc >s
 paths:
   /loan_applications/{loan_application_id}/loan_doc_tasks:
     post:
@@ -168,7 +168,7 @@ paths:
         > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
 
 
-        This endpoint will retrieve a single loan doc <<glossary:task>>.'
+        This endpoint will retrieve a single loan doc >.'
       summary: 🚧 Retrieve a loan doc task (BETA)
     delete:
       tags:
@@ -217,7 +217,7 @@ paths:
         > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
 
 
-        This endpoint will delete a loan doc <<glossary:task>>.'
+        This endpoint will delete a loan doc >.'
       summary: 🚧 Delete a loan doc task (BETA)
     put:
       tags:
@@ -266,7 +266,7 @@ paths:
         > **This endpoint is in beta.** Functionality may change without notice, support is limited, and use in production is not recommended. Your feedback is appreciated.
 
 
-        This endpoint will update a loan doc <<glossary:task>>.'
+        This endpoint will update a loan doc >.'
       summary: 🚧 Update a loan doc task (BETA)
       requestBody:
         description: ''
@@ -328,7 +328,12 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: "This endpoint allows a variety of actions to be taken on a <<glossary:loan doc task>>.\n\n> \U0001F4CC Available actions\n  **MARK_AS_COMPLETE** - Mark a loan doc task as complete"
+      description: 'This endpoint allows a variety of actions to be taken on a >.
+
+
+        > 📌 Available actions
+
+        **MARK_AS_COMPLETE** - Mark a loan doc task as complete'
       summary: Mark a loan doc task as complete
       requestBody:
         description: ''
@@ -343,82 +348,6 @@ paths:
                   MARK_AS_COMPLETE: '#/components/schemas/MarkAsCompleteLoanDocTask'
 components:
   schemas:
-    LoanDocTaskPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/LoanDocTask'
-        required:
-        - contents
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
     ErrorSet:
       type: object
       properties:
@@ -436,98 +365,17 @@ components:
           detail: Detailed message for the error
           _links:
             resource: contextual resource if applicable
-    LoanDocTaskUpdateBody:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Loan doc task's name.
-      description: Available properties for updating a loan doc task.
-      additionalProperties: false
-      minProperties: 1
-    LoanDocTaskAction:
-      type: object
-      properties:
-        action:
-          type: string
-          enum:
-          - MARK_AS_COMPLETE
-          description: Action to perform.
-      required:
-      - action
-      description: Available properties for a loan doc task action.
-      additionalProperties: false
-    AbstractPagination:
+    LoanDocTaskPagination:
       allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    LoanDocTask:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      - type: object
-        properties:
-          name:
-            type: string
-            description: Task title
-          description:
-            type:
-            - string
-            - 'null'
-            description: Task description.
-          current_state:
-            type: string
-            description: Current state.
-          created_at:
-            type: string
-            format: date-time
-            description: Timestamp of when the task record was created.
-          updated_at:
-            type: string
-            format: date-time
-            description: Timestamp of when the task record was last updated.
-        additionalProperties: false
-      description: Loan doc task model
-    LoanDocDefinitionTypes:
-      type: string
-      enum:
-      - null_doc
-      - other
-      - w2
-      - drivers_license
-      - paystub
-      - bank_statement
-      - federal_tax_return
-      - divorce_decree
-      - '1099'
-      - social_security_card
-      - dd214
-      - k1
-      - passport
-      - certificate_of_housing_counseling
-      description: Types of loan doc definitions.
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
+      - $ref: '#/components/schemas/AbstractPagination'
       - type: object
         properties:
           contents:
             type: array
             items:
-              type: object
-            description: The contents for the collection.
+              $ref: '#/components/schemas/LoanDocTask'
         required:
         - contents
-        additionalProperties: false
     LoanDocTaskPostBody:
       type: object
       properties:
@@ -557,82 +405,168 @@ components:
       - loan_borrower_id
       description: Available properties for creating a loan doc task.
       additionalProperties: false
+    LoanDocTaskAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - MARK_AS_COMPLETE
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a loan doc task action.
+      additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    LoanDocDefinitionTypes:
+      type: string
+      enum:
+      - null_doc
+      - other
+      - w2
+      - drivers_license
+      - paystub
+      - bank_statement
+      - federal_tax_return
+      - divorce_decree
+      - '1099'
+      - social_security_card
+      - dd214
+      - k1
+      - passport
+      - certificate_of_housing_counseling
+      description: Types of loan doc definitions.
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    LoanDocTaskUpdateBody:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Loan doc task's name.
+      description: Available properties for updating a loan doc task.
+      additionalProperties: false
+      minProperties: 1
+    LoanDocTask:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          name:
+            type: string
+            description: Task title
+          description:
+            type:
+            - string
+            - 'null'
+            description: Task description.
+          current_state:
+            type: string
+            description: Current state.
+          created_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the task record was created.
+          updated_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the task record was last updated.
+        additionalProperties: false
+      description: Loan doc task model
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
     MarkAsCompleteLoanDocTask:
       allOf:
       - $ref: '#/components/schemas/LoanDocTaskAction'
       description: Available properties for marking a loan doc task as complete.
-  responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   parameters:
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
     UpdatedBefore:
       name: updated_before
       description: The date which a resource must be updated before to be returned.
@@ -641,6 +575,13 @@ components:
       schema:
         type: string
         format: date-time
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
     Page:
       name: page
       description: The page to retrieve.
@@ -671,15 +612,79 @@ components:
       schema:
         type: string
         format: date-time
-  headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
       schema:
         type: string
+        format: date-time
+  headers:
     ApiVersionResponseHeader:
       description: API version.
       schema:
         type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   securitySchemes:
     OAuth2:
       type: oauth2

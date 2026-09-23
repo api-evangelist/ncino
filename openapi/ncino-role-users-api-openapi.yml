@@ -13,7 +13,7 @@ security:
 - OAuth2: []
 tags:
 - name: Role Users
-  description: Endpoints for managing user assignments on a <<glossary:role>>.
+  description: Endpoints for managing user assignments on a >.
 paths:
   /roles/{role_id}/users:
     get:
@@ -217,29 +217,47 @@ paths:
               $ref: '#/components/schemas/RoleUserDeleteBody'
 components:
   schemas:
-    RoleUserPagination:
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    RoleUserAssignmentResult:
+      type: object
+      properties:
+        user_ids:
+          type: array
+          items:
+            type: string
+          description: Current user IDs assigned to the role.
+      required:
+      - user_ids
+      description: The updated set of user IDs assigned to the role after the operation.
+      additionalProperties: false
+    AbstractCollection:
       allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
           contents:
             type: array
             items:
-              $ref: '#/components/schemas/RoleUser'
+              type: object
+            description: The contents for the collection.
         required:
         - contents
-        additionalProperties: false
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
         additionalProperties: false
     Error:
       type: object
@@ -286,23 +304,56 @@ components:
       - _self
       - _type
       additionalProperties: false
-    ErrorSet:
+    RoleUserDeleteBody:
       type: object
       properties:
-        errors:
+        user_ids:
           type: array
           items:
-            $ref: '#/components/schemas/Error'
+            type: string
+            format: uuid
+          description: GUIDs of users to remove.
       required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
+      - user_ids
+      description: User IDs to remove from the role.
+      additionalProperties: false
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    RoleUserPostBody:
+      type: object
+      properties:
+        user_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: GUIDs of users to assign.
+      required:
+      - user_ids
+      description: User IDs to assign to the role.
+      additionalProperties: false
+    RoleUserPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/RoleUser'
+        required:
+        - contents
+        additionalProperties: false
     AbstractPagination:
       allOf:
       - $ref: '#/components/schemas/AbstractCollection'
@@ -331,102 +382,6 @@ components:
         - email
         additionalProperties: false
       description: A user assigned to a role.
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
-    RoleUserAssignmentResult:
-      type: object
-      properties:
-        user_ids:
-          type: array
-          items:
-            type: string
-          description: Current user IDs assigned to the role.
-      required:
-      - user_ids
-      description: The updated set of user IDs assigned to the role after the operation.
-      additionalProperties: false
-    RoleUserPostBody:
-      type: object
-      properties:
-        user_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: GUIDs of users to assign.
-      required:
-      - user_ids
-      description: User IDs to assign to the role.
-      additionalProperties: false
-    RoleUserDeleteBody:
-      type: object
-      properties:
-        user_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: GUIDs of users to remove.
-      required:
-      - user_ids
-      description: User IDs to remove from the role.
-      additionalProperties: false
-  responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   parameters:
     ApiVersionHeader:
       name: X-Api-Version
@@ -450,14 +405,59 @@ components:
       schema:
         type: integer
   headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
     ApiVersionResponseHeader:
       description: API version.
       schema:
         type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   securitySchemes:
     OAuth2:
       type: oauth2

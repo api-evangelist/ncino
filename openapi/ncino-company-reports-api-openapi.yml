@@ -13,7 +13,7 @@ security:
 - OAuth2: []
 tags:
 - name: Company Reports
-  description: Endpoints pertaining to <<glossary:company>> reports
+  description: Endpoints pertaining to > reports
 paths:
   /companies/{company_id}/reports:
     post:
@@ -51,10 +51,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: 'This endpoint will generate a <<glossary:company>> report.
+      description: 'This endpoint will generate a > report.
 
 
-        The report will be generated as an <<glossary:asynchronous job>> and can be accessed when the job returned in the response has successfully completed.'
+        The report will be generated as an > and can be accessed when the job returned in the response has successfully completed.'
       summary: Generate a company report
       requestBody:
         description: ''
@@ -132,87 +132,48 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will download a report for a <<glossary:company>>.
+      description: This endpoint will download a report for a >.
       summary: Download a report for a company
 components:
-  parameters:
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-  responses:
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-  headers:
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
-    ContentDispositionResponseHeader:
-      description: Additional information about response payload.
-      schema:
-        type: string
   schemas:
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    ReportPostBody:
+      type: object
+      properties:
+        report_type:
+          type: string
+          enum:
+          - CO_BRANDED_APPS
+          - DOCUSIGN_ENVELOPES
+          - LOAN_APP_DETAILS
+          - LOAN_APPS_COUNT
+          - LO_ACTIVITY
+          - NPS_FEEDBACK
+          - PACKAGE_TRACKER
+          - PROSPECTS
+          - QR_CODES
+          - VERIFICATION_OF_ASSETS_ORDERS
+          description: Report type to generate
+      required:
+      - report_type
+      description: Available properties for generating a report.
+      additionalProperties: false
     TimeBoundReportPostBody:
       allOf:
       - $ref: '#/components/schemas/ReportPostBody'
@@ -233,6 +194,18 @@ components:
       description: 'Available properties for generating a time-scoped report.
 
         Start and end dates can span a time range as large as a year and default to a range covering the last day if both dates aren''t provided.'
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
     Error:
       type: object
       properties:
@@ -262,60 +235,6 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
-    ReportPostBody:
-      type: object
-      properties:
-        report_type:
-          type: string
-          enum:
-          - CO_BRANDED_APPS
-          - DOCUSIGN_ENVELOPES
-          - LOAN_APP_DETAILS
-          - LOAN_APPS_COUNT
-          - LO_ACTIVITY
-          - NPS_FEEDBACK
-          - PACKAGE_TRACKER
-          - PROSPECTS
-          - QR_CODES
-          - VERIFICATION_OF_ASSETS_ORDERS
-          description: Report type to generate
-      required:
-      - report_type
-      description: Available properties for generating a report.
-      additionalProperties: false
     AbstractModel:
       type: object
       properties:
@@ -332,6 +251,87 @@ components:
       - _self
       - _type
       additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+  headers:
+    ContentDispositionResponseHeader:
+      description: Additional information about response payload.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
   securitySchemes:
     OAuth2:
       type: oauth2

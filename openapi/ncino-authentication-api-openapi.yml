@@ -17,7 +17,7 @@ paths:
       description: Token endpoint host (served at the domain root, not under /api)
     post:
       summary: Generate or refresh an auth token
-      description: Exchanges API client credentials for a JWT access token. Authenticate with HTTP Basic using your client_id (username) and client_secret (password). Use grant_type `authorization_code` with the `code` issued for your <Glossary>OrgApiClient</Glossary> to obtain the first token, or grant_type `refresh_token` with a previously issued <Glossary>refresh token</Glossary> to renew one. The returned `access_token` is used as the Bearer token on all other endpoints.
+      description: Exchanges API client credentials for a JWT access token. Authenticate with HTTP Basic using your client_id (username) and client_secret (password). Use grant_type `authorization_code` with the `code` issued for your OrgApiClient to obtain the first token, or grant_type `refresh_token` with a previously issued refresh token to renew one. The returned `access_token` is used as the Bearer token on all other endpoints.
       tags:
       - Authentication
       security:
@@ -48,10 +48,9 @@ paths:
                 $ref: '#/components/schemas/auth_token_response'
         '401':
           $ref: '#/paths/~1webhooks/put/responses/401'
+      operationId: postOauthAuthToken
+      x-operation-id-source: derived
   /oauth/token:
-    servers:
-    - url: https://api.ncinomortgage.com
-      description: Production server
     post:
       tags:
       - Authentication
@@ -94,7 +93,7 @@ paths:
               $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: Initiate the <<glossary:authentication workflow>> using supported grant types.
+      description: Initiate the > using supported grant types.
       summary: Initiate authentication workflow
       security: []
       requestBody:
@@ -138,14 +137,14 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will retrieve <<glossary:access token>> information.
+      description: This endpoint will retrieve > information.
       summary: Retrieve access token information
       security:
       - OAuth2: []
-  /oauth/token/actions:
     servers:
     - url: https://api.ncinomortgage.com
       description: Production server
+  /oauth/token/actions:
     post:
       tags:
       - Authentication
@@ -188,7 +187,14 @@ paths:
               $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: "This endpoint will perform an action on an <<glossary:access token>>.\n\n> \U0001F4CC Available actions\n  **REVOKE** - Revoke an existing access token\n  **INTROSPECT** - Introspect an access token"
+      description: 'This endpoint will perform an action on an >.
+
+
+        > 📌 Available actions
+
+        **REVOKE** - Revoke an existing access token
+
+        **INTROSPECT** - Introspect an access token'
       summary: Perform an action on access token
       security: []
       requestBody:
@@ -203,113 +209,51 @@ paths:
                 mapping:
                   REVOKE: '#/components/schemas/OAuthActionBody'
                   INTROSPECT: '#/components/schemas/OAuthActionBody'
+    servers:
+    - url: https://api.ncinomortgage.com
+      description: Production server
 components:
   schemas:
-    OAuthTokenIntrospect:
+    auth_token_post:
       type: object
-      properties:
-        active:
-          type: boolean
-          description: Indicates whether access token is active.
-        scope:
-          type: string
-          description: Scopes granted.
-        client_id:
-          type: string
-          description: Client ID of the organization credential associated with the access token.
-        token_type:
-          type: string
-          description: Type of access token ("Bearer").
-        exp:
-          type: integer
-          description: Access token expiration timestamp.
-        iat:
-          type: integer
-          description: Access token issued at timestamp.
       required:
-      - active
-      description: OAuth 2.0 Access Token introspect information.
-      example: '{ "active" : true, "scope": "external", "client_id": "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3", "token_type":"Bearer", "exp":1712271294, "iat":1712270394 }
-
-        { "active" : false }'
-    OAuthTokenBody:
-      type: object
+      - grant_type
       properties:
         grant_type:
           type: string
           enum:
-          - client_credentials
-          - refresh_token
           - authorization_code
-          description: Grant type.
-        client_id:
+          - refresh_token
+          description: The OAuth2 grant type being used.
+          example: authorization_code
+        code:
           type: string
-          description: Client ID.
-        client_secret:
+          description: Required when grant_type is `authorization_code`. The authorization code issued for your org API client (returned as `clientId`/`id` when the API client was authorized for the org).
+          example: 459f521f-f2fa-4230-a704-46147ac8as7e
+        refresh_token:
           type: string
-          description: Client secret.
-      required:
-      - grant_type
-      - client_id
-      - client_secret
-      description: Available properties for obtaining an access token
-      additionalProperties: false
-    OAuthTokenClientBody:
-      allOf:
-      - $ref: '#/components/schemas/OAuthTokenBody'
-      - type: object
-        properties:
-          scope:
-            type: string
-            description: Requested scope(s).
-        additionalProperties: false
-      description: Available properties for obtaining an access token
-    Error:
+          description: Required when grant_type is `refresh_token`. A refresh token returned by a previous token request.
+          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.abc123
+    auth_token_response:
       type: object
       properties:
-        id:
+        access_token:
           type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
+          description: 'JWT bearer token to send as `Authorization: Bearer <access_token>` on API requests.'
+          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.abc123
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
           type: integer
-          description: The HTTP status code
-        title:
+          description: Lifetime of the access token in seconds.
+          example: 3600
+        refresh_token:
           type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    ErrorSet:
+          description: Token used to obtain a new access token without re-sending credentials.
+          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.xyz789
+    error_response:
       type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
     OAuthActionBody:
       type: object
       properties:
@@ -340,6 +284,50 @@ components:
       - token
       description: Available properties for access token actions
       additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    OAuthTokenIntrospect:
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: Indicates whether access token is active.
+        scope:
+          type: string
+          description: Scopes granted.
+        client_id:
+          type: string
+          description: Client ID of the organization credential associated with the access token.
+        token_type:
+          type: string
+          description: Type of access token ("Bearer").
+        exp:
+          type: integer
+          description: Access token expiration timestamp.
+        iat:
+          type: integer
+          description: Access token issued at timestamp.
+      required:
+      - active
+      description: OAuth 2.0 Access Token introspect information.
+      example: '{ "active" : true, "scope": "external", "client_id": "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3", "token_type":"Bearer", "exp":1712271294, "iat":1712270394 }
+
+        { "active" : false }'
     OAuthTokenRefreshBody:
       allOf:
       - $ref: '#/components/schemas/OAuthTokenBody'
@@ -406,44 +394,57 @@ components:
         - redirect_uri
         additionalProperties: false
       description: Available properties for obtaining an access token
-    auth_token_post:
+    OAuthTokenBody:
       type: object
-      required:
-      - grant_type
       properties:
         grant_type:
           type: string
           enum:
-          - authorization_code
+          - client_credentials
           - refresh_token
-          description: The OAuth2 grant type being used.
-          example: authorization_code
-        code:
+          - authorization_code
+          description: Grant type.
+        client_id:
           type: string
-          description: Required when grant_type is `authorization_code`. The authorization code issued for your org API client (returned as `clientId`/`id` when the API client was authorized for the org).
-          example: 459f521f-f2fa-4230-a704-46147ac8as7e
-        refresh_token:
+          description: Client ID.
+        client_secret:
           type: string
-          description: Required when grant_type is `refresh_token`. A refresh token returned by a previous token request.
-          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.abc123
-    auth_token_response:
+          description: Client secret.
+      required:
+      - grant_type
+      - client_id
+      - client_secret
+      description: Available properties for obtaining an access token
+      additionalProperties: false
+    Error:
       type: object
       properties:
-        access_token:
+        id:
           type: string
-          description: 'JWT bearer token to send as `Authorization: Bearer <access_token>` on API requests.'
-          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.abc123
-        token_type:
-          type: string
-          example: Bearer
-        expires_in:
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
           type: integer
-          description: Lifetime of the access token in seconds.
-          example: 3600
-        refresh_token:
+          description: The HTTP status code
+        title:
           type: string
-          description: Token used to obtain a new access token without re-sending credentials.
-          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.xyz789
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
     OAuthTokenInfo:
       type: object
       properties:
@@ -498,18 +499,17 @@ components:
       example:
         error: invalid_client
         error_description: Client auth failed due to unknown client, no client auth included, or unsupported auth method.
+    OAuthTokenClientBody:
+      allOf:
+      - $ref: '#/components/schemas/OAuthTokenBody'
+      - type: object
+        properties:
+          scope:
+            type: string
+            description: Requested scope(s).
+        additionalProperties: false
+      description: Available properties for obtaining an access token
   responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     InternalServerError:
       description: Internal server error
       content:
@@ -543,6 +543,17 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   parameters:
     ApiVersionHeader:
       name: X-Api-Version
@@ -552,12 +563,12 @@ components:
       schema:
         type: string
   headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
     ApiVersionResponseHeader:
       description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
       schema:
         type: string
   securitySchemes:

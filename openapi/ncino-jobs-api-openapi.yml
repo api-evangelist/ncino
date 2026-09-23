@@ -51,133 +51,10 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-      description: This endpoint will retrieve an <<glossary:asynchronous job>> record.
+      description: This endpoint will retrieve an > record.
       summary: Retrieve a job record
 components:
-  responses:
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-  headers:
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
   schemas:
-    JobType:
-      type: string
-      enum:
-      - SYNC_LOAN_APPS
-      - VALIDATE_WEBHOOK_URL
-      - GENERATE_ORGANIZATION_REPORT
-      - DELETE_REGION_BRANCH
-      - ORDER_VERIFICATION_REPORT
-      - REFRESH_VERIFICATION_REPORTS
-      - DISCONNECT_BORROWER
-      - SEND_VERIFICATION_REMINDER
-      - DELETE_LOAN
-      - REASSIGN_BORROWERS_PARTNERS_LOAN_APPS
-    Job:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      - type: object
-        properties:
-          job_type:
-            allOf:
-            - $ref: '#/components/schemas/JobType'
-            description: Job's type.
-          job_description:
-            type:
-            - string
-            - 'null'
-            description: Job's description.
-          status:
-            allOf:
-            - $ref: '#/components/schemas/JobStatus'
-            description: Jobs's status.
-          created_at:
-            type: string
-            format: date-time
-            description: Timestamp of when the job was created.
-          updated_at:
-            type: string
-            format: date-time
-            description: Timestamp of when the job was updated.
-          started_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: Timestamp of when the job was started.
-          finished_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: Timestamp of when the job was finished.
-          message:
-            type:
-            - string
-            - 'null'
-            description: Message about the job.
-        additionalProperties: false
-      description: Job record
     ErrorSet:
       type: object
       properties:
@@ -207,6 +84,19 @@ components:
         required:
         - id
         additionalProperties: false
+    JobType:
+      type: string
+      enum:
+      - SYNC_LOAN_APPS
+      - VALIDATE_WEBHOOK_URL
+      - GENERATE_ORGANIZATION_REPORT
+      - DELETE_REGION_BRANCH
+      - ORDER_VERIFICATION_REPORT
+      - REFRESH_VERIFICATION_REPORTS
+      - DISCONNECT_BORROWER
+      - SEND_VERIFICATION_REMINDER
+      - DELETE_LOAN
+      - REASSIGN_BORROWERS_PARTNERS_LOAN_APPS
     JobStatus:
       type: string
       enum:
@@ -260,12 +150,122 @@ components:
       - _self
       - _type
       additionalProperties: false
+    Job:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          job_type:
+            allOf:
+            - $ref: '#/components/schemas/JobType'
+            description: Job's type.
+          job_description:
+            type:
+            - string
+            - 'null'
+            description: Job's description.
+          status:
+            allOf:
+            - $ref: '#/components/schemas/JobStatus'
+            description: Jobs's status.
+          created_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the job was created.
+          updated_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the job was updated.
+          started_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Timestamp of when the job was started.
+          finished_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Timestamp of when the job was finished.
+          message:
+            type:
+            - string
+            - 'null'
+            description: Message about the job.
+        additionalProperties: false
+      description: Job record
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   parameters:
     ApiVersionHeader:
       name: X-Api-Version
       description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
       required: false
       in: header
+      schema:
+        type: string
+  headers:
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
       schema:
         type: string
   securitySchemes:
