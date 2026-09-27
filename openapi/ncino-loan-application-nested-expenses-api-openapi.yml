@@ -318,78 +318,18 @@ paths:
       summary: 🚧 Delete a specific expense record. (BETA)
 components:
   schemas:
-    ErrorSet:
+    ExpenseCollectionUpdateBody:
       type: object
       properties:
-        errors:
+        records:
           type: array
           items:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/ExpenseItemUpdateBody'
+          description: Array of records to update.
       required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    ExpenseCollection:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollectionCreated'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Expense'
-            description: Array of created expense records.
-        required:
-        - contents
-        additionalProperties: false
-      description: Collection of expense records. Returned when creating multiple records.
-    ExpenseItemUpdateBody:
-      allOf:
-      - $ref: '#/components/schemas/ExpenseUpdateBody'
-      - type: object
-        properties:
-          _id:
-            type: string
-            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
-        required:
-        - _id
-      description: Body for updating an expense record. Aside from the ID, pass only the fields to update.
-      minProperties: 2
-    ExpenseCreateBody:
-      type: object
-      properties:
-        type:
-          type: string
-          description: This expense's type.
-        category:
-          type: string
-          description: This expense's category.
-        amount:
-          type: integer
-          description: The amount paid to this expense.
-        frequency:
-          type: string
-          description: The frequency at which this expense is paid.
-      description: Body for creating a new expense record.
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
+      - records
+      description: Body for updating multiple expense records.
+      additionalProperties: false
     Error:
       type: object
       properties:
@@ -419,18 +359,51 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
-    ExpenseCollectionCreateBody:
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    ExpenseCreateBody:
       type: object
       properties:
-        records:
+        type:
+          type: string
+          description: This expense's type.
+        category:
+          type: string
+          description: This expense's category.
+        amount:
+          type: integer
+          description: The amount paid to this expense.
+        frequency:
+          type: string
+          description: The frequency at which this expense is paid.
+      description: Body for creating a new expense record.
+    ErrorSet:
+      type: object
+      properties:
+        errors:
           type: array
           items:
-            $ref: '#/components/schemas/ExpenseCreateBody'
-          description: Array of records to create.
+            $ref: '#/components/schemas/Error'
       required:
-      - records
-      description: Body for creating multiple expense records.
-      additionalProperties: false
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
     Expense:
       allOf:
       - $ref: '#/components/schemas/ExpenseCreateBody'
@@ -442,34 +415,45 @@ components:
         required:
         - _id
       description: A single expense record.
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
-    ExpenseCollectionUpdateBody:
-      type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpenseItemUpdateBody'
-          description: Array of records to update.
-      required:
-      - records
-      description: Body for updating multiple expense records.
-      additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    ExpenseCollection:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollectionCreated'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Expense'
+            description: Array of created expense records.
+        required:
+        - contents
+        additionalProperties: false
+      description: Collection of expense records. Returned when creating multiple records.
+    ExpenseItemUpdateBody:
+      allOf:
+      - $ref: '#/components/schemas/ExpenseUpdateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: Body for updating an expense record. Aside from the ID, pass only the fields to update.
+      minProperties: 2
     ExpenseUpdateBody:
       type: object
       properties:
@@ -487,10 +471,6 @@ components:
           description: The frequency at which this expense is paid.
       description: Body for updating an expense record. Pass only the fields to update.
       minProperties: 1
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
     ResourceCollectionCreated:
       allOf:
       - $ref: '#/components/schemas/AbstractCollection'
@@ -509,18 +489,26 @@ components:
         representations. Extend this class and specify the item type via cattr_reader,
 
         similar to AbstractPagination.'
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
     ExpensePagination:
       allOf:
       - $ref: '#/components/schemas/AbstractPagination'
@@ -532,7 +520,26 @@ components:
               $ref: '#/components/schemas/Expense'
         required:
         - contents
+    ExpenseCollectionCreateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseCreateBody'
+          description: Array of records to create.
+      required:
+      - records
+      description: Body for creating multiple expense records.
+      additionalProperties: false
   parameters:
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
     ApiVersionHeader:
       name: X-Api-Version
       description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
@@ -547,45 +554,7 @@ components:
       in: query
       schema:
         type: integer
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-  headers:
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
   responses:
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     UnauthorizedError:
       description: Unauthorized
       content:
@@ -608,6 +577,17 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     InternalServerError:
       description: Internal server error
       content:
@@ -619,6 +599,26 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  headers:
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
   securitySchemes:
     OAuth2:
       type: oauth2

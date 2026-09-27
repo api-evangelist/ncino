@@ -254,39 +254,29 @@ paths:
                   CASCADE_STATUS: '#/components/schemas/CascadeStatusLoanMilestone'
 components:
   schemas:
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    CascadeStatusLoanMilestone:
+    AbstractResourceModel:
       allOf:
-      - $ref: '#/components/schemas/LoanMilestoneAction'
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          completed:
-            type: boolean
-            description: The target completion status.
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
         required:
-        - completed
+        - id
         additionalProperties: false
-      description: 'Cascade the completion status of this milestone forward or backward.
-
-        When completed is true: marks this and all preceding milestones as complete, all subsequent as incomplete.
-
-        When completed is false: marks this and all subsequent milestones as incomplete.'
+    LoanMilestonePagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/LoanMilestone'
+        required:
+        - contents
     LoanMilestone:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -334,30 +324,6 @@ components:
             description: Timestamp of when the milestone was last updated.
         additionalProperties: false
       description: A milestone instance on a specific loan, tracking completion status.
-    LoanMilestonePagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/LoanMilestone'
-        required:
-        - contents
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
     Error:
       type: object
       properties:
@@ -387,6 +353,91 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
+    LoanMilestoneAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - CASCADE_STATUS
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a loan milestone action.
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    CascadeStatusLoanMilestone:
+      allOf:
+      - $ref: '#/components/schemas/LoanMilestoneAction'
+      - type: object
+        properties:
+          completed:
+            type: boolean
+            description: The target completion status.
+        required:
+        - completed
+        additionalProperties: false
+      description: 'Cascade the completion status of this milestone forward or backward.
+
+        When completed is true: marks this and all preceding milestones as complete, all subsequent as incomplete.
+
+        When completed is false: marks this and all subsequent milestones as incomplete.'
+    LoanMilestonePatchBody:
+      type: object
+      properties:
+        completed:
+          type: boolean
+          description: Whether the milestone is completed.
+        notes:
+          type:
+          - string
+          - 'null'
+          maxLength: 65536
+          description: Notes on the milestone.
+      description: Available properties for updating a loan milestone.
+      additionalProperties: false
+      minProperties: 1
     AbstractModel:
       type: object
       properties:
@@ -403,61 +454,41 @@ components:
       - _self
       - _type
       additionalProperties: false
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    LoanMilestonePatchBody:
-      type: object
-      properties:
-        completed:
-          type: boolean
-          description: Whether the milestone is completed.
-        notes:
-          type:
-          - string
-          - 'null'
-          maxLength: 65536
-          description: Notes on the milestone.
-      description: Available properties for updating a loan milestone.
-      additionalProperties: false
-      minProperties: 1
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    LoanMilestoneAction:
-      type: object
-      properties:
-        action:
-          type: string
-          enum:
-          - CASCADE_STATUS
-          description: Action to perform.
-      required:
-      - action
-      description: Available properties for a loan milestone action.
-      additionalProperties: false
   parameters:
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
     UpdatedBefore:
       name: updated_before
       description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
       required: false
       in: query
       schema:
@@ -477,69 +508,7 @@ components:
       in: query
       schema:
         type: integer
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-  headers:
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
   responses:
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     UnauthorizedError:
       description: Unauthorized
       content:
@@ -562,6 +531,17 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     InternalServerError:
       description: Internal server error
       content:
@@ -573,6 +553,26 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  headers:
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
   securitySchemes:
     OAuth2:
       type: oauth2

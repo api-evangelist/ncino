@@ -256,65 +256,45 @@ paths:
                   REFRESH_VERIFICATION: '#/components/schemas/RefreshVerification'
 components:
   schemas:
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    Verification:
-      allOf:
-      - $ref: '#/components/schemas/AbstractVerification'
-      description: Verification model
-    RefreshVerification:
-      allOf:
-      - $ref: '#/components/schemas/VerificationAction'
-      - type: object
-        properties:
-          days_back:
-            type: integer
-            description: 'Number of days back for which the report will verify.
-
-              Valid values include: 30, 60, 90, 180, 360, 720'
-        required:
-        - days_back
-        additionalProperties: false
-      description: Available properties for refreshing a verification for a loan borrower.
-    VerificationPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Verification'
-        required:
-        - contents
-    AbstractCollection:
+    AbstractResourceModel:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
         required:
-        - contents
+        - id
         additionalProperties: false
+    AbstractVerification:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          created_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the verification report record was created.
+          updated_at:
+            type: string
+            format: date-time
+            description: Timestamp of when the verification report record was last updated.
+          completed_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Timestamp of when the verification report was completed.
+          report_type:
+            type: string
+            description: Verification report's type.
+        required:
+        - created_at
+        - report_type
+        additionalProperties: false
+      description: Abstract verification model
     Error:
       type: object
       properties:
@@ -344,81 +324,6 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    AbstractVerification:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      - type: object
-        properties:
-          created_at:
-            type: string
-            format: date-time
-            description: Timestamp of when the verification report record was created.
-          updated_at:
-            type: string
-            format: date-time
-            description: Timestamp of when the verification report record was last updated.
-          completed_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: Timestamp of when the verification report was completed.
-          report_type:
-            type: string
-            description: Verification report's type.
-        required:
-        - created_at
-        - report_type
-        additionalProperties: false
-      description: Abstract verification model
-    VerificationAction:
-      type: object
-      properties:
-        action:
-          type: string
-          enum:
-          - REFRESH_VERIFICATION
-          description: Action to perform.
-      required:
-      - action
-      description: Available properties for a verification action
-      additionalProperties: false
     AbstractPagination:
       allOf:
       - $ref: '#/components/schemas/AbstractCollection'
@@ -431,6 +336,69 @@ components:
             type: integer
             description: The total number of items in the collection.
         additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    VerificationPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Verification'
+        required:
+        - contents
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    RefreshVerification:
+      allOf:
+      - $ref: '#/components/schemas/VerificationAction'
+      - type: object
+        properties:
+          days_back:
+            type: integer
+            description: 'Number of days back for which the report will verify.
+
+              Valid values include: 30, 60, 90, 180, 360, 720'
+        required:
+        - days_back
+        additionalProperties: false
+      description: Available properties for refreshing a verification for a loan borrower.
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    Verification:
+      allOf:
+      - $ref: '#/components/schemas/AbstractVerification'
+      description: Verification model
     VerificationReportType:
       type: string
       enum:
@@ -450,10 +418,73 @@ components:
       - VOIE_PAYROLL
       - VOIE_TX_VERIFY
       description: Types of verification reports.
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    VerificationAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - REFRESH_VERIFICATION
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a verification action
+      additionalProperties: false
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
   parameters:
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
     UpdatedBefore:
       name: updated_before
       description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
       required: false
       in: query
       schema:
@@ -473,37 +504,6 @@ components:
       in: query
       schema:
         type: integer
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
   headers:
     ContentDispositionResponseHeader:
       description: Additional information about response payload.
@@ -518,28 +518,6 @@ components:
       schema:
         type: string
   responses:
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     UnauthorizedError:
       description: Unauthorized
       content:
@@ -562,8 +540,30 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     InternalServerError:
       description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:

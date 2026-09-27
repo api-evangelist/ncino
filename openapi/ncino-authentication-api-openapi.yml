@@ -234,6 +234,8 @@ components:
           type: string
           description: Required when grant_type is `refresh_token`. A refresh token returned by a previous token request.
           example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.abc123
+    error_response:
+      type: object
     auth_token_response:
       type: object
       properties:
@@ -252,8 +254,72 @@ components:
           type: string
           description: Token used to obtain a new access token without re-sending credentials.
           example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.xyz789
-    error_response:
+    Error:
       type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    OAuthTokenBody:
+      type: object
+      properties:
+        grant_type:
+          type: string
+          enum:
+          - client_credentials
+          - refresh_token
+          - authorization_code
+          description: Grant type.
+        client_id:
+          type: string
+          description: Client ID.
+        client_secret:
+          type: string
+          description: Client secret.
+      required:
+      - grant_type
+      - client_id
+      - client_secret
+      description: Available properties for obtaining an access token
+      additionalProperties: false
+    OAuthTokenRefreshBody:
+      allOf:
+      - $ref: '#/components/schemas/OAuthTokenBody'
+      - type: object
+        properties:
+          refresh_token:
+            type: string
+            description: Refresh token.
+          scope:
+            type: string
+            description: Requested scope(s).
+        required:
+        - refresh_token
+        additionalProperties: false
+      description: Available properties for refreshing an access token
     OAuthActionBody:
       type: object
       properties:
@@ -284,65 +350,22 @@ components:
       - token
       description: Available properties for access token actions
       additionalProperties: false
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    OAuthTokenIntrospect:
-      type: object
-      properties:
-        active:
-          type: boolean
-          description: Indicates whether access token is active.
-        scope:
-          type: string
-          description: Scopes granted.
-        client_id:
-          type: string
-          description: Client ID of the organization credential associated with the access token.
-        token_type:
-          type: string
-          description: Type of access token ("Bearer").
-        exp:
-          type: integer
-          description: Access token expiration timestamp.
-        iat:
-          type: integer
-          description: Access token issued at timestamp.
-      required:
-      - active
-      description: OAuth 2.0 Access Token introspect information.
-      example: '{ "active" : true, "scope": "external", "client_id": "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3", "token_type":"Bearer", "exp":1712271294, "iat":1712270394 }
-
-        { "active" : false }'
-    OAuthTokenRefreshBody:
+    OAuthTokenCodeBody:
       allOf:
       - $ref: '#/components/schemas/OAuthTokenBody'
       - type: object
         properties:
-          refresh_token:
+          code:
             type: string
-            description: Refresh token.
-          scope:
+            description: Authorization Code.
+          redirect_uri:
             type: string
-            description: Requested scope(s).
+            description: Redirect URL.
         required:
-        - refresh_token
+        - code
+        - redirect_uri
         additionalProperties: false
-      description: Available properties for refreshing an access token
+      description: Available properties for obtaining an access token
     OAuthToken:
       type: object
       properties:
@@ -378,105 +401,50 @@ components:
         token_type: Bearer
         expires_in: 900
         scope: external
-    OAuthTokenCodeBody:
-      allOf:
-      - $ref: '#/components/schemas/OAuthTokenBody'
-      - type: object
-        properties:
-          code:
-            type: string
-            description: Authorization Code.
-          redirect_uri:
-            type: string
-            description: Redirect URL.
-        required:
-        - code
-        - redirect_uri
-        additionalProperties: false
-      description: Available properties for obtaining an access token
-    OAuthTokenBody:
+    OAuthTokenIntrospect:
       type: object
       properties:
-        grant_type:
+        active:
+          type: boolean
+          description: Indicates whether access token is active.
+        scope:
           type: string
-          enum:
-          - client_credentials
-          - refresh_token
-          - authorization_code
-          description: Grant type.
+          description: Scopes granted.
         client_id:
           type: string
-          description: Client ID.
-        client_secret:
+          description: Client ID of the organization credential associated with the access token.
+        token_type:
           type: string
-          description: Client secret.
+          description: Type of access token ("Bearer").
+        exp:
+          type: integer
+          description: Access token expiration timestamp.
+        iat:
+          type: integer
+          description: Access token issued at timestamp.
       required:
-      - grant_type
-      - client_id
-      - client_secret
-      description: Available properties for obtaining an access token
-      additionalProperties: false
-    Error:
+      - active
+      description: OAuth 2.0 Access Token introspect information.
+      example: '{ "active" : true, "scope": "external", "client_id": "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3", "token_type":"Bearer", "exp":1712271294, "iat":1712270394 }
+
+        { "active" : false }'
+    ErrorSet:
       type: object
       properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    OAuthTokenInfo:
-      type: object
-      properties:
-        expires_in:
-          type: integer
-          description: Duration of time the access token is granted for (seconds).
-        scope:
+        errors:
           type: array
           items:
-            type: string
-          description: Scopes granted.
-        created_at:
-          type: integer
-          description: Timestamp when access token was issued.
-        credential:
-          type: object
-          properties:
-            client_id:
-              type: string
-          description: Organization credential associated with access token.
+            $ref: '#/components/schemas/Error'
       required:
-      - expires_in
-      - created_at
-      - credential
-      description: OAuth 2.0 Access Token information.
+      - errors
       example:
-        scope:
-        - external
-        expires_in: 900
-        credential:
-          client_id: MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3
-        created_at: 171216788
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
     OAuthError:
       type: object
       properties:
@@ -509,9 +477,41 @@ components:
             description: Requested scope(s).
         additionalProperties: false
       description: Available properties for obtaining an access token
+    OAuthTokenInfo:
+      type: object
+      properties:
+        expires_in:
+          type: integer
+          description: Duration of time the access token is granted for (seconds).
+        scope:
+          type: array
+          items:
+            type: string
+          description: Scopes granted.
+        created_at:
+          type: integer
+          description: Timestamp when access token was issued.
+        credential:
+          type: object
+          properties:
+            client_id:
+              type: string
+          description: Organization credential associated with access token.
+      required:
+      - expires_in
+      - created_at
+      - credential
+      description: OAuth 2.0 Access Token information.
+      example:
+        scope:
+        - external
+        expires_in: 900
+        credential:
+          client_id: MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3
+        created_at: 171216788
   responses:
-    InternalServerError:
-      description: Internal server error
+    BadRequestError:
+      description: Bad request
       content:
         application/json:
           schema:
@@ -532,17 +532,6 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     ForbiddenError:
       description: Forbidden
       content:
@@ -554,21 +543,32 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
   parameters:
     ApiVersionHeader:
       name: X-Api-Version
       description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
       required: false
       in: header
-      schema:
-        type: string
-  headers:
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
       schema:
         type: string
   securitySchemes:

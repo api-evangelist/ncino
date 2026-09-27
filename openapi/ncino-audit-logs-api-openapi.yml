@@ -88,30 +88,11 @@ paths:
           $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
 components:
   schemas:
-    user:
+    error_response:
       type: object
-      nullable: true
-      example: null
-    status:
+    mers_org_id:
       type: string
-      nullable: true
-      example: unregistered
-    user_agent:
-      type: string
-      nullable: true
-      example: null
-    min:
-      type: string
-      example: 123456789012345680
-    base64:
-      type: string
-      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
-    general_iso8601:
-      type: string
-      example: '2019-02-28T00:00:00Z'
-    is_system:
-      type: boolean
-      example: false
+      example: 1234567
     default_success_response:
       type: object
       properties:
@@ -130,18 +111,32 @@ components:
           items:
             type: string
           example: null
-    incoming:
-      type: boolean
-      example: false
-    error_response:
-      type: object
     is_test:
       type: boolean
       example: true
+    min:
+      type: string
+      example: 123456789012345680
+    general_iso8601:
+      type: string
+      example: '2019-02-28T00:00:00Z'
+    base64:
+      type: string
+      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
     additional_info:
       type: string
       nullable: true
       example: null
+    is_system:
+      type: boolean
+      example: false
+    user_agent:
+      type: string
+      nullable: true
+      example: null
+    incoming:
+      type: boolean
+      example: false
     event_type:
       type: string
       enum:
@@ -252,16 +247,21 @@ components:
       - activate_org_api_clients
       - edit_org_api_client_permissions
       example: delivery_initiated
-    mers_org_id:
-      type: string
-      example: 1234567
-    guid:
-      type: string
-      example: 459f521f-f2fa-4230-a704-46147ac8as7e
     ip_address:
       type: string
       nullable: true
       example: null
+    user:
+      type: object
+      nullable: true
+      example: null
+    guid:
+      type: string
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    status:
+      type: string
+      nullable: true
+      example: unregistered
   securitySchemes:
     bearerAuth:
       type: http

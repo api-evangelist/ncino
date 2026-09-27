@@ -348,35 +348,37 @@ paths:
                   MARK_AS_COMPLETE: '#/components/schemas/MarkAsCompleteLoanDocTask'
 components:
   schemas:
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    LoanDocTaskPagination:
+    AbstractResourceModel:
       allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/LoanDocTask'
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
         required:
-        - contents
-    LoanDocTaskPostBody:
+        - id
+        additionalProperties: false
+    LoanDocDefinitionTypes:
+      type: string
+      enum:
+      - null_doc
+      - other
+      - w2
+      - drivers_license
+      - paystub
+      - bank_statement
+      - federal_tax_return
+      - divorce_decree
+      - '1099'
+      - social_security_card
+      - dd214
+      - k1
+      - passport
+      - certificate_of_housing_counseling
+      description: Types of loan doc definitions.
+    LoanDocTaskUpdateBody:
       type: object
       properties:
         name:
@@ -384,52 +386,9 @@ components:
           minLength: 1
           maxLength: 255
           description: Loan doc task's name.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 255
-          description: Loan doc task's description.
-        doc_type:
-          allOf:
-          - $ref: '#/components/schemas/LoanDocDefinitionTypes'
-          description: Type of loan doc definition to create.
-        loan_borrower_id:
-          type: string
-          format: uuid
-          description: ID of the loan borrower to assign the task to.
-      required:
-      - name
-      - doc_type
-      - loan_borrower_id
-      description: Available properties for creating a loan doc task.
+      description: Available properties for updating a loan doc task.
       additionalProperties: false
-    LoanDocTaskAction:
-      type: object
-      properties:
-        action:
-          type: string
-          enum:
-          - MARK_AS_COMPLETE
-          description: Action to perform.
-      required:
-      - action
-      description: Available properties for a loan doc task action.
-      additionalProperties: false
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
+      minProperties: 1
     Error:
       type: object
       properties:
@@ -459,6 +418,100 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    MarkAsCompleteLoanDocTask:
+      allOf:
+      - $ref: '#/components/schemas/LoanDocTaskAction'
+      description: Available properties for marking a loan doc task as complete.
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    LoanDocTaskPostBody:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Loan doc task's name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Loan doc task's description.
+        doc_type:
+          allOf:
+          - $ref: '#/components/schemas/LoanDocDefinitionTypes'
+          description: Type of loan doc definition to create.
+        loan_borrower_id:
+          type: string
+          format: uuid
+          description: ID of the loan borrower to assign the task to.
+      required:
+      - name
+      - doc_type
+      - loan_borrower_id
+      description: Available properties for creating a loan doc task.
+      additionalProperties: false
+    LoanDocTaskPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/LoanDocTask'
+        required:
+        - contents
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
     AbstractModel:
       type: object
       properties:
@@ -475,55 +528,18 @@ components:
       - _self
       - _type
       additionalProperties: false
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
-    LoanDocDefinitionTypes:
-      type: string
-      enum:
-      - null_doc
-      - other
-      - w2
-      - drivers_license
-      - paystub
-      - bank_statement
-      - federal_tax_return
-      - divorce_decree
-      - '1099'
-      - social_security_card
-      - dd214
-      - k1
-      - passport
-      - certificate_of_housing_counseling
-      description: Types of loan doc definitions.
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    LoanDocTaskUpdateBody:
+    LoanDocTaskAction:
       type: object
       properties:
-        name:
+        action:
           type: string
-          minLength: 1
-          maxLength: 255
-          description: Loan doc task's name.
-      description: Available properties for updating a loan doc task.
+          enum:
+          - MARK_AS_COMPLETE
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a loan doc task action.
       additionalProperties: false
-      minProperties: 1
     LoanDocTask:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -550,26 +566,41 @@ components:
             description: Timestamp of when the task record was last updated.
         additionalProperties: false
       description: Loan doc task model
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    MarkAsCompleteLoanDocTask:
-      allOf:
-      - $ref: '#/components/schemas/LoanDocTaskAction'
-      description: Available properties for marking a loan doc task as complete.
   parameters:
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
     UpdatedBefore:
       name: updated_before
       description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
       required: false
       in: query
       schema:
@@ -589,69 +620,7 @@ components:
       in: query
       schema:
         type: integer
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-  headers:
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
   responses:
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     UnauthorizedError:
       description: Unauthorized
       content:
@@ -674,6 +643,17 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     InternalServerError:
       description: Internal server error
       content:
@@ -685,6 +665,26 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  headers:
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
   securitySchemes:
     OAuth2:
       type: oauth2
