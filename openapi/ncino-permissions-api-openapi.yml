@@ -114,65 +114,6 @@ paths:
       summary: 🚧 Retrieve the permissions included in a given default role template (BETA)
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    PermissionTemplate:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          template_key:
-            type: string
-            description: The template identifier.
-          permissions:
-            type: array
-            items:
-              type: string
-            description: Permission keys enabled in this template.
-        required:
-        - template_key
-        - permissions
-        additionalProperties: false
-      description: The permissions included in a default role template.
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
     AbstractCollection:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -183,6 +124,18 @@ components:
             items:
               type: object
             description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    PermissionPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Permission'
         required:
         - contents
         additionalProperties: false
@@ -220,6 +173,18 @@ components:
         so this is a plain model keyed by its string `key` rather than a uuid-backed
 
         resource model.'
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
     ErrorSet:
       type: object
       properties:
@@ -237,18 +202,24 @@ components:
           detail: Detailed message for the error
           _links:
             resource: contextual resource if applicable
-    PermissionPagination:
+    PermissionTemplate:
       allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          contents:
+          template_key:
+            type: string
+            description: The template identifier.
+          permissions:
             type: array
             items:
-              $ref: '#/components/schemas/Permission'
+              type: string
+            description: Permission keys enabled in this template.
         required:
-        - contents
+        - template_key
+        - permissions
         additionalProperties: false
+      description: The permissions included in a default role template.
     AbstractModel:
       type: object
       properties:
@@ -265,31 +236,38 @@ components:
       - _self
       - _type
       additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
   responses:
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     BadRequestError:
       description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
       content:
         application/json:
           schema:
@@ -310,8 +288,30 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     InternalServerError:
       description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
       content:
         application/json:
           schema:

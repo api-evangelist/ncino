@@ -214,6 +214,26 @@ paths:
       description: Production server
 components:
   schemas:
+    auth_token_response:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: 'JWT bearer token to send as `Authorization: Bearer <access_token>` on API requests.'
+          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.abc123
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: Lifetime of the access token in seconds.
+          example: 3600
+        refresh_token:
+          type: string
+          description: Token used to obtain a new access token without re-sending credentials.
+          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.xyz789
+    error_response:
+      type: object
     auth_token_post:
       type: object
       required:
@@ -234,26 +254,138 @@ components:
           type: string
           description: Required when grant_type is `refresh_token`. A refresh token returned by a previous token request.
           example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.abc123
-    error_response:
-      type: object
-    auth_token_response:
+    OAuthTokenInfo:
       type: object
       properties:
-        access_token:
-          type: string
-          description: 'JWT bearer token to send as `Authorization: Bearer <access_token>` on API requests.'
-          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.abc123
-        token_type:
-          type: string
-          example: Bearer
         expires_in:
           type: integer
-          description: Lifetime of the access token in seconds.
-          example: 3600
-        refresh_token:
+          description: Duration of time the access token is granted for (seconds).
+        scope:
+          type: array
+          items:
+            type: string
+          description: Scopes granted.
+        created_at:
+          type: integer
+          description: Timestamp when access token was issued.
+        credential:
+          type: object
+          properties:
+            client_id:
+              type: string
+          description: Organization credential associated with access token.
+      required:
+      - expires_in
+      - created_at
+      - credential
+      description: OAuth 2.0 Access Token information.
+      example:
+        scope:
+        - external
+        expires_in: 900
+        credential:
+          client_id: MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3
+        created_at: 171216788
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    OAuthActionBody:
+      type: object
+      properties:
+        action:
           type: string
-          description: Token used to obtain a new access token without re-sending credentials.
-          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.xyz789
+          enum:
+          - REVOKE
+          - INTROSPECT
+          description: Action to perform.
+        client_id:
+          type: string
+          description: Client ID.
+        client_secret:
+          type: string
+          description: Client secret.
+        token:
+          type: string
+          description: Access or refresh token.
+        token_type_hint:
+          type: string
+          enum:
+          - access_token
+          - refresh_token
+          description: Type of token.
+      required:
+      - client_id
+      - client_secret
+      - token
+      description: Available properties for access token actions
+      additionalProperties: false
+    OAuthTokenIntrospect:
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: Indicates whether access token is active.
+        scope:
+          type: string
+          description: Scopes granted.
+        client_id:
+          type: string
+          description: Client ID of the organization credential associated with the access token.
+        token_type:
+          type: string
+          description: Type of access token ("Bearer").
+        exp:
+          type: integer
+          description: Access token expiration timestamp.
+        iat:
+          type: integer
+          description: Access token issued at timestamp.
+      required:
+      - active
+      description: OAuth 2.0 Access Token introspect information.
+      example: '{ "active" : true, "scope": "external", "client_id": "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3", "token_type":"Bearer", "exp":1712271294, "iat":1712270394 }
+
+        { "active" : false }'
+    OAuthTokenCodeBody:
+      allOf:
+      - $ref: '#/components/schemas/OAuthTokenBody'
+      - type: object
+        properties:
+          code:
+            type: string
+            description: Authorization Code.
+          redirect_uri:
+            type: string
+            description: Redirect URL.
+        required:
+        - code
+        - redirect_uri
+        additionalProperties: false
+      description: Available properties for obtaining an access token
+    OAuthTokenClientBody:
+      allOf:
+      - $ref: '#/components/schemas/OAuthTokenBody'
+      - type: object
+        properties:
+          scope:
+            type: string
+            description: Requested scope(s).
+        additionalProperties: false
+      description: Available properties for obtaining an access token
     Error:
       type: object
       properties:
@@ -283,6 +415,28 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
+    OAuthError:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+          - invalid_request
+          - invalid_client
+          - invalid_grant
+          - invalid_scope
+          - unauthorized_client
+          - unsupported_grant_type
+          description: Error code.
+        error_description:
+          type: string
+          description: Error description.
+      required:
+      - error
+      description: OAuth 2.0 Error.
+      example:
+        error: invalid_client
+        error_description: Client auth failed due to unknown client, no client auth included, or unsupported auth method.
     OAuthTokenBody:
       type: object
       properties:
@@ -320,52 +474,6 @@ components:
         - refresh_token
         additionalProperties: false
       description: Available properties for refreshing an access token
-    OAuthActionBody:
-      type: object
-      properties:
-        action:
-          type: string
-          enum:
-          - REVOKE
-          - INTROSPECT
-          description: Action to perform.
-        client_id:
-          type: string
-          description: Client ID.
-        client_secret:
-          type: string
-          description: Client secret.
-        token:
-          type: string
-          description: Access or refresh token.
-        token_type_hint:
-          type: string
-          enum:
-          - access_token
-          - refresh_token
-          description: Type of token.
-      required:
-      - client_id
-      - client_secret
-      - token
-      description: Available properties for access token actions
-      additionalProperties: false
-    OAuthTokenCodeBody:
-      allOf:
-      - $ref: '#/components/schemas/OAuthTokenBody'
-      - type: object
-        properties:
-          code:
-            type: string
-            description: Authorization Code.
-          redirect_uri:
-            type: string
-            description: Redirect URL.
-        required:
-        - code
-        - redirect_uri
-        additionalProperties: false
-      description: Available properties for obtaining an access token
     OAuthToken:
       type: object
       properties:
@@ -401,114 +509,6 @@ components:
         token_type: Bearer
         expires_in: 900
         scope: external
-    OAuthTokenIntrospect:
-      type: object
-      properties:
-        active:
-          type: boolean
-          description: Indicates whether access token is active.
-        scope:
-          type: string
-          description: Scopes granted.
-        client_id:
-          type: string
-          description: Client ID of the organization credential associated with the access token.
-        token_type:
-          type: string
-          description: Type of access token ("Bearer").
-        exp:
-          type: integer
-          description: Access token expiration timestamp.
-        iat:
-          type: integer
-          description: Access token issued at timestamp.
-      required:
-      - active
-      description: OAuth 2.0 Access Token introspect information.
-      example: '{ "active" : true, "scope": "external", "client_id": "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3", "token_type":"Bearer", "exp":1712271294, "iat":1712270394 }
-
-        { "active" : false }'
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    OAuthError:
-      type: object
-      properties:
-        error:
-          type: string
-          enum:
-          - invalid_request
-          - invalid_client
-          - invalid_grant
-          - invalid_scope
-          - unauthorized_client
-          - unsupported_grant_type
-          description: Error code.
-        error_description:
-          type: string
-          description: Error description.
-      required:
-      - error
-      description: OAuth 2.0 Error.
-      example:
-        error: invalid_client
-        error_description: Client auth failed due to unknown client, no client auth included, or unsupported auth method.
-    OAuthTokenClientBody:
-      allOf:
-      - $ref: '#/components/schemas/OAuthTokenBody'
-      - type: object
-        properties:
-          scope:
-            type: string
-            description: Requested scope(s).
-        additionalProperties: false
-      description: Available properties for obtaining an access token
-    OAuthTokenInfo:
-      type: object
-      properties:
-        expires_in:
-          type: integer
-          description: Duration of time the access token is granted for (seconds).
-        scope:
-          type: array
-          items:
-            type: string
-          description: Scopes granted.
-        created_at:
-          type: integer
-          description: Timestamp when access token was issued.
-        credential:
-          type: object
-          properties:
-            client_id:
-              type: string
-          description: Organization credential associated with access token.
-      required:
-      - expires_in
-      - created_at
-      - credential
-      description: OAuth 2.0 Access Token information.
-      example:
-        scope:
-        - external
-        expires_in: 900
-        credential:
-          client_id: MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3
-        created_at: 171216788
   responses:
     BadRequestError:
       description: Bad request
@@ -521,8 +521,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -532,8 +532,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
+    UnauthorizedError:
+      description: Unauthorized
       content:
         application/json:
           schema:

@@ -332,18 +332,6 @@ paths:
                   CHANGE_ORG: '#/components/schemas/ChangeOrgLoanOfficer'
 components:
   schemas:
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
     InputThirdParty:
       type: object
       properties:
@@ -378,102 +366,107 @@ components:
       enum:
       - ''
       description: An empty string.
-    SendWelcomeEmailLoanOfficer:
+    DisableLoanOfficer:
       allOf:
       - $ref: '#/components/schemas/LoanOfficerAction'
-      description: Available properties for sending a welcome email to a loan officer.
-    ThirdParty:
+      - type: object
+        properties:
+          borrower_LO_reassignment:
+            type: string
+            format: uuid
+            description: Loan officer's ID to which existing <<glossary:borrower account>>s will be reassigned. Default loan officer is used if no ID is provided.
+          partner_LO_reassignment:
+            type: string
+            format: uuid
+            description: Loan officer's ID to which existing <<glossary:partner>>s will be reassigned. Default loan officer is used if no ID is provided.
+        additionalProperties: false
+      description: Available properties for disabling a loan officer.
+    AbstractCollection:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          credit_user_id:
-            type:
-            - string
-            - 'null'
-            description: External user ID for credit orders.
-          los_username:
-            type:
-            - string
-            - 'null'
-            description: External LOS username.
-          crm_user_id:
-            type:
-            - string
-            - 'null'
-            description: External user ID for CRM.
-          crm_user_type:
-            type:
-            - string
-            - 'null'
-            description: External user type for CRM.
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
         required:
-        - credit_user_id
-        - los_username
+        - contents
         additionalProperties: false
-      description: Third party data for user
-    LoanOfficerInputAddress:
+    ChangeOrgLoanOfficer:
       allOf:
-      - $ref: '#/components/schemas/InputAddress'
+      - $ref: '#/components/schemas/LoanOfficerAction'
       - type: object
         properties:
-          state:
-            allOf:
-            - $ref: '#/components/schemas/StateCode'
-            description: Loan officer's state.
+          org_type:
+            type: string
+            enum:
+            - COMPANY
+            - REGION
+            - BRANCH
+            description: Organization type (<<glossary:COMPANY>>, <<glossary:REGION>>, <<glossary:BRANCH>>).
+          org_id:
+            type: string
+            format: uuid
+            description: Organization ID.
         required:
-        - state
+        - org_type
+        - org_id
         additionalProperties: false
-      description: Available properties for a loan officer's address.
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    AbstractPagination:
+      description: Available properties for changing a loan officer's organization.
+    AbstractResourceModel:
       allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
         additionalProperties: false
-    ResourceCreated:
+    SendWelcomeEmailLoanOfficer:
       allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
+      - $ref: '#/components/schemas/LoanOfficerAction'
+      description: Available properties for sending a welcome email to a loan officer.
     PromoteLoanOfficer:
       allOf:
       - $ref: '#/components/schemas/LoanOfficerAction'
       description: Available properties for promoting a loan officer.
+    Address:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          street1:
+            type:
+            - string
+            - 'null'
+            description: Street line 1.
+          street2:
+            type:
+            - string
+            - 'null'
+            description: Street line 2.
+          city:
+            type:
+            - string
+            - 'null'
+            description: City.
+          state:
+            oneOf:
+            - $ref: '#/components/schemas/StateCode'
+            - $ref: '#/components/schemas/EmptyString'
+            description: State.
+          zip:
+            type:
+            - string
+            - 'null'
+            description: Zip code.
+        additionalProperties: false
+      description: Address model
     ErrorSet:
       type: object
       properties:
@@ -491,6 +484,10 @@ components:
           detail: Detailed message for the error
           _links:
             resource: contextual resource if applicable
+    EnableLoanOfficer:
+      allOf:
+      - $ref: '#/components/schemas/LoanOfficerAction'
+      description: Available properties for enabling a loan officer.
     LoanOfficerPatchBody:
       type: object
       properties:
@@ -561,6 +558,72 @@ components:
       description: Available properties for updating a <<glossary:loan officer>> record.
       additionalProperties: false
       minProperties: 1
+    StateCode:
+      type: string
+      enum:
+      - AA
+      - AE
+      - AK
+      - AL
+      - AP
+      - AR
+      - AS
+      - AZ
+      - CA
+      - CO
+      - CT
+      - DC
+      - DE
+      - FL
+      - FM
+      - GA
+      - GU
+      - HI
+      - IA
+      - ID
+      - IL
+      - IN
+      - KS
+      - KY
+      - LA
+      - MA
+      - MD
+      - ME
+      - MH
+      - MI
+      - MN
+      - MO
+      - MP
+      - MS
+      - MT
+      - NC
+      - ND
+      - NE
+      - NH
+      - NJ
+      - NM
+      - NV
+      - NY
+      - OH
+      - OK
+      - OR
+      - PA
+      - PR
+      - PW
+      - RI
+      - SC
+      - SD
+      - TN
+      - TX
+      - UT
+      - VA
+      - VI
+      - VT
+      - WA
+      - WI
+      - WV
+      - WY
+      description: State abbreviated code.
     LoanOfficerAction:
       type: object
       properties:
@@ -578,40 +641,174 @@ components:
       - action
       description: Available properties for a loan officer action.
       additionalProperties: false
-    AbstractCollection:
+    ThirdParty:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          credit_user_id:
+            type:
+            - string
+            - 'null'
+            description: External user ID for credit orders.
+          los_username:
+            type:
+            - string
+            - 'null'
+            description: External LOS username.
+          crm_user_id:
+            type:
+            - string
+            - 'null'
+            description: External user ID for CRM.
+          crm_user_type:
+            type:
+            - string
+            - 'null'
+            description: External user type for CRM.
+        required:
+        - credit_user_id
+        - los_username
+        additionalProperties: false
+      description: Third party data for user
+    LoanOfficerPostBody:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Loan officer's first name.
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Loan officer's last name.
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Loan officer's email.
+        phone:
+          type: string
+          format: phone
+          description: Loan officer's phone.
+        website:
+          type: string
+          format: http_uri
+          maxLength: 700
+          description: Loan officers website URL (e.g. http://mydomain.com).
+        address:
+          allOf:
+          - $ref: '#/components/schemas/LoanOfficerInputAddress'
+          description: Loan officer's address.
+        nmls:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Loan officer's NMLS ID.
+        cost_center:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Cost center identifier.
+        title:
+          type:
+          - string
+          - 'null'
+          description: Loan officer's title.
+        office_phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Loan officer's office phone.
+        bio:
+          type:
+          - string
+          - 'null'
+          maxLength: 700
+          description: Loan officer's bio.
+        is_discoverable:
+          type: boolean
+          description: Whether the loan officer can be billed.
+      required:
+      - first_name
+      - last_name
+      - email
+      - phone
+      - website
+      - address
+      description: Available properties for creating a <<glossary:loan officer>> record.
+      additionalProperties: false
+    LoanOfficerPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
       - type: object
         properties:
           contents:
             type: array
             items:
-              type: object
-            description: The contents for the collection.
+              $ref: '#/components/schemas/LoanOfficer'
         required:
         - contents
-        additionalProperties: false
-    ChangeOrgLoanOfficer:
+    DemoteLoanOfficer:
       allOf:
       - $ref: '#/components/schemas/LoanOfficerAction'
+      description: Available properties for demoting a loan officer.
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    InputAddress:
+      type: object
+      properties:
+        street1:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Street line 1
+        street2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Street line 2
+        city:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: City
+        state:
+          allOf:
+          - $ref: '#/components/schemas/StateCode'
+          description: State
+        zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip code
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
       - type: object
         properties:
-          org_type:
-            type: string
-            enum:
-            - COMPANY
-            - REGION
-            - BRANCH
-            description: Organization type (<<glossary:COMPANY>>, <<glossary:REGION>>, <<glossary:BRANCH>>).
-          org_id:
-            type: string
-            format: uuid
-            description: Organization ID.
-        required:
-        - org_type
-        - org_id
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
         additionalProperties: false
-      description: Available properties for changing a loan officer's organization.
     LoanOfficer:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -718,223 +915,6 @@ components:
         - address
         additionalProperties: false
       description: Loan officer model
-    Address:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          street1:
-            type:
-            - string
-            - 'null'
-            description: Street line 1.
-          street2:
-            type:
-            - string
-            - 'null'
-            description: Street line 2.
-          city:
-            type:
-            - string
-            - 'null'
-            description: City.
-          state:
-            oneOf:
-            - $ref: '#/components/schemas/StateCode'
-            - $ref: '#/components/schemas/EmptyString'
-            description: State.
-          zip:
-            type:
-            - string
-            - 'null'
-            description: Zip code.
-        additionalProperties: false
-      description: Address model
-    StateCode:
-      type: string
-      enum:
-      - AA
-      - AE
-      - AK
-      - AL
-      - AP
-      - AR
-      - AS
-      - AZ
-      - CA
-      - CO
-      - CT
-      - DC
-      - DE
-      - FL
-      - FM
-      - GA
-      - GU
-      - HI
-      - IA
-      - ID
-      - IL
-      - IN
-      - KS
-      - KY
-      - LA
-      - MA
-      - MD
-      - ME
-      - MH
-      - MI
-      - MN
-      - MO
-      - MP
-      - MS
-      - MT
-      - NC
-      - ND
-      - NE
-      - NH
-      - NJ
-      - NM
-      - NV
-      - NY
-      - OH
-      - OK
-      - OR
-      - PA
-      - PR
-      - PW
-      - RI
-      - SC
-      - SD
-      - TN
-      - TX
-      - UT
-      - VA
-      - VI
-      - VT
-      - WA
-      - WI
-      - WV
-      - WY
-      description: State abbreviated code.
-    EnableLoanOfficer:
-      allOf:
-      - $ref: '#/components/schemas/LoanOfficerAction'
-      description: Available properties for enabling a loan officer.
-    InputAddress:
-      type: object
-      properties:
-        street1:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 255
-          description: Street line 1
-        street2:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: Street line 2
-        city:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 255
-          description: City
-        state:
-          allOf:
-          - $ref: '#/components/schemas/StateCode'
-          description: State
-        zip:
-          type:
-          - string
-          - 'null'
-          minLength: 5
-          maxLength: 10
-          description: Zip code
-      additionalProperties: false
-    DemoteLoanOfficer:
-      allOf:
-      - $ref: '#/components/schemas/LoanOfficerAction'
-      description: Available properties for demoting a loan officer.
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    LoanOfficerPostBody:
-      type: object
-      properties:
-        first_name:
-          type: string
-          minLength: 1
-          maxLength: 30
-          description: Loan officer's first name.
-        last_name:
-          type: string
-          minLength: 1
-          maxLength: 30
-          description: Loan officer's last name.
-        email:
-          type: string
-          format: email
-          maxLength: 255
-          description: Loan officer's email.
-        phone:
-          type: string
-          format: phone
-          description: Loan officer's phone.
-        website:
-          type: string
-          format: http_uri
-          maxLength: 700
-          description: Loan officers website URL (e.g. http://mydomain.com).
-        address:
-          allOf:
-          - $ref: '#/components/schemas/LoanOfficerInputAddress'
-          description: Loan officer's address.
-        nmls:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: Loan officer's NMLS ID.
-        cost_center:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: Cost center identifier.
-        title:
-          type:
-          - string
-          - 'null'
-          description: Loan officer's title.
-        office_phone:
-          type:
-          - string
-          - 'null'
-          format: phone
-          description: Loan officer's office phone.
-        bio:
-          type:
-          - string
-          - 'null'
-          maxLength: 700
-          description: Loan officer's bio.
-        is_discoverable:
-          type: boolean
-          description: Whether the loan officer can be billed.
-      required:
-      - first_name
-      - last_name
-      - email
-      - phone
-      - website
-      - address
-      description: Available properties for creating a <<glossary:loan officer>> record.
-      additionalProperties: false
     AbstractModel:
       type: object
       properties:
@@ -951,89 +931,55 @@ components:
       - _self
       - _type
       additionalProperties: false
-    DisableLoanOfficer:
+    ResourceCreated:
       allOf:
-      - $ref: '#/components/schemas/LoanOfficerAction'
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    LoanOfficerInputAddress:
+      allOf:
+      - $ref: '#/components/schemas/InputAddress'
       - type: object
         properties:
-          borrower_LO_reassignment:
-            type: string
-            format: uuid
-            description: Loan officer's ID to which existing <<glossary:borrower account>>s will be reassigned. Default loan officer is used if no ID is provided.
-          partner_LO_reassignment:
-            type: string
-            format: uuid
-            description: Loan officer's ID to which existing <<glossary:partner>>s will be reassigned. Default loan officer is used if no ID is provided.
-        additionalProperties: false
-      description: Available properties for disabling a loan officer.
-    LoanOfficerPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/LoanOfficer'
+          state:
+            allOf:
+            - $ref: '#/components/schemas/StateCode'
+            description: Loan officer's state.
         required:
-        - contents
-  parameters:
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    UpdatedBefore:
-      name: updated_before
-      description: The date which a resource must be updated before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
+        - state
+        additionalProperties: false
+      description: Available properties for a loan officer's address.
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
   responses:
-    UnauthorizedError:
-      description: Unauthorized
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -1065,6 +1011,17 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     InternalServerError:
       description: Internal server error
       content:
@@ -1076,26 +1033,69 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   headers:
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
     ApiSupportedVersionsResponseHeader:
       description: API supported versions for endpoint.
       schema:
         type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
   securitySchemes:
     OAuth2:
       type: oauth2

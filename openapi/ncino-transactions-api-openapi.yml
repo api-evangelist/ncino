@@ -315,67 +315,309 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    document_name:
+    effective_date:
       type: string
-      example: Document 1
+      example: '2019-02-28'
+    audit_logs:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/guid'
+          eventType:
+            $ref: '#/components/schemas/event_type'
+          incoming:
+            $ref: '#/components/schemas/incoming'
+          status:
+            $ref: '#/components/schemas/status'
+          requestTimestamp:
+            $ref: '#/components/schemas/general_iso8601'
+          isSystem:
+            $ref: '#/components/schemas/is_system'
+          isTest:
+            $ref: '#/components/schemas/is_test'
+      example:
+      - id: 459f521f-f2fa-4230-a704-46147ac8as7e
+        eventType: connectivity
+        incoming: false
+        status: success
+        requestTimestamp: '2019-02-28T00:00:00Z'
+        isTest: false
+    name:
+      type: string
+      example: Name
+    transfer_type:
+      type: string
+      enum:
+      - TransferAll
+      - TransferControl
+      - TransferControlWithSecuredParty
+      - TransferControlAndDelegatee
+      - TransferControlAndLocation
+      - TransferControlAndLocationWithSecuredParty
+      - TransferDelegatee
+      - TransferLocation
+      example: TransferAll
+    transaction_additional_details:
+      type: object
+      properties:
+        detailsType:
+          $ref: '#/components/schemas/detailed_transaction_type'
+        documentName:
+          type: string
+          example: Name
+        documentType:
+          type: string
+          example: Other
+        trackingNumber:
+          type: string
+          example: '123456'
+        approvalCode:
+          type: string
+          example: '5016'
+        approvalDescription:
+          type: string
+          example: signature doesn't match the value on mers registry
+        recipients:
+          type: array
+          items:
+            type: object
+            properties:
+              mersOrgId:
+                $ref: '#/components/schemas/mers_org_id'
+              status:
+                $ref: '#/components/schemas/delivery_recipient_status'
+              approvalCode:
+                type: string
+                example: '5016'
+              approvalDescription:
+                type: string
+                example: signature doesn't match the value on mers registry
+          example:
+          - mersOrgId: 1234567
+            status: disapproved
+            approvalCode: 5016
+            approvalDescription: signature doesn't match the value on mers registry
+        transferType:
+          $ref: '#/components/schemas/transfer_type'
+        mersReferenceId:
+          type: string
+          example: '123456'
+        confirmationStatus:
+          $ref: '#/components/schemas/transfer_confirmation_status'
+        effectiveDate:
+          $ref: '#/components/schemas/effective_date'
+        controller:
+          $ref: '#/components/schemas/mers_org_id'
+        masterServicer:
+          $ref: '#/components/schemas/mers_org_id'
+        subServicer:
+          $ref: '#/components/schemas/mers_org_id'
+        location:
+          $ref: '#/components/schemas/mers_org_id'
+        transferDelegatee:
+          $ref: '#/components/schemas/mers_org_id'
+        securedParty:
+          $ref: '#/components/schemas/mers_org_id'
+        securedPartyDelegatee:
+          $ref: '#/components/schemas/mers_org_id'
+        originalController:
+          $ref: '#/components/schemas/mers_org_id'
+        originalMasterServicer:
+          $ref: '#/components/schemas/mers_org_id'
+        originalSubServicer:
+          $ref: '#/components/schemas/mers_org_id'
+        originalLocation:
+          $ref: '#/components/schemas/mers_org_id'
+        originalTransferDelegatee:
+          $ref: '#/components/schemas/mers_org_id'
+        originalSecuredParty:
+          $ref: '#/components/schemas/mers_org_id'
+        originalSecuredPartyDelegatee:
+          $ref: '#/components/schemas/mers_org_id'
+      example:
+        detailsType: ChangeDataDetails
+        documentName: Name
+        documentType: Other
+    delivery_post:
+      type: object
+      required:
+      - recipients
+      properties:
+        recipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/mers_org_id'
+          example:
+          - '1234567'
     mers_response:
       type: string
       example: <xml>MERS response</xml>
+    connectivity_post:
+      type: object
+      properties:
+        addressType:
+          $ref: '#/components/schemas/mers_address_type'
+    content_type:
+      type: string
+      enum:
+      - application/pdf
+      - application/xml
+      example: application/pdf
+    boolean:
+      type: boolean
+      example: true
+    transaction_post:
+      type: object
+      properties:
+        confirmationType:
+          $ref: '#/components/schemas/confirmation_type'
+    request_id:
+      type: string
+      example: 123456
+    transaction_type:
+      type: string
+      enum:
+      - connectivity
+      - inquiry
+      - member_inquiry
+      - contact_inquiry
+      - registration
+      - delivery
+      - transfer
+      - change_status
+      - change_data
+      - resend_notifications
+      - controller_history
+      example: transfer
     is_test:
       type: boolean
       example: true
-    register_post:
+    mers_org_id:
+      type: string
+      example: 1234567
+    general_iso8601:
+      type: string
+      example: '2019-02-28T00:00:00Z'
+    status:
+      type: string
+      nullable: true
+      example: unregistered
+    transfer_confirmation_status:
+      type: string
+      enum:
+      - pending
+      - accepted
+      - rejected
+      - no_action_required
+      example: accepted
+    is_system:
+      type: boolean
+      example: false
+    change_status_type:
+      type: string
+      enum:
+      - REV_REGISTRATION
+      - PAID_OFF
+      - REV_PAID_OFF
+      - CHARGED_OFF
+      - REV_CHARGED_OFF
+      - CONV_PAPER
+      - REV_CONV_PAPER
+      - PAPER_REPLACEMENT
+      - REV_PAPER_REPLACEMENT
+      - TRANSF_TO_PROP
+      - REV_TRANSF_TO_PROP
+      - REV_ASSUMPTION
+      - REV_DOCUMENT
+      - REV_MODIFICATION
+      - ARCHIVE
+      example: REV_REGISTRATION
+    detailed_transaction_type:
+      type: string
+      enum:
+      - ChangeStatusDetails
+      - ChangeDataDetails
+      - RegistrationDetails
+      - TransferDetails
+      - DeliveryDetails
+      example: TransferDetails
+    confirmation_type:
+      type: string
+      enum:
+      - Accept
+      - Reject
+      - Approve
+      - Disapprove
+      - Cancel
+      example: Accept
+    transfer_post:
       type: object
       required:
-      - controllerOrgId
-      - locationOrgId
-      - servicerOrgId
-      - borrowers
+      - type
+      - effectiveDate
       properties:
+        type:
+          $ref: '#/components/schemas/transfer_type'
+        effectiveDate:
+          $ref: '#/components/schemas/effective_date'
         controllerOrgId:
           $ref: '#/components/schemas/mers_org_id'
         locationOrgId:
           $ref: '#/components/schemas/mers_org_id'
         servicerOrgId:
           $ref: '#/components/schemas/mers_org_id'
-        delegateeToTransferOrgId:
+        subservicerOrgId:
           $ref: '#/components/schemas/mers_org_id'
         securedPartyOrgId:
           $ref: '#/components/schemas/mers_org_id'
         securedPartyDelegateeOrgId:
           $ref: '#/components/schemas/mers_org_id'
-        transferControl:
-          type: boolean
-          example: false
-        borrowers:
-          type: array
-          items:
-            type: object
-            properties:
-              firstName:
-                $ref: '#/components/schemas/name'
-              middleName:
-                $ref: '#/components/schemas/name'
-              lastName:
-                $ref: '#/components/schemas/name'
-              suffix:
-                $ref: '#/components/schemas/name'
-          example:
-          - firstName: First
-            middleName: Middle
-            lastName: Last
-            suffix: Sr
+        delegateeForTransferOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        counterPartyOrgId:
+          $ref: '#/components/schemas/mers_org_id'
+        includeDelivery:
+          $ref: '#/components/schemas/boolean'
+    mers_address_type:
+      type: string
+      enum:
+      - eRegistry
+      - eDelivery
+      example: eRegistry
+    incoming:
+      type: boolean
+      example: false
+    inquiry_post:
+      type: object
+      properties:
+        min:
+          $ref: '#/components/schemas/min'
+        enote_guid:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Alternative to min. Either min or enote_guid is required.
     base64:
       type: string
       example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
-    transaction_post:
-      type: object
-      properties:
-        confirmationType:
-          $ref: '#/components/schemas/confirmation_type'
+    min:
+      type: string
+      example: 123456789012345680
     document_type:
       type: string
       example: AppraisalReport
+    delivery_recipient_status:
+      type: string
+      enum:
+      - sent
+      - accepted
+      - rejected
+      - approved
+      - disapproved
+      - canceled
+      - expired
+      example: approved
     event_type:
       type: string
       enum:
@@ -486,6 +728,38 @@ components:
       - activate_org_api_clients
       - edit_org_api_client_permissions
       example: delivery_initiated
+    change_status_post:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          $ref: '#/components/schemas/change_status_type'
+        docGuid:
+          allOf:
+          - $ref: '#/components/schemas/guid'
+          description: Required when type is REV_DOCUMENT.
+    document_name:
+      type: string
+      example: Document 1
+    default_success_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+        warnings:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
     change_data_post:
       type: object
       required:
@@ -533,209 +807,52 @@ components:
           $ref: '#/components/schemas/mers_org_id'
         securedPartyDelegateeOrgId:
           $ref: '#/components/schemas/mers_org_id'
-    change_status_post:
+    error_response:
+      type: object
+    guid:
+      type: string
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    register_post:
       type: object
       required:
-      - type
+      - controllerOrgId
+      - locationOrgId
+      - servicerOrgId
+      - borrowers
       properties:
-        type:
-          $ref: '#/components/schemas/change_status_type'
-        docGuid:
-          allOf:
-          - $ref: '#/components/schemas/guid'
-          description: Required when type is REV_DOCUMENT.
-    request_id:
-      type: string
-      example: 123456
-    mers_org_id:
-      type: string
-      example: 1234567
-    transfer_post:
-      type: object
-      required:
-      - type
-      - effectiveDate
-      properties:
-        type:
-          $ref: '#/components/schemas/transfer_type'
-        effectiveDate:
-          $ref: '#/components/schemas/effective_date'
         controllerOrgId:
           $ref: '#/components/schemas/mers_org_id'
         locationOrgId:
           $ref: '#/components/schemas/mers_org_id'
         servicerOrgId:
           $ref: '#/components/schemas/mers_org_id'
-        subservicerOrgId:
+        delegateeToTransferOrgId:
           $ref: '#/components/schemas/mers_org_id'
         securedPartyOrgId:
           $ref: '#/components/schemas/mers_org_id'
         securedPartyDelegateeOrgId:
           $ref: '#/components/schemas/mers_org_id'
-        delegateeForTransferOrgId:
-          $ref: '#/components/schemas/mers_org_id'
-        counterPartyOrgId:
-          $ref: '#/components/schemas/mers_org_id'
-        includeDelivery:
-          $ref: '#/components/schemas/boolean'
-    mers_address_type:
-      type: string
-      enum:
-      - eRegistry
-      - eDelivery
-      example: eRegistry
-    confirmation_type:
-      type: string
-      enum:
-      - Accept
-      - Reject
-      - Approve
-      - Disapprove
-      - Cancel
-      example: Accept
-    incoming:
-      type: boolean
-      example: false
-    detailed_transaction_type:
-      type: string
-      enum:
-      - ChangeStatusDetails
-      - ChangeDataDetails
-      - RegistrationDetails
-      - TransferDetails
-      - DeliveryDetails
-      example: TransferDetails
-    guid:
-      type: string
-      example: 459f521f-f2fa-4230-a704-46147ac8as7e
-    status:
-      type: string
-      nullable: true
-      example: unregistered
-    inquiry_post:
-      type: object
-      properties:
-        min:
-          $ref: '#/components/schemas/min'
-        enote_guid:
-          allOf:
-          - $ref: '#/components/schemas/guid'
-          description: Alternative to min. Either min or enote_guid is required.
-    transaction_additional_details:
-      type: object
-      properties:
-        detailsType:
-          $ref: '#/components/schemas/detailed_transaction_type'
-        documentName:
-          type: string
-          example: Name
-        documentType:
-          type: string
-          example: Other
-        trackingNumber:
-          type: string
-          example: '123456'
-        approvalCode:
-          type: string
-          example: '5016'
-        approvalDescription:
-          type: string
-          example: signature doesn't match the value on mers registry
-        recipients:
+        transferControl:
+          type: boolean
+          example: false
+        borrowers:
           type: array
           items:
             type: object
             properties:
-              mersOrgId:
-                $ref: '#/components/schemas/mers_org_id'
-              status:
-                $ref: '#/components/schemas/delivery_recipient_status'
-              approvalCode:
-                type: string
-                example: '5016'
-              approvalDescription:
-                type: string
-                example: signature doesn't match the value on mers registry
+              firstName:
+                $ref: '#/components/schemas/name'
+              middleName:
+                $ref: '#/components/schemas/name'
+              lastName:
+                $ref: '#/components/schemas/name'
+              suffix:
+                $ref: '#/components/schemas/name'
           example:
-          - mersOrgId: 1234567
-            status: disapproved
-            approvalCode: 5016
-            approvalDescription: signature doesn't match the value on mers registry
-        transferType:
-          $ref: '#/components/schemas/transfer_type'
-        mersReferenceId:
-          type: string
-          example: '123456'
-        confirmationStatus:
-          $ref: '#/components/schemas/transfer_confirmation_status'
-        effectiveDate:
-          $ref: '#/components/schemas/effective_date'
-        controller:
-          $ref: '#/components/schemas/mers_org_id'
-        masterServicer:
-          $ref: '#/components/schemas/mers_org_id'
-        subServicer:
-          $ref: '#/components/schemas/mers_org_id'
-        location:
-          $ref: '#/components/schemas/mers_org_id'
-        transferDelegatee:
-          $ref: '#/components/schemas/mers_org_id'
-        securedParty:
-          $ref: '#/components/schemas/mers_org_id'
-        securedPartyDelegatee:
-          $ref: '#/components/schemas/mers_org_id'
-        originalController:
-          $ref: '#/components/schemas/mers_org_id'
-        originalMasterServicer:
-          $ref: '#/components/schemas/mers_org_id'
-        originalSubServicer:
-          $ref: '#/components/schemas/mers_org_id'
-        originalLocation:
-          $ref: '#/components/schemas/mers_org_id'
-        originalTransferDelegatee:
-          $ref: '#/components/schemas/mers_org_id'
-        originalSecuredParty:
-          $ref: '#/components/schemas/mers_org_id'
-        originalSecuredPartyDelegatee:
-          $ref: '#/components/schemas/mers_org_id'
-      example:
-        detailsType: ChangeDataDetails
-        documentName: Name
-        documentType: Other
-    delivery_recipient_status:
-      type: string
-      enum:
-      - sent
-      - accepted
-      - rejected
-      - approved
-      - disapproved
-      - canceled
-      - expired
-      example: approved
-    connectivity_post:
-      type: object
-      properties:
-        addressType:
-          $ref: '#/components/schemas/mers_address_type'
-    transfer_type:
-      type: string
-      enum:
-      - TransferAll
-      - TransferControl
-      - TransferControlWithSecuredParty
-      - TransferControlAndDelegatee
-      - TransferControlAndLocation
-      - TransferControlAndLocationWithSecuredParty
-      - TransferDelegatee
-      - TransferLocation
-      example: TransferAll
-    modification_type:
-      type: string
-      enum:
-      - Electronic
-      - Paper
-      example: Electronic
+          - firstName: First
+            middleName: Middle
+            lastName: Last
+            suffix: Sr
     change_data_type:
       type: string
       enum:
@@ -747,129 +864,12 @@ components:
       - MODIFY
       - UPDATE
       example: ADD_DOCUMENT
-    delivery_post:
-      type: object
-      required:
-      - recipients
-      properties:
-        recipients:
-          type: array
-          items:
-            $ref: '#/components/schemas/mers_org_id'
-          example:
-          - '1234567'
-    error_response:
-      type: object
-    is_system:
-      type: boolean
-      example: false
-    default_success_response:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        errors:
-          type: array
-          nullable: true
-          items:
-            type: string
-          example: null
-        warnings:
-          type: array
-          nullable: true
-          items:
-            type: string
-          example: null
-    general_iso8601:
-      type: string
-      example: '2019-02-28T00:00:00Z'
-    min:
-      type: string
-      example: 123456789012345680
-    content_type:
+    modification_type:
       type: string
       enum:
-      - application/pdf
-      - application/xml
-      example: application/pdf
-    audit_logs:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            $ref: '#/components/schemas/guid'
-          eventType:
-            $ref: '#/components/schemas/event_type'
-          incoming:
-            $ref: '#/components/schemas/incoming'
-          status:
-            $ref: '#/components/schemas/status'
-          requestTimestamp:
-            $ref: '#/components/schemas/general_iso8601'
-          isSystem:
-            $ref: '#/components/schemas/is_system'
-          isTest:
-            $ref: '#/components/schemas/is_test'
-      example:
-      - id: 459f521f-f2fa-4230-a704-46147ac8as7e
-        eventType: connectivity
-        incoming: false
-        status: success
-        requestTimestamp: '2019-02-28T00:00:00Z'
-        isTest: false
-    boolean:
-      type: boolean
-      example: true
-    transfer_confirmation_status:
-      type: string
-      enum:
-      - pending
-      - accepted
-      - rejected
-      - no_action_required
-      example: accepted
-    effective_date:
-      type: string
-      example: '2019-02-28'
-    name:
-      type: string
-      example: Name
-    transaction_type:
-      type: string
-      enum:
-      - connectivity
-      - inquiry
-      - member_inquiry
-      - contact_inquiry
-      - registration
-      - delivery
-      - transfer
-      - change_status
-      - change_data
-      - resend_notifications
-      - controller_history
-      example: transfer
-    change_status_type:
-      type: string
-      enum:
-      - REV_REGISTRATION
-      - PAID_OFF
-      - REV_PAID_OFF
-      - CHARGED_OFF
-      - REV_CHARGED_OFF
-      - CONV_PAPER
-      - REV_CONV_PAPER
-      - PAPER_REPLACEMENT
-      - REV_PAPER_REPLACEMENT
-      - TRANSF_TO_PROP
-      - REV_TRANSF_TO_PROP
-      - REV_ASSUMPTION
-      - REV_DOCUMENT
-      - REV_MODIFICATION
-      - ARCHIVE
-      example: REV_REGISTRATION
+      - Electronic
+      - Paper
+      example: Electronic
   securitySchemes:
     bearerAuth:
       type: http

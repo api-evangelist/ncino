@@ -186,81 +186,68 @@ paths:
                 mapping:
                   reorder_milestones: '#/components/schemas/ReorderMilestonesCompanyAction'
 components:
+  responses:
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   schemas:
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
     EmptyString:
       type: string
       enum:
       - ''
       description: An empty string.
-    ReorderMilestonesCompanyAction:
-      allOf:
-      - $ref: '#/components/schemas/CompanyAction'
-      - type: object
-        properties:
-          order:
-            type: array
-            items:
-              type: string
-              format: uuid
-            minItems: 2
-            description: Ordered list of milestone IDs. All company milestones must be provided.
-        required:
-        - order
-        additionalProperties: false
-      description: Available properties for reordering a <<glossary:company>>'s milestones. Reordering milestones will only apply to loans moving forward. Loan records that have already been established within nCino Mortgage will not be affected.
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
     CompanyUpdateBody:
       type: object
       properties:
@@ -298,6 +285,107 @@ components:
       description: Available properties for updating a <<glossary:company>>.
       additionalProperties: false
       minProperties: 1
+    Company:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          name:
+            type: string
+            description: Company's name.
+          nmls:
+            type: string
+            description: Company's NMLS id.
+          created_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Timestamp of when the company was created.
+          updated_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: Timestamp of when the company was last updated.
+          address:
+            allOf:
+            - $ref: '#/components/schemas/Address'
+            description: Company's address.
+          logo_url:
+            type:
+            - string
+            - 'null'
+            description: Company's logo URL.
+          app_icon_url:
+            type:
+            - string
+            - 'null'
+            description: Company's app icon URL.
+          support_email:
+            type: string
+            description: Company's support email.
+          tech_contact_email:
+            type: string
+            description: Company's tech contact email.
+          internal_phone:
+            type: string
+            description: Company's internal phone.
+          mobile_homepage_logo_url:
+            type:
+            - string
+            - 'null'
+            description: Company's mobile home logo URL.
+          apple_store_url:
+            type:
+            - string
+            - 'null'
+            format: http_uri
+            description: Company's Apple Store URL.
+          google_play_store_url:
+            type:
+            - string
+            - 'null'
+            format: http_uri
+            description: Company's Google Play store URL.
+        additionalProperties: false
+      description: Company record
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    CompanyPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Company'
+        required:
+        - contents
     ErrorSet:
       type: object
       properties:
@@ -315,30 +403,6 @@ components:
           detail: Detailed message for the error
           _links:
             resource: contextual resource if applicable
-    CompanyPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Company'
-        required:
-        - contents
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
     Address:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -371,6 +435,22 @@ components:
             description: Zip code.
         additionalProperties: false
       description: Address model
+    ReorderMilestonesCompanyAction:
+      allOf:
+      - $ref: '#/components/schemas/CompanyAction'
+      - type: object
+        properties:
+          order:
+            type: array
+            items:
+              type: string
+              format: uuid
+            minItems: 2
+            description: Ordered list of milestone IDs. All company milestones must be provided.
+        required:
+        - order
+        additionalProperties: false
+      description: Available properties for reordering a <<glossary:company>>'s milestones. Reordering milestones will only apply to loans moving forward. Loan records that have already been established within nCino Mortgage will not be affected.
     StateCode:
       type: string
       enum:
@@ -437,75 +517,6 @@ components:
       - WV
       - WY
       description: State abbreviated code.
-    Company:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      - type: object
-        properties:
-          name:
-            type: string
-            description: Company's name.
-          nmls:
-            type: string
-            description: Company's NMLS id.
-          created_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: Timestamp of when the company was created.
-          updated_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: Timestamp of when the company was last updated.
-          address:
-            allOf:
-            - $ref: '#/components/schemas/Address'
-            description: Company's address.
-          logo_url:
-            type:
-            - string
-            - 'null'
-            description: Company's logo URL.
-          app_icon_url:
-            type:
-            - string
-            - 'null'
-            description: Company's app icon URL.
-          support_email:
-            type: string
-            description: Company's support email.
-          tech_contact_email:
-            type: string
-            description: Company's tech contact email.
-          internal_phone:
-            type: string
-            description: Company's internal phone.
-          mobile_homepage_logo_url:
-            type:
-            - string
-            - 'null'
-            description: Company's mobile home logo URL.
-          apple_store_url:
-            type:
-            - string
-            - 'null'
-            format: http_uri
-            description: Company's Apple Store URL.
-          google_play_store_url:
-            type:
-            - string
-            - 'null'
-            format: http_uri
-            description: Company's Google Play store URL.
-        additionalProperties: false
-      description: Company record
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
     CompanyAction:
       type: object
       properties:
@@ -518,6 +529,22 @@ components:
       - action
       description: Available properties for a <<glossary:company>> action.
       additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
     AbstractModel:
       type: object
       properties:
@@ -534,7 +561,60 @@ components:
       - _self
       - _type
       additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
   parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
     PageSize:
       name: page_size
       description: The number of records returned in each page.
@@ -545,22 +625,6 @@ components:
     CreatedAfter:
       name: created_after
       description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    UpdatedBefore:
-      name: updated_before
-      description: The date which a resource must be updated before to be returned.
       required: false
       in: query
       schema:
@@ -581,78 +645,14 @@ components:
       in: header
       schema:
         type: string
-    Page:
-      name: page
-      description: The page to retrieve.
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
       required: false
       in: query
       schema:
-        type: integer
-  responses:
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-  headers:
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
         type: string
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
+        format: date-time
   securitySchemes:
     OAuth2:
       type: oauth2

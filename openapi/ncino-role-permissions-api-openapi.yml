@@ -303,7 +303,93 @@ paths:
             schema:
               $ref: '#/components/schemas/RolePermissionsBody'
 components:
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   schemas:
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    RolePermissionsBody:
+      type: object
+      properties:
+        permission_keys:
+          type: array
+          items:
+            type: string
+          description: Permission keys. On POST they are added to the role, on DELETE they are removed, and on PUT they replace the role's entire permission set.
+      required:
+      - permission_keys
+      description: The permission keys to apply to a role.
+      additionalProperties: false
+    RolePermissionsResult:
+      type: object
+      properties:
+        permission_keys:
+          type: array
+          items:
+            type: string
+          description: Current permission keys enabled on the role.
+      required:
+      - permission_keys
+      description: The permission keys enabled on the role after the operation.
+      additionalProperties: false
     Error:
       type: object
       properties:
@@ -333,92 +419,6 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    RolePermissionsResult:
-      type: object
-      properties:
-        permission_keys:
-          type: array
-          items:
-            type: string
-          description: Current permission keys enabled on the role.
-      required:
-      - permission_keys
-      description: The permission keys enabled on the role after the operation.
-      additionalProperties: false
-    RolePermissionsBody:
-      type: object
-      properties:
-        permission_keys:
-          type: array
-          items:
-            type: string
-          description: Permission keys. On POST they are added to the role, on DELETE they are removed, and on PUT they replace the role's entire permission set.
-      required:
-      - permission_keys
-      description: The permission keys to apply to a role.
-      additionalProperties: false
-  responses:
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   headers:
     ApiSupportedVersionsResponseHeader:
       description: API supported versions for endpoint.

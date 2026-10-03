@@ -77,6 +77,27 @@ paths:
               $ref: '#/components/schemas/AppSharePostBody'
 components:
   schemas:
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
     Error:
       type: object
       properties:
@@ -106,27 +127,6 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
     AppSharePostBody:
       type: object
       properties:
@@ -160,8 +160,8 @@ components:
       description: Available properties for sharing a loan officer's app link. At least one of email or phone must be supplied.
       additionalProperties: false
   responses:
-    NotFoundError:
-      description: Not found
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -182,8 +182,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -193,8 +193,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
+    NotFoundError:
+      description: Not found
       content:
         application/json:
           schema:

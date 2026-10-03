@@ -336,6 +336,63 @@ paths:
                   CHANGE_ORG: '#/components/schemas/ChangeOrgTeamMember'
 components:
   schemas:
+    TeamMemberRoleType:
+      type: string
+      enum:
+      - CLOSER
+      - PROCESSOR
+      - LOA
+      - DISCLOSURE_DESK
+      - FUNDER
+      - SHIPPER
+      - POST_CLOSER
+      - ACCOUNT_EXECUTIVE
+      description: Team member's role type enum key.
+    LimitedInputThirdParty:
+      type: object
+      properties:
+        credit_user_id:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: External user ID for credit orders.
+        los_username:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: External LOS username.
+      description: Third party integration data for team member.
+      additionalProperties: false
+    TeamMemberAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - ENABLE
+          - DISABLE
+          - SEND_WELCOME_EMAIL
+          - CHANGE_ORG
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a team member action.
+      additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
     AbstractResourceModel:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -348,6 +405,118 @@ components:
         required:
         - id
         additionalProperties: false
+    TeamMemberPatchBody:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Team member's first name.
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Team member's last name.
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Team member's email.
+        phone:
+          type: string
+          format: phone
+          description: Team member's phone.
+        role:
+          allOf:
+          - $ref: '#/components/schemas/TeamMemberRoleType'
+          description: Team member's role type.
+        nmls:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Team member's NMLS ID.
+        third_party:
+          allOf:
+          - $ref: '#/components/schemas/LimitedInputThirdParty'
+          description: Team member's third party integration information.
+      description: Available properties for updating a team member record.
+      additionalProperties: false
+      minProperties: 1
+    TeamMemberPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/TeamMember'
+        required:
+        - contents
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    TeamMemberPostBody:
+      type: object
+      properties:
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Team member's first name.
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+          description: Team member's last name.
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Team member's email.
+        role:
+          allOf:
+          - $ref: '#/components/schemas/TeamMemberRoleType'
+          description: Team member's role enum key.
+        phone:
+          type:
+          - string
+          - 'null'
+          format: phone
+          description: Team member's phone.
+        nmls:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Team member's NMLS ID.
+      required:
+      - first_name
+      - last_name
+      - email
+      - role
+      description: Available properties for creating a team member record.
+      additionalProperties: false
+    DisableTeamMember:
+      allOf:
+      - $ref: '#/components/schemas/TeamMemberAction'
+      description: Available properties for disabling a team member.
     ThirdParty:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -378,51 +547,9 @@ components:
         - los_username
         additionalProperties: false
       description: Third party data for user
-    Error:
+    NoContent:
       type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    LimitedInputThirdParty:
-      type: object
-      properties:
-        credit_user_id:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: External user ID for credit orders.
-        los_username:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: External LOS username.
-      description: Third party integration data for team member.
+      properties: {}
       additionalProperties: false
     AbstractPagination:
       allOf:
@@ -436,6 +563,10 @@ components:
             type: integer
             description: The total number of items in the collection.
         additionalProperties: false
+    SendWelcomeEmailTeamMember:
+      allOf:
+      - $ref: '#/components/schemas/TeamMemberAction'
+      description: Available properties for sending a welcome email to a team member.
     ChangeOrgTeamMember:
       allOf:
       - $ref: '#/components/schemas/TeamMemberAction'
@@ -457,54 +588,10 @@ components:
         - org_id
         additionalProperties: false
       description: Available properties for changing a team member's organization.
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
-    TeamMemberRoleType:
-      type: string
-      enum:
-      - CLOSER
-      - PROCESSOR
-      - LOA
-      - DISCLOSURE_DESK
-      - FUNDER
-      - SHIPPER
-      - POST_CLOSER
-      - ACCOUNT_EXECUTIVE
-      description: Team member's role type enum key.
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    SendWelcomeEmailTeamMember:
+    EnableTeamMember:
       allOf:
       - $ref: '#/components/schemas/TeamMemberAction'
-      description: Available properties for sending a welcome email to a team member.
-    TeamMemberPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/TeamMember'
-        required:
-        - contents
+      description: Available properties for enabling a team member.
     TeamMember:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -554,126 +641,6 @@ components:
         - email
         additionalProperties: false
       description: Team member model
-    TeamMemberPostBody:
-      type: object
-      properties:
-        first_name:
-          type: string
-          minLength: 1
-          maxLength: 30
-          description: Team member's first name.
-        last_name:
-          type: string
-          minLength: 1
-          maxLength: 30
-          description: Team member's last name.
-        email:
-          type: string
-          format: email
-          maxLength: 255
-          description: Team member's email.
-        role:
-          allOf:
-          - $ref: '#/components/schemas/TeamMemberRoleType'
-          description: Team member's role enum key.
-        phone:
-          type:
-          - string
-          - 'null'
-          format: phone
-          description: Team member's phone.
-        nmls:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: Team member's NMLS ID.
-      required:
-      - first_name
-      - last_name
-      - email
-      - role
-      description: Available properties for creating a team member record.
-      additionalProperties: false
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
-    DisableTeamMember:
-      allOf:
-      - $ref: '#/components/schemas/TeamMemberAction'
-      description: Available properties for disabling a team member.
-    TeamMemberAction:
-      type: object
-      properties:
-        action:
-          type: string
-          enum:
-          - ENABLE
-          - DISABLE
-          - SEND_WELCOME_EMAIL
-          - CHANGE_ORG
-          description: Action to perform.
-      required:
-      - action
-      description: Available properties for a team member action.
-      additionalProperties: false
-    TeamMemberPatchBody:
-      type: object
-      properties:
-        first_name:
-          type: string
-          minLength: 1
-          maxLength: 30
-          description: Team member's first name.
-        last_name:
-          type: string
-          minLength: 1
-          maxLength: 30
-          description: Team member's last name.
-        email:
-          type: string
-          format: email
-          maxLength: 255
-          description: Team member's email.
-        phone:
-          type: string
-          format: phone
-          description: Team member's phone.
-        role:
-          allOf:
-          - $ref: '#/components/schemas/TeamMemberRoleType'
-          description: Team member's role type.
-        nmls:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: Team member's NMLS ID.
-        third_party:
-          allOf:
-          - $ref: '#/components/schemas/LimitedInputThirdParty'
-          description: Team member's third party integration information.
-      description: Available properties for updating a team member record.
-      additionalProperties: false
-      minProperties: 1
-    EnableTeamMember:
-      allOf:
-      - $ref: '#/components/schemas/TeamMemberAction'
-      description: Available properties for enabling a team member.
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
     AbstractModel:
       type: object
       properties:
@@ -690,63 +657,42 @@ components:
       - _self
       - _type
       additionalProperties: false
-  parameters:
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    UpdatedBefore:
-      name: updated_before
-      description: The date which a resource must be updated before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
   responses:
-    UnauthorizedError:
-      description: Unauthorized
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -778,6 +724,17 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     InternalServerError:
       description: Internal server error
       content:
@@ -789,26 +746,69 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   headers:
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
     ApiSupportedVersionsResponseHeader:
       description: API supported versions for endpoint.
       schema:
         type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
   securitySchemes:
     OAuth2:
       type: oauth2

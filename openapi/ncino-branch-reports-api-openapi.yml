@@ -132,19 +132,141 @@ paths:
       description: This endpoint downloads a > report.
       summary: Download a branch report
 components:
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   schemas:
-    AbstractResourceModel:
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    TimeBoundReportPostBody:
       allOf:
-      - $ref: '#/components/schemas/AbstractModel'
+      - $ref: '#/components/schemas/ReportPostBody'
       - type: object
         properties:
-          id:
+          start_date:
             type: string
-            format: uuid
-            description: Unique identifier for the record.
+            format: date
+            description: Start date for including records into report
+          end_date:
+            type: string
+            format: date
+            description: End date for including records into report
         required:
-        - id
+        - start_date
+        - end_date
         additionalProperties: false
+      description: 'Available properties for generating a time-scoped report.
+
+        Start and end dates can span a time range as large as a year and default to a range covering the last day if both dates aren''t provided.'
+    ReportPostBody:
+      type: object
+      properties:
+        report_type:
+          type: string
+          enum:
+          - CO_BRANDED_APPS
+          - DOCUSIGN_ENVELOPES
+          - LOAN_APP_DETAILS
+          - LOAN_APPS_COUNT
+          - LO_ACTIVITY
+          - NPS_FEEDBACK
+          - PACKAGE_TRACKER
+          - PROSPECTS
+          - QR_CODES
+          - VERIFICATION_OF_ASSETS_ORDERS
+          description: Report type to generate
+      required:
+      - report_type
+      description: Available properties for generating a report.
+      additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
     Error:
       type: object
       properties:
@@ -174,147 +296,25 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
-    ResourceCreated:
+    AbstractResourceModel:
       allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
-    ReportPostBody:
-      type: object
-      properties:
-        report_type:
-          type: string
-          enum:
-          - CO_BRANDED_APPS
-          - DOCUSIGN_ENVELOPES
-          - LOAN_APP_DETAILS
-          - LOAN_APPS_COUNT
-          - LO_ACTIVITY
-          - NPS_FEEDBACK
-          - PACKAGE_TRACKER
-          - PROSPECTS
-          - QR_CODES
-          - VERIFICATION_OF_ASSETS_ORDERS
-          description: Report type to generate
-      required:
-      - report_type
-      description: Available properties for generating a report.
-      additionalProperties: false
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
-    TimeBoundReportPostBody:
-      allOf:
-      - $ref: '#/components/schemas/ReportPostBody'
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          start_date:
+          id:
             type: string
-            format: date
-            description: Start date for including records into report
-          end_date:
-            type: string
-            format: date
-            description: End date for including records into report
+            format: uuid
+            description: Unique identifier for the record.
         required:
-        - start_date
-        - end_date
+        - id
         additionalProperties: false
-      description: 'Available properties for generating a time-scoped report.
-
-        Start and end dates can span a time range as large as a year and default to a range covering the last day if both dates aren''t provided.'
-  responses:
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
     ContentDispositionResponseHeader:
       description: Additional information about response payload.
+      schema:
+        type: string
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
       schema:
         type: string
     ApiVersionResponseHeader:

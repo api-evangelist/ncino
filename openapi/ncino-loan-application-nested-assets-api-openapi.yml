@@ -369,153 +369,6 @@ paths:
       summary: 🚧 Delete a specific asset record. (BETA)
 components:
   schemas:
-    AssetCollectionUpdateBody:
-      type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/AssetItemUpdateBody'
-          description: Array of records to update.
-      required:
-      - records
-      description: Body for updating multiple asset records.
-      additionalProperties: false
-    AssetItemUpdateBody:
-      allOf:
-      - $ref: '#/components/schemas/AssetUpdateBody'
-      - type: object
-        properties:
-          _id:
-            type: string
-            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
-        required:
-        - _id
-      description: Body for updating an asset record. Aside from the ID, pass only the fields to update.
-      minProperties: 2
-    AssetPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Asset'
-        required:
-        - contents
-        additionalProperties: false
-    AssetCollection:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollectionCreated'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Asset'
-            description: Array of created asset records.
-        required:
-        - contents
-        additionalProperties: false
-      description: Collection of asset records. Returned when creating multiple records.
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    AssetCollectionCreateBody:
-      type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/AssetCreateBody'
-          description: Array of records to create.
-      required:
-      - records
-      description: Body for creating multiple asset records.
-      additionalProperties: false
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
-    AssetUpdateBody:
-      type: object
-      properties:
-        type:
-          type: string
-          description: This asset's type.
-        value:
-          type: integer
-          description: This asset's estimated value.
-        owner:
-          type: string
-          description: 'The owner(s) of this asset: "Borrower", "Co-borrower", or "Both".'
-      description: Body for updating an asset record. Pass only the fields to update.
-      minProperties: 1
     Asset:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -556,6 +409,62 @@ components:
         meta fields (alongside `_self`/`_type`/`_links`), so a data field can
 
         never overwrite it.'
+    AssetCollection:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollectionCreated'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Asset'
+            description: Array of created asset records.
+        required:
+        - contents
+        additionalProperties: false
+      description: Collection of asset records. Returned when creating multiple records.
+    AssetCollectionUpdateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetItemUpdateBody'
+          description: Array of records to update.
+      required:
+      - records
+      description: Body for updating multiple asset records.
+      additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
     ResourceCollectionCreated:
       allOf:
       - $ref: '#/components/schemas/AbstractCollection'
@@ -577,6 +486,56 @@ components:
     NoContent:
       type: object
       properties: {}
+      additionalProperties: false
+    AssetItemUpdateBody:
+      allOf:
+      - $ref: '#/components/schemas/AssetUpdateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: Body for updating an asset record. Aside from the ID, pass only the fields to update.
+      minProperties: 2
+    AssetUpdateBody:
+      type: object
+      properties:
+        type:
+          type: string
+          description: This asset's type.
+        value:
+          type: integer
+          description: This asset's estimated value.
+        owner:
+          type: string
+          description: 'The owner(s) of this asset: "Borrower", "Co-borrower", or "Both".'
+      description: Body for updating an asset record. Pass only the fields to update.
+      minProperties: 1
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    AssetCollectionCreateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetCreateBody'
+          description: Array of records to create.
+      required:
+      - records
+      description: Body for creating multiple asset records.
       additionalProperties: false
     AssetCreateBody:
       type: object
@@ -615,31 +574,50 @@ components:
       - _self
       - _type
       additionalProperties: false
-  parameters:
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    AssetPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Asset'
+        required:
+        - contents
+        additionalProperties: false
   responses:
-    UnauthorizedError:
-      description: Unauthorized
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -671,6 +649,17 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     InternalServerError:
       description: Internal server error
       content:
@@ -682,24 +671,35 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
     ApiVersionResponseHeader:
       description: API version.
       schema:
         type: string
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
       schema:
         type: string
   securitySchemes:
