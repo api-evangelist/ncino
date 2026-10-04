@@ -317,9 +317,246 @@ paths:
         Deletes a specific expense record by ID.'
       summary: 🚧 Delete a specific expense record. (BETA)
 components:
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+  schemas:
+    Expense:
+      allOf:
+      - $ref: '#/components/schemas/ExpenseCreateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: A single expense record.
+    ExpenseUpdateBody:
+      type: object
+      properties:
+        type:
+          type: string
+          description: This expense's type.
+        category:
+          type: string
+          description: This expense's category.
+        amount:
+          type: integer
+          description: The amount paid to this expense.
+        frequency:
+          type: string
+          description: The frequency at which this expense is paid.
+      description: Body for updating an expense record. Pass only the fields to update.
+      minProperties: 1
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    ExpenseCreateBody:
+      type: object
+      properties:
+        type:
+          type: string
+          description: This expense's type.
+        category:
+          type: string
+          description: This expense's category.
+        amount:
+          type: integer
+          description: The amount paid to this expense.
+        frequency:
+          type: string
+          description: The frequency at which this expense is paid.
+      description: Body for creating a new expense record.
+    ResourceCollectionCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: Array of created resources.
+        required:
+        - contents
+        additionalProperties: false
+      description: 'Generic base class for returning multiple created resources with their full
+
+        representations. Extend this class and specify the item type via cattr_reader,
+
+        similar to AbstractPagination.'
+    ExpenseItemUpdateBody:
+      allOf:
+      - $ref: '#/components/schemas/ExpenseUpdateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: Body for updating an expense record. Aside from the ID, pass only the fields to update.
+      minProperties: 2
+    ExpenseCollection:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollectionCreated'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Expense'
+            description: Array of created expense records.
+        required:
+        - contents
+        additionalProperties: false
+      description: Collection of expense records. Returned when creating multiple records.
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    ExpensePagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Expense'
+        required:
+        - contents
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    ExpenseCollectionCreateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseCreateBody'
+          description: Array of records to create.
+      required:
+      - records
+      description: Body for creating multiple expense records.
+      additionalProperties: false
+    ExpenseCollectionUpdateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseItemUpdateBody'
+          description: Array of records to update.
+      required:
+      - records
+      description: Body for updating multiple expense records.
+      additionalProperties: false
   responses:
-    ForbiddenError:
-      description: Forbidden
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -351,6 +588,17 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     UnauthorizedError:
       description: Unauthorized
       content:
@@ -362,232 +610,6 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-  schemas:
-    ExpenseUpdateBody:
-      type: object
-      properties:
-        type:
-          type: string
-          description: This expense's type.
-        category:
-          type: string
-          description: This expense's category.
-        amount:
-          type: integer
-          description: The amount paid to this expense.
-        frequency:
-          type: string
-          description: The frequency at which this expense is paid.
-      description: Body for updating an expense record. Pass only the fields to update.
-      minProperties: 1
-    ExpenseItemUpdateBody:
-      allOf:
-      - $ref: '#/components/schemas/ExpenseUpdateBody'
-      - type: object
-        properties:
-          _id:
-            type: string
-            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
-        required:
-        - _id
-      description: Body for updating an expense record. Aside from the ID, pass only the fields to update.
-      minProperties: 2
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
-    ExpenseCollectionUpdateBody:
-      type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpenseItemUpdateBody'
-          description: Array of records to update.
-      required:
-      - records
-      description: Body for updating multiple expense records.
-      additionalProperties: false
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    Expense:
-      allOf:
-      - $ref: '#/components/schemas/ExpenseCreateBody'
-      - type: object
-        properties:
-          _id:
-            type: string
-            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
-        required:
-        - _id
-      description: A single expense record.
-    ResourceCollectionCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: Array of created resources.
-        required:
-        - contents
-        additionalProperties: false
-      description: 'Generic base class for returning multiple created resources with their full
-
-        representations. Extend this class and specify the item type via cattr_reader,
-
-        similar to AbstractPagination.'
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    ExpenseCreateBody:
-      type: object
-      properties:
-        type:
-          type: string
-          description: This expense's type.
-        category:
-          type: string
-          description: This expense's category.
-        amount:
-          type: integer
-          description: The amount paid to this expense.
-        frequency:
-          type: string
-          description: The frequency at which this expense is paid.
-      description: Body for creating a new expense record.
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    ExpenseCollectionCreateBody:
-      type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpenseCreateBody'
-          description: Array of records to create.
-      required:
-      - records
-      description: Body for creating multiple expense records.
-      additionalProperties: false
-    ExpensePagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Expense'
-        required:
-        - contents
-    ExpenseCollection:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollectionCreated'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Expense'
-            description: Array of created expense records.
-        required:
-        - contents
-        additionalProperties: false
-      description: Collection of expense records. Returned when creating multiple records.
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
   headers:
     ApiSupportedVersionsResponseHeader:
       description: API supported versions for endpoint.
@@ -595,28 +617,6 @@ components:
         type: string
     ApiVersionResponseHeader:
       description: API version.
-      schema:
-        type: string
-  parameters:
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
       schema:
         type: string
   securitySchemes:

@@ -230,207 +230,39 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    unregistered_reason:
+    street:
       type: string
-      nullable: true
-      example: null
-    smartdoc_version:
-      type: string
-      nullable: true
-      example: 1.02
+      example: 123 SimpleNexus Ln
     modified:
       type: boolean
       example: false
-    audit_logs:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            $ref: '#/components/schemas/guid'
-          eventType:
-            $ref: '#/components/schemas/event_type'
-          incoming:
-            $ref: '#/components/schemas/incoming'
-          status:
-            $ref: '#/components/schemas/status'
-          requestTimestamp:
-            $ref: '#/components/schemas/general_iso8601'
-          isSystem:
-            $ref: '#/components/schemas/is_system'
-          isTest:
-            $ref: '#/components/schemas/is_test'
-      example:
-      - id: 459f521f-f2fa-4230-a704-46147ac8as7e
-        eventType: connectivity
-        incoming: false
-        status: success
-        requestTimestamp: '2019-02-28T00:00:00Z'
-        isTest: false
-    assumed:
-      type: boolean
-      example: false
-    content_type:
+    city:
       type: string
-      enum:
-      - application/pdf
-      - application/xml
-      example: application/pdf
-    tamperseal:
-      type: boolean
-      example: false
-    is_test:
-      type: boolean
-      example: true
-    general_iso8601:
+      example: Lehi
+    zip:
       type: string
-      example: '2019-02-28T00:00:00Z'
+      example: '12345'
     status:
       type: string
       nullable: true
       example: unregistered
-    enotes-enote_guid-documents-upload_post:
-      type: object
-      required:
-      - documents
-      properties:
-        documents:
-          type: array
-          items:
-            type: object
-            required:
-            - documentType
-            - contentType
-            - loanNumber
-            - name
-            - data
-            properties:
-              remoteId:
-                type: string
-                example: remote-doc-1
-              documentType:
-                $ref: '#/components/schemas/document_type'
-              contentType:
-                $ref: '#/components/schemas/content_type'
-              loanNumber:
-                $ref: '#/components/schemas/loan_number'
-              name:
-                $ref: '#/components/schemas/document_name'
-              data:
-                $ref: '#/components/schemas/base64'
-    is_system:
-      type: boolean
-      example: false
-    active:
-      type: boolean
-      example: true
-    lien_type:
+    environment:
       type: string
-      example: FirstLien
-    incoming:
-      type: boolean
-      example: false
-    base64:
-      type: string
-      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
-    min:
-      type: string
-      example: 123456789012345680
+      enum:
+      - stage
+      - production
+      example: stage
+      readOnly: true
     first_name:
       type: string
       example: Simple
-    state:
-      type: string
-      example: NV
-    city_state_zip:
-      type: string
-      example: Lehi, UT 84043
-    enote_response:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/guid'
-        loanNumber:
-          $ref: '#/components/schemas/loan_number'
-        min:
-          $ref: '#/components/schemas/min'
-        isTest:
-          $ref: '#/components/schemas/is_test'
-        smartdocPresented:
-          $ref: '#/components/schemas/smartdoc_presented'
-        smartdocVersion:
-          $ref: '#/components/schemas/smartdoc_version'
-        lienType:
-          $ref: '#/components/schemas/lien_type'
-        borrowerFirstName:
-          $ref: '#/components/schemas/first_name'
-        borrowerLastName:
-          $ref: '#/components/schemas/last_name'
-        borrowerAddress1:
-          $ref: '#/components/schemas/street'
-        borrowerAddress2:
-          $ref: '#/components/schemas/city_state_zip'
-        status:
-          $ref: '#/components/schemas/status'
-        registeredAt:
-          $ref: '#/components/schemas/general_iso8601'
-        tampersealed:
-          $ref: '#/components/schemas/tamperseal'
-        tampersealLastValidatedAt:
-          $ref: '#/components/schemas/tamperseal_last_validated_at'
-        assumed:
-          $ref: '#/components/schemas/assumed'
-        modified:
-          $ref: '#/components/schemas/modified'
-        active:
-          $ref: '#/components/schemas/active'
-        unregisteredReason:
-          $ref: '#/components/schemas/unregistered_reason'
-        createdAt:
-          $ref: '#/components/schemas/general_iso8601'
-        updatedAt:
-          $ref: '#/components/schemas/general_iso8601'
-        auditLogs:
-          $ref: '#/components/schemas/audit_logs'
-    document_type:
-      type: string
-      example: AppraisalReport
-    enotes_post:
-      type: object
-      required:
-      - lienType
-      - borrowerFirstName
-      - borrowerLastName
-      - streetAddress
-      - city
-      - state
-      - zip
-      - enoteData
-      - enoteDataFileType
-      - pdfData
-      properties:
-        lienType:
-          $ref: '#/components/schemas/lien_type'
-        borrowerFirstName:
-          $ref: '#/components/schemas/first_name'
-        borrowerLastName:
-          $ref: '#/components/schemas/last_name'
-        streetAddress:
-          $ref: '#/components/schemas/street'
-        city:
-          $ref: '#/components/schemas/city'
-        state:
-          $ref: '#/components/schemas/state'
-        zip:
-          $ref: '#/components/schemas/zip'
-        loanNumber:
-          $ref: '#/components/schemas/loan_number'
-        enoteData:
-          $ref: '#/components/schemas/base64'
-        enoteDataFileType:
-          $ref: '#/components/schemas/file_type'
-        pdfData:
-          $ref: '#/components/schemas/base64'
+    smartdoc_presented:
+      type: boolean
+      nullable: true
+      example: null
+    is_test:
+      type: boolean
+      example: true
     event_type:
       type: string
       enum:
@@ -541,58 +373,168 @@ components:
       - activate_org_api_clients
       - edit_org_api_client_permissions
       example: delivery_initiated
-    street:
-      type: string
-      example: 123 SimpleNexus Ln
-    document_name:
-      type: string
-      example: Document 1
-    city:
-      type: string
-      example: Lehi
-    loan_number:
-      type: string
-      example: 0292364
-    default_success_response:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        errors:
-          type: array
-          nullable: true
-          items:
-            type: string
-          example: null
-        warnings:
-          type: array
-          nullable: true
-          items:
-            type: string
-          example: null
-    last_name:
-      type: string
-      example: Nexus
-    zip:
-      type: string
-      example: '12345'
-    smartdoc_presented:
+    incoming:
       type: boolean
+      example: false
+    unregistered_reason:
+      type: string
       nullable: true
       example: null
-    environment:
+    min:
       type: string
-      enum:
-      - stage
-      - production
-      example: stage
-      readOnly: true
+      example: 123456789012345680
+    assumed:
+      type: boolean
+      example: false
+    active:
+      type: boolean
+      example: true
     error_response:
       type: object
     guid:
       type: string
       example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    lien_type:
+      type: string
+      example: FirstLien
+    enotes-enote_guid-documents-upload_post:
+      type: object
+      required:
+      - documents
+      properties:
+        documents:
+          type: array
+          items:
+            type: object
+            required:
+            - documentType
+            - contentType
+            - loanNumber
+            - name
+            - data
+            properties:
+              remoteId:
+                type: string
+                example: remote-doc-1
+              documentType:
+                $ref: '#/components/schemas/document_type'
+              contentType:
+                $ref: '#/components/schemas/content_type'
+              loanNumber:
+                $ref: '#/components/schemas/loan_number'
+              name:
+                $ref: '#/components/schemas/document_name'
+              data:
+                $ref: '#/components/schemas/base64'
+    last_name:
+      type: string
+      example: Nexus
+    tamperseal_last_validated_at:
+      type: string
+      nullable: true
+      example: null
+    loan_number:
+      type: string
+      example: 0292364
+    base64:
+      type: string
+      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
+    document_type:
+      type: string
+      example: AppraisalReport
+    enote_response:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/guid'
+        loanNumber:
+          $ref: '#/components/schemas/loan_number'
+        min:
+          $ref: '#/components/schemas/min'
+        isTest:
+          $ref: '#/components/schemas/is_test'
+        smartdocPresented:
+          $ref: '#/components/schemas/smartdoc_presented'
+        smartdocVersion:
+          $ref: '#/components/schemas/smartdoc_version'
+        lienType:
+          $ref: '#/components/schemas/lien_type'
+        borrowerFirstName:
+          $ref: '#/components/schemas/first_name'
+        borrowerLastName:
+          $ref: '#/components/schemas/last_name'
+        borrowerAddress1:
+          $ref: '#/components/schemas/street'
+        borrowerAddress2:
+          $ref: '#/components/schemas/city_state_zip'
+        status:
+          $ref: '#/components/schemas/status'
+        registeredAt:
+          $ref: '#/components/schemas/general_iso8601'
+        tampersealed:
+          $ref: '#/components/schemas/tamperseal'
+        tampersealLastValidatedAt:
+          $ref: '#/components/schemas/tamperseal_last_validated_at'
+        assumed:
+          $ref: '#/components/schemas/assumed'
+        modified:
+          $ref: '#/components/schemas/modified'
+        active:
+          $ref: '#/components/schemas/active'
+        unregisteredReason:
+          $ref: '#/components/schemas/unregistered_reason'
+        createdAt:
+          $ref: '#/components/schemas/general_iso8601'
+        updatedAt:
+          $ref: '#/components/schemas/general_iso8601'
+        auditLogs:
+          $ref: '#/components/schemas/audit_logs'
+    tamperseal:
+      type: boolean
+      example: false
+    enotes_post:
+      type: object
+      required:
+      - lienType
+      - borrowerFirstName
+      - borrowerLastName
+      - streetAddress
+      - city
+      - state
+      - zip
+      - enoteData
+      - enoteDataFileType
+      - pdfData
+      properties:
+        lienType:
+          $ref: '#/components/schemas/lien_type'
+        borrowerFirstName:
+          $ref: '#/components/schemas/first_name'
+        borrowerLastName:
+          $ref: '#/components/schemas/last_name'
+        streetAddress:
+          $ref: '#/components/schemas/street'
+        city:
+          $ref: '#/components/schemas/city'
+        state:
+          $ref: '#/components/schemas/state'
+        zip:
+          $ref: '#/components/schemas/zip'
+        loanNumber:
+          $ref: '#/components/schemas/loan_number'
+        enoteData:
+          $ref: '#/components/schemas/base64'
+        enoteDataFileType:
+          $ref: '#/components/schemas/file_type'
+        pdfData:
+          $ref: '#/components/schemas/base64'
+    smartdoc_version:
+      type: string
+      nullable: true
+      example: 1.02
+    document_name:
+      type: string
+      example: Document 1
     500_error_response:
       type: object
       properties:
@@ -612,16 +554,74 @@ components:
           type: string
           nullable: true
           example: null
+    state:
+      type: string
+      example: NV
+    is_system:
+      type: boolean
+      example: false
+    default_success_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+        warnings:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+    content_type:
+      type: string
+      enum:
+      - application/pdf
+      - application/xml
+      example: application/pdf
+    general_iso8601:
+      type: string
+      example: '2019-02-28T00:00:00Z'
+    city_state_zip:
+      type: string
+      example: Lehi, UT 84043
     file_type:
       type: string
       enum:
       - application/zip
       - application/xml
       example: application/zip
-    tamperseal_last_validated_at:
-      type: string
-      nullable: true
-      example: null
+    audit_logs:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/guid'
+          eventType:
+            $ref: '#/components/schemas/event_type'
+          incoming:
+            $ref: '#/components/schemas/incoming'
+          status:
+            $ref: '#/components/schemas/status'
+          requestTimestamp:
+            $ref: '#/components/schemas/general_iso8601'
+          isSystem:
+            $ref: '#/components/schemas/is_system'
+          isTest:
+            $ref: '#/components/schemas/is_test'
+      example:
+      - id: 459f521f-f2fa-4230-a704-46147ac8as7e
+        eventType: connectivity
+        incoming: false
+        status: success
+        requestTimestamp: '2019-02-28T00:00:00Z'
+        isTest: false
   securitySchemes:
     bearerAuth:
       type: http

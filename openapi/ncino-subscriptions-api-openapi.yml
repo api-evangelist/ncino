@@ -270,32 +270,61 @@ paths:
     - url: https://api.ncinomortgage.com
       description: Production server
 components:
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
   schemas:
-    WebhookSubscriptionSaveBody:
-      type: object
-      properties:
-        event:
-          allOf:
-          - $ref: '#/components/schemas/WebhookEventName'
-          description: Event being subscribed to.
-      required:
-      - event
-      description: Available properties for creating or updating a webhook's subscription.
-      additionalProperties: false
-      minProperties: 1
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
     AbstractResourceModel:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -308,6 +337,10 @@ components:
         required:
         - id
         additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
     WebhookEventName:
       type: string
       enum:
@@ -347,51 +380,6 @@ components:
       - user_updated
       - verification_available
       description: Webhook event name.
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    WebhookSubscription:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      - type: object
-        properties:
-          event:
-            allOf:
-            - $ref: '#/components/schemas/WebhookEventName'
-            description: Event that the webhook is subscribed to.
-        required:
-        - event
-        additionalProperties: false
-      description: Webhook subscription record
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    WebhookSubscriptionPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/WebhookSubscription'
-        required:
-        - contents
     AbstractPagination:
       allOf:
       - $ref: '#/components/schemas/AbstractCollection'
@@ -404,26 +392,6 @@ components:
             type: integer
             description: The total number of items in the collection.
         additionalProperties: false
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
     Error:
       type: object
       properties:
@@ -453,9 +421,95 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    WebhookSubscriptionPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebhookSubscription'
+        required:
+        - contents
+    WebhookSubscription:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          event:
+            allOf:
+            - $ref: '#/components/schemas/WebhookEventName'
+            description: Event that the webhook is subscribed to.
+        required:
+        - event
+        additionalProperties: false
+      description: Webhook subscription record
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    WebhookSubscriptionSaveBody:
+      type: object
+      properties:
+        event:
+          allOf:
+          - $ref: '#/components/schemas/WebhookEventName'
+          description: Event being subscribed to.
+      required:
+      - event
+      description: Available properties for creating or updating a webhook's subscription.
+      additionalProperties: false
+      minProperties: 1
   responses:
-    ForbiddenError:
-      description: Forbidden
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -487,8 +541,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -498,8 +552,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
+    UnauthorizedError:
+      description: Unauthorized
       content:
         application/json:
           schema:
@@ -518,60 +572,6 @@ components:
       description: API version.
       schema:
         type: string
-  parameters:
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    UpdatedBefore:
-      name: updated_before
-      description: The date which a resource must be updated before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
   securitySchemes:
     OAuth2:
       type: oauth2

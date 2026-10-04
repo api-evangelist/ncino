@@ -303,31 +303,29 @@ paths:
             schema:
               $ref: '#/components/schemas/RolePermissionsBody'
 components:
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
   responses:
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     UnauthorizedError:
       description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
       content:
         application/json:
           schema:
@@ -348,24 +346,18 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   schemas:
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
     RolePermissionsBody:
       type: object
       properties:
@@ -377,18 +369,6 @@ components:
       required:
       - permission_keys
       description: The permission keys to apply to a role.
-      additionalProperties: false
-    RolePermissionsResult:
-      type: object
-      properties:
-        permission_keys:
-          type: array
-          items:
-            type: string
-          description: Current permission keys enabled on the role.
-      required:
-      - permission_keys
-      description: The permission keys enabled on the role after the operation.
       additionalProperties: false
     Error:
       type: object
@@ -419,15 +399,35 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
-  headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
+    RolePermissionsResult:
+      type: object
+      properties:
+        permission_keys:
+          type: array
+          items:
+            type: string
+          description: Current permission keys enabled on the role.
+      required:
+      - permission_keys
+      description: The permission keys enabled on the role after the operation.
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
   parameters:
     ApiVersionHeader:
       name: X-Api-Version

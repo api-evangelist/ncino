@@ -267,9 +267,253 @@ paths:
       description: This endpoint will delete a > >.
       summary: Delete a loan officer assignment
 components:
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+  schemas:
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    AccountAssignment:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          assignor_type:
+            allOf:
+            - $ref: '#/components/schemas/AccountAssignmentType'
+            description: Type of entity the relevant account has access to.
+          assignor_name:
+            type: string
+            description: Name of the entity the relevant account has access to.
+          assignor_id:
+            type: string
+            format: uuid
+            description: ID of the entity the relevant account has access to.
+        required:
+        - assignor_type
+        - assignor_name
+        - assignor_id
+        additionalProperties: false
+      description: User <<glossary:assignment>> record
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    AccountAssignmentCreateBody:
+      type: object
+      properties:
+        assignor_type:
+          allOf:
+          - $ref: '#/components/schemas/AccountAssignmentType'
+          description: Type of entity the relevant account will have access to.
+        assignor_id:
+          type: string
+          format: uuid
+          description: ID of the entity the relevant account will have access to.
+      required:
+      - assignor_type
+      - assignor_id
+      description: Available properties for creating an account assignment.
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    AvailableAssignmentPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/AvailableAssignment'
+        required:
+        - contents
+    AccountAssignmentType:
+      type: string
+      enum:
+      - BRANCH
+      - COMPANY
+      - LOAN_OFFICER
+      - REGION
+      description: Assignment type enum key.
+    AccountAssignmentPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/AccountAssignment'
+        required:
+        - contents
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    AvailableAssignment:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          assignment_type:
+            allOf:
+            - $ref: '#/components/schemas/AccountAssignmentType'
+            description: Assignment's type.
+          name:
+            type: string
+            description: Assignment's name.
+        additionalProperties: false
+      description: Available <<glossary:assignment>> record
   responses:
-    ForbiddenError:
-      description: Forbidden
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -301,8 +545,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -312,8 +556,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
+    UnauthorizedError:
+      description: Unauthorized
       content:
         application/json:
           schema:
@@ -332,250 +576,6 @@ components:
       description: API version.
       schema:
         type: string
-  schemas:
-    AvailableAssignmentPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/AvailableAssignment'
-        required:
-        - contents
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    AvailableAssignment:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      - type: object
-        properties:
-          assignment_type:
-            allOf:
-            - $ref: '#/components/schemas/AccountAssignmentType'
-            description: Assignment's type.
-          name:
-            type: string
-            description: Assignment's name.
-        additionalProperties: false
-      description: Available <<glossary:assignment>> record
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    AccountAssignmentPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/AccountAssignment'
-        required:
-        - contents
-    AccountAssignmentType:
-      type: string
-      enum:
-      - BRANCH
-      - COMPANY
-      - LOAN_OFFICER
-      - REGION
-      description: Assignment type enum key.
-    AccountAssignmentCreateBody:
-      type: object
-      properties:
-        assignor_type:
-          allOf:
-          - $ref: '#/components/schemas/AccountAssignmentType'
-          description: Type of entity the relevant account will have access to.
-        assignor_id:
-          type: string
-          format: uuid
-          description: ID of the entity the relevant account will have access to.
-      required:
-      - assignor_type
-      - assignor_id
-      description: Available properties for creating an account assignment.
-      additionalProperties: false
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    AccountAssignment:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      - type: object
-        properties:
-          assignor_type:
-            allOf:
-            - $ref: '#/components/schemas/AccountAssignmentType'
-            description: Type of entity the relevant account has access to.
-          assignor_name:
-            type: string
-            description: Name of the entity the relevant account has access to.
-          assignor_id:
-            type: string
-            format: uuid
-            description: ID of the entity the relevant account has access to.
-        required:
-        - assignor_type
-        - assignor_name
-        - assignor_id
-        additionalProperties: false
-      description: User <<glossary:assignment>> record
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-  parameters:
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    UpdatedBefore:
-      name: updated_before
-      description: The date which a resource must be updated before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -187,226 +187,6 @@ webhooks:
                   user_type: USER_BORROWER
 components:
   schemas:
-    JobType:
-      type: string
-      enum:
-      - SYNC_LOAN_APPS
-      - VALIDATE_WEBHOOK_URL
-      - GENERATE_ORGANIZATION_REPORT
-      - DELETE_REGION_BRANCH
-      - ORDER_VERIFICATION_REPORT
-      - REFRESH_VERIFICATION_REPORTS
-      - DISCONNECT_BORROWER
-      - SEND_VERIFICATION_REMINDER
-      - DELETE_LOAN
-      - REASSIGN_BORROWERS_PARTNERS_LOAN_APPS
-    OrganizationCreatedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              organization:
-                type: string
-            required:
-            - organization
-            example:
-              organization: /fake/path/to/organization
-          event:
-            type: string
-            enum:
-            - organization_created
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/OrganizationCreatedEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    UserFirstLoginEventInfo:
-      allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      description: The event info particular to the user_first_login event.
-    StateLicenseEventInfo:
-      type: object
-      properties:
-        state:
-          oneOf:
-          - $ref: '#/components/schemas/StateCode'
-          - $ref: '#/components/schemas/NationwideCode'
-          description: State license's state.
-      required:
-      - state
-      description: The event info particular to the state license events.
-    OrganizationDeletedEventInfo:
-      type: object
-      properties:
-        org_type:
-          type: string
-          enum:
-          - REGION
-          - BRANCH
-          description: Type of organization (REGION or BRANCH).
-        name:
-          type: string
-          description: Name of the organization deleted.
-      required:
-      - org_type
-      - name
-      description: The event info particular to the organization_deleted event
-    UserDisabledEventInfo:
-      allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      description: The event info particular to the user_disabled event.
-    LoanDeactivatedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loan:
-                type: string
-            required:
-            - loan
-            example:
-              loan: /fake/path/to/loan
-          event:
-            type: string
-            enum:
-            - loan_deactivated
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/LoanEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    UserFirstLoginWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              user:
-                type: string
-            required:
-            - user
-            example:
-              user: /fake/path/to/user
-          event:
-            type: string
-            enum:
-            - user_first_login
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/UserFirstLoginEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    OrganizationCreatedEventInfo:
-      type: object
-      properties:
-        org_type:
-          type: string
-          enum:
-          - REGION
-          - BRANCH
-          description: Type of organization (REGION or BRANCH).
-        name:
-          type: string
-          description: Name of the organization created.
-      required:
-      - org_type
-      - name
-      description: The event info particular to the organization_created event.
-    LoanAppUpdatedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loan_application:
-                type: string
-            required:
-            - loan_application
-            example:
-              loan_application: /fake/path/to/loan_application
-          event:
-            type: string
-            enum:
-            - loan_app_updated
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/LoanApplicationEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    JobStatusChangedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              job:
-                type: string
-            required:
-            - job
-            example:
-              job: /fake/path/to/job
-          event:
-            type: string
-            enum:
-            - job_status_changed
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/JobStatusChangedEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    DocumentCreatedEventInfo:
-      type: object
-      properties:
-        document_name:
-          type: string
-          description: Name of the created document.
-        doc_type:
-          type: string
-          description: Document type classification.
-          nullable: true
-        task_name:
-          type: string
-          description: Name of the associated task.
-          nullable: true
-        loan_number:
-          type: string
-          description: Loan number.
-          nullable: true
-      required:
-      - document_name
-      description: The event info for the document_created event.
     VerificationAvailableEventInfo:
       type: object
       properties:
@@ -417,30 +197,7 @@ components:
       required:
       - report_type
       description: The event info particular to the verification_complete event.
-    NationwideCode:
-      type: string
-      enum:
-      - US
-      description: Nationwide code.
-    MilestonesReorderedEventInfo:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the organization.
-      required:
-      - name
-      description: The event info particular to the milestones_reordered event.
-    UserCreatedEventInfo:
-      allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      - type: object
-        properties:
-          user_borrower:
-            type: string
-            description: Borrower's name.
-      description: The event info particular to the user_created event.
-    LoanActivatedWebhookRequestBody0:
+    StateLicenseDeletedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
       - type: object
@@ -448,50 +205,29 @@ components:
           _links:
             type: object
             properties:
-              loan:
+              state_licenses:
                 type: string
             required:
-            - loan
+            - state_licenses
             example:
-              loan: /fake/path/to/loan
+              state_licenses: /fake/path/to/state_licenses
           event:
             type: string
             enum:
-            - loan_activated
+            - state_license_deleted
             description: Event that triggered the webhook.
           event_info:
             allOf:
-            - $ref: '#/components/schemas/LoanEventInfo'
+            - $ref: '#/components/schemas/StateLicenseEventInfo'
         required:
         - _links
         - event
         - event_info
         additionalProperties: false
-    DocumentUploadedEventInfo:
-      type: object
-      properties:
-        document_name:
-          type: string
-          description: Name of the uploaded document.
-        doc_type:
-          type: string
-          description: Document type classification.
-          nullable: true
-        task_name:
-          type: string
-          description: Name of the associated task.
-          nullable: true
-        loan_number:
-          type: string
-          description: Loan number.
-          nullable: true
-        uploaded_by:
-          type: string
-          description: Who uploaded the document (borrower or servicer).
-      required:
-      - document_name
-      - uploaded_by
-      description: The event info for the document_uploaded event.
+    UserEnabledEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      description: The event info particular to the user_enabled event.
     UserDisabledWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
@@ -519,167 +255,63 @@ components:
         - event
         - event_info
         additionalProperties: false
-    BaseWebhookRequestBody:
-      type: object
-      properties:
-        _id:
-          type: string
-          format: uuid
-          description: Unique identifier for the webhook event.
-          example: 00000000-0000-0000-0000-000000000000
-        _timestamp:
-          type: string
-          format: date-time
-          description: Timestamp for when the webhook event was triggered.
-          example: '1989-08-23T00:00:00+00:00'
-      required:
-      - _id
-      - _timestamp
-      additionalProperties: false
-    UserEnabledEventInfo:
-      allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      description: The event info particular to the user_enabled event.
-    MilestonesReorderedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              milestones:
-                type: string
-            required:
-            - milestones
-            example:
-              milestones: /fake/path/to/milestones
-          event:
-            type: string
-            enum:
-            - milestones_reordered
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/MilestonesReorderedEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    MilestoneDeletedEventInfo:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the organization.
-      required:
-      - name
-      description: The event info particular to the milestone_deleted event.
-    OrganizationDeletedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              parent_organization:
-                type: string
-            required:
-            - parent_organization
-            example:
-              parent_organization: /fake/path/to/parent_organization
-          event:
-            type: string
-            enum:
-            - organization_deleted
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/OrganizationDeletedEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    VerificationAvailableWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              verification:
-                type: string
-            required:
-            - verification
-            example:
-              verification: /fake/path/to/verification
-          event:
-            type: string
-            enum:
-            - verification_available
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/VerificationAvailableEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    UserCreatedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              user:
-                type: string
-            required:
-            - user
-            example:
-              user: /fake/path/to/user
-          event:
-            type: string
-            enum:
-            - user_created
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/UserCreatedEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    VerificationReportType:
+    JobType:
       type: string
       enum:
-      - BOTH
-      - DOC_VOI_MORTGAGE
-      - DVOE
-      - VOA
-      - VOAI
-      - VOA_HISTORY
-      - VOE
-      - VOE_MORTGAGE
-      - VOE_PAYROLL
-      - VOE_TRANSACTIONS
-      - VOI
-      - VOIE
-      - VOIE_MORTGAGE
-      - VOIE_PAYROLL
-      - VOIE_TX_VERIFY
-      description: Types of verification reports.
-    UserDeletedEventInfo:
+      - SYNC_LOAN_APPS
+      - VALIDATE_WEBHOOK_URL
+      - GENERATE_ORGANIZATION_REPORT
+      - DELETE_REGION_BRANCH
+      - ORDER_VERIFICATION_REPORT
+      - REFRESH_VERIFICATION_REPORTS
+      - DISCONNECT_BORROWER
+      - SEND_VERIFICATION_REMINDER
+      - DELETE_LOAN
+      - REASSIGN_BORROWERS_PARTNERS_LOAN_APPS
+    LoanAppSubmittedWebhookRequestBody0:
       allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      description: The event info particular to the user_deleted event.
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan_application:
+                type: string
+            required:
+            - loan_application
+            example:
+              loan_application: /fake/path/to/loan_application
+          event:
+            type: string
+            enum:
+            - loan_app_submitted
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/LoanApplicationEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    LoanOfficerAdminChangeEventInfo:
+      type: object
+      properties:
+        admin_type:
+          type: string
+          enum:
+          - COMPANY_ADMIN
+          - REGION_ADMIN
+          - BRANCH_ADMIN
+          description: Type of admin to which the loan officer was promoted or from which the loan officer was demoted.
+        name:
+          type: string
+          description: Name of the loan officer.
+      required:
+      - admin_type
+      - name
+      description: The event info particular to the loan_officer_promoted and loan_officer_demoted events.
     LoanMilestoneUpdatedEventInfo:
       type: object
       properties:
@@ -697,6 +329,10 @@ components:
       - status
       - loan_number
       description: The event info for the loan_milestone_updated event.
+    UserFirstLoginEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      description: The event info particular to the user_first_login event.
     StateCode:
       type: string
       enum:
@@ -763,7 +399,7 @@ components:
       - WV
       - WY
       description: State abbreviated code.
-    LoanUpdatedWebhookRequestBody0:
+    LoanDeactivatedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
       - type: object
@@ -780,7 +416,7 @@ components:
           event:
             type: string
             enum:
-            - loan_updated
+            - loan_deactivated
             description: Event that triggered the webhook.
           event_info:
             allOf:
@@ -790,43 +426,6 @@ components:
         - event
         - event_info
         additionalProperties: false
-    LoanOfficerPromotedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loan_officer:
-                type: string
-            required:
-            - loan_officer
-            example:
-              loan_officer: /fake/path/to/loan_officer
-          event:
-            type: string
-            enum:
-            - loan_officer_promoted
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/LoanOfficerAdminChangeEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    NullableJobStatus:
-      type: string
-      enum:
-      - QUEUED
-      - STARTED
-      - QUEUED_FOR_RETRY
-      - COMPLETED
-      - FAILED
-      - null
-      nullable: true
     StateLicenseUpdatedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
@@ -854,7 +453,77 @@ components:
         - event
         - event_info
         additionalProperties: false
-    LoanAppStartedWebhookRequestBody0:
+    VerificationReportType:
+      type: string
+      enum:
+      - BOTH
+      - DOC_VOI_MORTGAGE
+      - DVOE
+      - VOA
+      - VOAI
+      - VOA_HISTORY
+      - VOE
+      - VOE_MORTGAGE
+      - VOE_PAYROLL
+      - VOE_TRANSACTIONS
+      - VOI
+      - VOIE
+      - VOIE_MORTGAGE
+      - VOIE_PAYROLL
+      - VOIE_TX_VERIFY
+      description: Types of verification reports.
+    JobStatusChangedEventInfo:
+      type: object
+      properties:
+        job_type:
+          allOf:
+          - $ref: '#/components/schemas/JobType'
+          description: Type of job that was changed.
+        job_description:
+          type: string
+          description: Job's description.
+          nullable: true
+        from_status:
+          allOf:
+          - $ref: '#/components/schemas/NullableJobStatus'
+          description: Job's status prior to the change. If the job was just created, this will be nil.
+        to_status:
+          allOf:
+          - $ref: '#/components/schemas/JobStatus'
+          description: Job's status after the change.
+        changed_at:
+          type: string
+          format: date-time
+          description: When the job's status changed.
+      description: The event info particular to the job_status_changed event.
+    AccountAssignmentCreatedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              assignment:
+                type: string
+            required:
+            - assignment
+            example:
+              assignment: /fake/path/to/assignment
+          event:
+            type: string
+            enum:
+            - account_assignment_created
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/AccountAssignmentEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    LoanAppUpdatedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
       - type: object
@@ -871,7 +540,7 @@ components:
           event:
             type: string
             enum:
-            - loan_app_started
+            - loan_app_updated
             description: Event that triggered the webhook.
           event_info:
             allOf:
@@ -881,7 +550,7 @@ components:
         - event
         - event_info
         additionalProperties: false
-    LoanCreatedWebhookRequestBody0:
+    VerificationAvailableWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
       - type: object
@@ -889,76 +558,51 @@ components:
           _links:
             type: object
             properties:
-              loan:
+              verification:
                 type: string
             required:
-            - loan
+            - verification
             example:
-              loan: /fake/path/to/loan
+              verification: /fake/path/to/verification
           event:
             type: string
             enum:
-            - loan_created
+            - verification_available
             description: Event that triggered the webhook.
           event_info:
             allOf:
-            - $ref: '#/components/schemas/LoanEventInfo'
+            - $ref: '#/components/schemas/VerificationAvailableEventInfo'
         required:
         - _links
         - event
         - event_info
         additionalProperties: false
-    WebhookRequestBody:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          events:
-            type: array
-            items:
-              $ref: '#/components/schemas/WebhookRequestEvent'
-            minItems: 1
-            description: An array of events that have been triggered.
-        required:
-        - events
-        additionalProperties: false
-    MilestoneCreatedEventInfo:
+    DocumentUploadedEventInfo:
       type: object
       properties:
-        name:
+        document_name:
           type: string
-          description: Name of the milestone.
+          description: Name of the uploaded document.
+        doc_type:
+          type: string
+          description: Document type classification.
+          nullable: true
+        task_name:
+          type: string
+          description: Name of the associated task.
+          nullable: true
+        loan_number:
+          type: string
+          description: Loan number.
+          nullable: true
+        uploaded_by:
+          type: string
+          description: Who uploaded the document (borrower or servicer).
       required:
-      - name
-      description: The event info particular to the milestone_created event.
-    LoanMilestoneUpdatedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loan_milestone:
-                type: string
-            required:
-            - loan_milestone
-            example:
-              loan_milestone: /fake/path/to/loan_milestone
-          event:
-            type: string
-            enum:
-            - loan_milestone_updated
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/LoanMilestoneUpdatedEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    MilestoneDeletedWebhookRequestBody0:
+      - document_name
+      - uploaded_by
+      description: The event info for the document_uploaded event.
+    MilestonesReorderedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
       - type: object
@@ -975,11 +619,11 @@ components:
           event:
             type: string
             enum:
-            - milestone_deleted
+            - milestones_reordered
             description: Event that triggered the webhook.
           event_info:
             allOf:
-            - $ref: '#/components/schemas/MilestoneDeletedEventInfo'
+            - $ref: '#/components/schemas/MilestonesReorderedEventInfo'
         required:
         - _links
         - event
@@ -1012,16 +656,15 @@ components:
         - event
         - event_info
         additionalProperties: false
-    LoanEventInfo:
-      type: object
-      properties:
-        loan_number:
-          type: string
-          description: Loan number.
-      required:
-      - loan_number
-      description: The event info particular to the loan webhook group events.
-    StateLicenseDeletedWebhookRequestBody0:
+    JobStatus:
+      type: string
+      enum:
+      - QUEUED
+      - STARTED
+      - QUEUED_FOR_RETRY
+      - COMPLETED
+      - FAILED
+    LoanMilestoneUpdatedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
       - type: object
@@ -1029,26 +672,26 @@ components:
           _links:
             type: object
             properties:
-              state_licenses:
+              loan_milestone:
                 type: string
             required:
-            - state_licenses
+            - loan_milestone
             example:
-              state_licenses: /fake/path/to/state_licenses
+              loan_milestone: /fake/path/to/loan_milestone
           event:
             type: string
             enum:
-            - state_license_deleted
+            - loan_milestone_updated
             description: Event that triggered the webhook.
           event_info:
             allOf:
-            - $ref: '#/components/schemas/StateLicenseEventInfo'
+            - $ref: '#/components/schemas/LoanMilestoneUpdatedEventInfo'
         required:
         - _links
         - event
         - event_info
         additionalProperties: false
-    DocumentUploadedWebhookRequestBody0:
+    LoanAppAbandonedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
       - type: object
@@ -1056,46 +699,52 @@ components:
           _links:
             type: object
             properties:
-              loan:
+              loan_application:
                 type: string
             required:
-            - loan
+            - loan_application
             example:
-              loan: /fake/path/to/loan
+              loan_application: /fake/path/to/loan_application
           event:
             type: string
             enum:
-            - document_uploaded
+            - loan_app_abandoned
             description: Event that triggered the webhook.
           event_info:
             allOf:
-            - $ref: '#/components/schemas/DocumentUploadedEventInfo'
+            - $ref: '#/components/schemas/LoanApplicationEventInfo'
         required:
         - _links
         - event
         - event_info
         additionalProperties: false
-    AccountAssignmentEventInfo:
-      type: object
-      properties:
-        assignee_type:
-          type: string
-          description: Type of the account that owns the assignment.
-        assignee_name:
-          type: string
-          description: Name of the account that owns the assignment.
-        assignor_type:
-          type: string
-          description: Type of entity the relevant account has access to.
-        assignor_name:
-          type: string
-          description: Name of the entity the relevant account has access to.
-      required:
-      - assignee_type
-      - assignee_name
-      - assignor_type
-      - assignor_name
-      description: The event info particular to the account assignment events.
+    OrganizationCreatedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              organization:
+                type: string
+            required:
+            - organization
+            example:
+              organization: /fake/path/to/organization
+          event:
+            type: string
+            enum:
+            - organization_created
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/OrganizationCreatedEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
     MilestoneCreatedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
@@ -1123,6 +772,16 @@ components:
         - event
         - event_info
         additionalProperties: false
+    NullableJobStatus:
+      type: string
+      enum:
+      - QUEUED
+      - STARTED
+      - QUEUED_FOR_RETRY
+      - COMPLETED
+      - FAILED
+      - null
+      nullable: true
     LoanMilestoneCompletedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
@@ -1150,45 +809,79 @@ components:
         - event
         - event_info
         additionalProperties: false
-    UserEventInfo:
+    MilestonesReorderedEventInfo:
       type: object
       properties:
         name:
           type: string
-          description: Name of user.
-        user_type:
-          type: string
-          enum:
-          - USER_BORROWER
-          - COMPANY_ADMIN
-          - REGION_ADMIN
-          - BRANCH_ADMIN
-          - LOAN_OFFICER
-          - TEAM_MEMBER
-          - PARTNER
-          description: Type of user.
-      description: The event info shared between user events.
-    DocumentUpdatedEventInfo:
+          description: Name of the organization.
+      required:
+      - name
+      description: The event info particular to the milestones_reordered event.
+    OrganizationDeletedEventInfo:
       type: object
       properties:
-        document_name:
+        org_type:
           type: string
-          description: Name of the updated document.
-        doc_type:
+          enum:
+          - REGION
+          - BRANCH
+          description: Type of organization (REGION or BRANCH).
+        name:
           type: string
-          description: Document type classification.
-          nullable: true
-        task_name:
-          type: string
-          description: Name of the associated task.
-          nullable: true
-        loan_number:
-          type: string
-          description: Loan number.
-          nullable: true
+          description: Name of the organization deleted.
       required:
-      - document_name
-      description: The event info for the document_updated event.
+      - org_type
+      - name
+      description: The event info particular to the organization_deleted event
+    AccountAssignmentEventInfo:
+      type: object
+      properties:
+        assignee_type:
+          type: string
+          description: Type of the account that owns the assignment.
+        assignee_name:
+          type: string
+          description: Name of the account that owns the assignment.
+        assignor_type:
+          type: string
+          description: Type of entity the relevant account has access to.
+        assignor_name:
+          type: string
+          description: Name of the entity the relevant account has access to.
+      required:
+      - assignee_type
+      - assignee_name
+      - assignor_type
+      - assignor_name
+      description: The event info particular to the account assignment events.
+    LoanUpdatedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan:
+                type: string
+            required:
+            - loan
+            example:
+              loan: /fake/path/to/loan
+          event:
+            type: string
+            enum:
+            - loan_updated
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/LoanEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
     UserUpdatedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
@@ -1216,6 +909,638 @@ components:
         - event
         - event_info
         additionalProperties: false
+    UserUpdatedEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      description: The event info particular to the user_updated event.
+    BaseWebhookRequestBody:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: uuid
+          description: Unique identifier for the webhook event.
+          example: 00000000-0000-0000-0000-000000000000
+        _timestamp:
+          type: string
+          format: date-time
+          description: Timestamp for when the webhook event was triggered.
+          example: '1989-08-23T00:00:00+00:00'
+      required:
+      - _id
+      - _timestamp
+      additionalProperties: false
+    StateLicenseCreatedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              state_license:
+                type: string
+            required:
+            - state_license
+            example:
+              state_license: /fake/path/to/state_license
+          event:
+            type: string
+            enum:
+            - state_license_created
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/StateLicenseEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    JobStatusChangedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              job:
+                type: string
+            required:
+            - job
+            example:
+              job: /fake/path/to/job
+          event:
+            type: string
+            enum:
+            - job_status_changed
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/JobStatusChangedEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    DocumentCreatedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan:
+                type: string
+            required:
+            - loan
+            example:
+              loan: /fake/path/to/loan
+          event:
+            type: string
+            enum:
+            - document_created
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/DocumentCreatedEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    NationwideCode:
+      type: string
+      enum:
+      - US
+      description: Nationwide code.
+    UserFirstLoginWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              user:
+                type: string
+            required:
+            - user
+            example:
+              user: /fake/path/to/user
+          event:
+            type: string
+            enum:
+            - user_first_login
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/UserFirstLoginEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    DocumentCreatedEventInfo:
+      type: object
+      properties:
+        document_name:
+          type: string
+          description: Name of the created document.
+        doc_type:
+          type: string
+          description: Document type classification.
+          nullable: true
+        task_name:
+          type: string
+          description: Name of the associated task.
+          nullable: true
+        loan_number:
+          type: string
+          description: Loan number.
+          nullable: true
+      required:
+      - document_name
+      description: The event info for the document_created event.
+    LoanActivatedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan:
+                type: string
+            required:
+            - loan
+            example:
+              loan: /fake/path/to/loan
+          event:
+            type: string
+            enum:
+            - loan_activated
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/LoanEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    LoanCreatedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan:
+                type: string
+            required:
+            - loan
+            example:
+              loan: /fake/path/to/loan
+          event:
+            type: string
+            enum:
+            - loan_created
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/LoanEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    OrganizationDeletedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              parent_organization:
+                type: string
+            required:
+            - parent_organization
+            example:
+              parent_organization: /fake/path/to/parent_organization
+          event:
+            type: string
+            enum:
+            - organization_deleted
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/OrganizationDeletedEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    MilestoneDeletedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              milestones:
+                type: string
+            required:
+            - milestones
+            example:
+              milestones: /fake/path/to/milestones
+          event:
+            type: string
+            enum:
+            - milestone_deleted
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/MilestoneDeletedEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    UserDeletedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan_officer:
+                type: string
+            required:
+            - loan_officer
+            example:
+              loan_officer: /fake/path/to/loan_officer
+          event:
+            type: string
+            enum:
+            - user_deleted
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/UserDeletedEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    StateLicenseEventInfo:
+      type: object
+      properties:
+        state:
+          oneOf:
+          - $ref: '#/components/schemas/StateCode'
+          - $ref: '#/components/schemas/NationwideCode'
+          description: State license's state.
+      required:
+      - state
+      description: The event info particular to the state license events.
+    OrganizationCreatedEventInfo:
+      type: object
+      properties:
+        org_type:
+          type: string
+          enum:
+          - REGION
+          - BRANCH
+          description: Type of organization (REGION or BRANCH).
+        name:
+          type: string
+          description: Name of the organization created.
+      required:
+      - org_type
+      - name
+      description: The event info particular to the organization_created event.
+    UserDisabledEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      description: The event info particular to the user_disabled event.
+    LoanMilestoneCompletedEventInfo:
+      type: object
+      properties:
+        milestone_name:
+          type: string
+          description: Name of the milestone.
+        loan_number:
+          type: string
+          description: Loan number.
+      required:
+      - milestone_name
+      - loan_number
+      description: The event info for the loan_milestone_completed event.
+    UserCreatedEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      - type: object
+        properties:
+          user_borrower:
+            type: string
+            description: Borrower's name.
+      description: The event info particular to the user_created event.
+    DocumentUploadedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan:
+                type: string
+            required:
+            - loan
+            example:
+              loan: /fake/path/to/loan
+          event:
+            type: string
+            enum:
+            - document_uploaded
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/DocumentUploadedEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    UserEventInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of user.
+        user_type:
+          type: string
+          enum:
+          - USER_BORROWER
+          - COMPANY_ADMIN
+          - REGION_ADMIN
+          - BRANCH_ADMIN
+          - LOAN_OFFICER
+          - TEAM_MEMBER
+          - PARTNER
+          description: Type of user.
+      description: The event info shared between user events.
+    LoanDeletedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loans:
+                type: string
+            required:
+            - loans
+            example:
+              loans: /fake/path/to/loans
+          event:
+            type: string
+            enum:
+            - loan_deleted
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/LoanEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    LoanAppStartedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan_application:
+                type: string
+            required:
+            - loan_application
+            example:
+              loan_application: /fake/path/to/loan_application
+          event:
+            type: string
+            enum:
+            - loan_app_started
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/LoanApplicationEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    LoanOfficerPromotedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan_officer:
+                type: string
+            required:
+            - loan_officer
+            example:
+              loan_officer: /fake/path/to/loan_officer
+          event:
+            type: string
+            enum:
+            - loan_officer_promoted
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/LoanOfficerAdminChangeEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    LoanApplicationEventInfo:
+      type: object
+      properties:
+        borrower_name:
+          type: string
+          description: Borrower name.
+      description: The event info particular to the loan application webhook group events.
+    WebhookRequestBody:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          events:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebhookRequestEvent'
+            minItems: 1
+            description: An array of events that have been triggered.
+        required:
+        - events
+        additionalProperties: false
+    UserDeletedEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      description: The event info particular to the user_deleted event.
+    DocumentUpdatedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan:
+                type: string
+            required:
+            - loan
+            example:
+              loan: /fake/path/to/loan
+          event:
+            type: string
+            enum:
+            - document_updated
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/DocumentUpdatedEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    UserCreatedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              user:
+                type: string
+            required:
+            - user
+            example:
+              user: /fake/path/to/user
+          event:
+            type: string
+            enum:
+            - user_created
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/UserCreatedEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    LoanAppImportedWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              loan_application:
+                type: string
+            required:
+            - loan_application
+            example:
+              loan_application: /fake/path/to/loan_application
+          event:
+            type: string
+            enum:
+            - loan_app_imported
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/LoanApplicationEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    UserEnabledWebhookRequestBody0:
+      allOf:
+      - $ref: '#/components/schemas/BaseWebhookRequestBody'
+      - type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              user:
+                type: string
+            required:
+            - user
+            example:
+              user: /fake/path/to/user
+          event:
+            type: string
+            enum:
+            - user_enabled
+            description: Event that triggered the webhook.
+          event_info:
+            allOf:
+            - $ref: '#/components/schemas/UserEnabledEventInfo'
+        required:
+        - _links
+        - event
+        - event_info
+        additionalProperties: false
+    DocumentUpdatedEventInfo:
+      type: object
+      properties:
+        document_name:
+          type: string
+          description: Name of the updated document.
+        doc_type:
+          type: string
+          description: Document type classification.
+          nullable: true
+        task_name:
+          type: string
+          description: Name of the associated task.
+          nullable: true
+        loan_number:
+          type: string
+          description: Loan number.
+          nullable: true
+      required:
+      - document_name
+      description: The event info for the document_updated event.
+    LoanEventInfo:
+      type: object
+      properties:
+        loan_number:
+          type: string
+          description: Loan number.
+      required:
+      - loan_number
+      description: The event info particular to the loan webhook group events.
     WebhookRequestEvent:
       type: object
       properties: {}
@@ -1294,298 +1619,24 @@ components:
       - $ref: '#/components/schemas/UserDeletedWebhookRequestBody0'
       - $ref: '#/components/schemas/VerificationAvailableWebhookRequestBody0'
       additionalProperties: false
-    AccountAssignmentCreatedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              assignment:
-                type: string
-            required:
-            - assignment
-            example:
-              assignment: /fake/path/to/assignment
-          event:
-            type: string
-            enum:
-            - account_assignment_created
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/AccountAssignmentEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    UserEnabledWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              user:
-                type: string
-            required:
-            - user
-            example:
-              user: /fake/path/to/user
-          event:
-            type: string
-            enum:
-            - user_enabled
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/UserEnabledEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    JobStatus:
-      type: string
-      enum:
-      - QUEUED
-      - STARTED
-      - QUEUED_FOR_RETRY
-      - COMPLETED
-      - FAILED
-    LoanOfficerAdminChangeEventInfo:
+    MilestoneDeletedEventInfo:
       type: object
       properties:
-        admin_type:
-          type: string
-          enum:
-          - COMPANY_ADMIN
-          - REGION_ADMIN
-          - BRANCH_ADMIN
-          description: Type of admin to which the loan officer was promoted or from which the loan officer was demoted.
         name:
           type: string
-          description: Name of the loan officer.
+          description: Name of the organization.
       required:
-      - admin_type
       - name
-      description: The event info particular to the loan_officer_promoted and loan_officer_demoted events.
-    DocumentUpdatedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loan:
-                type: string
-            required:
-            - loan
-            example:
-              loan: /fake/path/to/loan
-          event:
-            type: string
-            enum:
-            - document_updated
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/DocumentUpdatedEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    DocumentCreatedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loan:
-                type: string
-            required:
-            - loan
-            example:
-              loan: /fake/path/to/loan
-          event:
-            type: string
-            enum:
-            - document_created
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/DocumentCreatedEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    UserUpdatedEventInfo:
-      allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      description: The event info particular to the user_updated event.
-    LoanApplicationEventInfo:
+      description: The event info particular to the milestone_deleted event.
+    MilestoneCreatedEventInfo:
       type: object
       properties:
-        borrower_name:
-          type: string
-          description: Borrower name.
-      description: The event info particular to the loan application webhook group events.
-    LoanAppAbandonedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loan_application:
-                type: string
-            required:
-            - loan_application
-            example:
-              loan_application: /fake/path/to/loan_application
-          event:
-            type: string
-            enum:
-            - loan_app_abandoned
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/LoanApplicationEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    LoanAppImportedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loan_application:
-                type: string
-            required:
-            - loan_application
-            example:
-              loan_application: /fake/path/to/loan_application
-          event:
-            type: string
-            enum:
-            - loan_app_imported
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/LoanApplicationEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    LoanDeletedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loans:
-                type: string
-            required:
-            - loans
-            example:
-              loans: /fake/path/to/loans
-          event:
-            type: string
-            enum:
-            - loan_deleted
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/LoanEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    LoanAppSubmittedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loan_application:
-                type: string
-            required:
-            - loan_application
-            example:
-              loan_application: /fake/path/to/loan_application
-          event:
-            type: string
-            enum:
-            - loan_app_submitted
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/LoanApplicationEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    LoanMilestoneCompletedEventInfo:
-      type: object
-      properties:
-        milestone_name:
+        name:
           type: string
           description: Name of the milestone.
-        loan_number:
-          type: string
-          description: Loan number.
       required:
-      - milestone_name
-      - loan_number
-      description: The event info for the loan_milestone_completed event.
-    StateLicenseCreatedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              state_license:
-                type: string
-            required:
-            - state_license
-            example:
-              state_license: /fake/path/to/state_license
-          event:
-            type: string
-            enum:
-            - state_license_created
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/StateLicenseEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
+      - name
+      description: The event info particular to the milestone_created event.
     LoanOfficerDemotedWebhookRequestBody0:
       allOf:
       - $ref: '#/components/schemas/BaseWebhookRequestBody'
@@ -1613,57 +1664,6 @@ components:
         - event
         - event_info
         additionalProperties: false
-    UserDeletedWebhookRequestBody0:
-      allOf:
-      - $ref: '#/components/schemas/BaseWebhookRequestBody'
-      - type: object
-        properties:
-          _links:
-            type: object
-            properties:
-              loan_officer:
-                type: string
-            required:
-            - loan_officer
-            example:
-              loan_officer: /fake/path/to/loan_officer
-          event:
-            type: string
-            enum:
-            - user_deleted
-            description: Event that triggered the webhook.
-          event_info:
-            allOf:
-            - $ref: '#/components/schemas/UserDeletedEventInfo'
-        required:
-        - _links
-        - event
-        - event_info
-        additionalProperties: false
-    JobStatusChangedEventInfo:
-      type: object
-      properties:
-        job_type:
-          allOf:
-          - $ref: '#/components/schemas/JobType'
-          description: Type of job that was changed.
-        job_description:
-          type: string
-          description: Job's description.
-          nullable: true
-        from_status:
-          allOf:
-          - $ref: '#/components/schemas/NullableJobStatus'
-          description: Job's status prior to the change. If the job was just created, this will be nil.
-        to_status:
-          allOf:
-          - $ref: '#/components/schemas/JobStatus'
-          description: Job's status after the change.
-        changed_at:
-          type: string
-          format: date-time
-          description: When the job's status changed.
-      description: The event info particular to the job_status_changed event.
   responses:
     WebhookResponse:
       description: Return a 200 status to indicate that the data was received successfully

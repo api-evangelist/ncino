@@ -280,141 +280,6 @@ paths:
       summary: 🚧 Retrieve a doc package order (BETA)
 components:
   schemas:
-    DocPackageOrderPatchBody:
-      type: object
-      properties:
-        order_group_id:
-          type: string
-          format: uuid
-          description: The order group ID returned by the create endpoint.
-        doc_package_order_ids:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            format: uuid
-          description: Optional subset of doc package order IDs to retry. When omitted, all failed orders in the group are retried.
-      required:
-      - order_group_id
-      description: Available properties for retrying failed doc package orders
-      additionalProperties: false
-    DocPackageOrderPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/DocPackageOrder'
-        required:
-        - contents
-    DocPackageOrderRecipient:
-      type: object
-      properties:
-        role:
-          allOf:
-          - $ref: '#/components/schemas/RecipientRoleType'
-          description: The recipient's role.
-        email:
-          type:
-          - string
-          - 'null'
-          description: The recipient's email address.
-        phone:
-          type:
-          - string
-          - 'null'
-          description: The recipient's phone number. (###-###-####)
-        full_name:
-          type:
-          - string
-          - 'null'
-          description: The recipient's full name.
-      description: An additional recipient to be added to the package.
-      additionalProperties: false
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
-    RecipientRoleType:
-      type: string
-      enum:
-      - additional_contact
-      - Appointment of Designee
-      - Borrower
-      - Builder
-      - Buyer's Agent
-      - Buyer's Attorney
-      - Closer
-      - CoBorrower
-      - Doc Prep By
-      - Escrow Agent
-      - Escrow Company
-      - Loan Officer
-      - Loan Processor
-      - One off Doc Recipient
-      - Seller's Agent
-      - Seller's Attorney
-      - Settlement Agent
-      - Title Company
-      description: Recipient role type enum key.
-    DocVendor:
-      type: string
-      enum:
-      - encompass
-      description: Doc vendor type enum key.
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    PackageType:
-      type: string
-      enum:
-      - initial
-      - closing
-      - pre_closing
-      - requested_docs
-      - sent_docs
-      - post_consummation
-      - hybrid
-      - hybrid_ron
-      description: Disclosure package type enum key.
     RonJurisdictionInfo:
       type: object
       properties:
@@ -435,6 +300,87 @@ components:
 
         the RON transaction. Only applicable when closing package type is ''HybridRON''.'
       additionalProperties: false
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    DocPackageOrderAccepted:
+      type: object
+      properties:
+        order_group_id:
+          type: string
+          format: uuid
+          description: Shared identifier for all orders created by this request.
+        message:
+          type: string
+          description: Description of how to poll for status.
+      required:
+      - order_group_id
+      - message
+      description: 'Response returned when doc package orders have been accepted for async processing.
+
+        Poll GET /loans/{loan_id}/doc_package_orders?order_group_id={order_group_id} to track status.'
+      additionalProperties: false
+    DocPackageOrderPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/DocPackageOrder'
+        required:
+        - contents
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
     DocPackageOrderPostBody:
       type: object
       properties:
@@ -487,13 +433,43 @@ components:
           description: The list of Encompass form/template names to generate (e.g. "Loan Estimate"). Required when order type is 'forms'; ignored otherwise.
       description: Available properties for creating doc package orders
       additionalProperties: false
-    OrderType:
-      type: string
-      enum:
-      - opening
-      - closing
-      - forms
-      description: Order type enum key.
+    DocPackageOrderRecipient:
+      type: object
+      properties:
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RecipientRoleType'
+          description: The recipient's role.
+        email:
+          type:
+          - string
+          - 'null'
+          description: The recipient's email address.
+        phone:
+          type:
+          - string
+          - 'null'
+          description: The recipient's phone number. (###-###-####)
+        full_name:
+          type:
+          - string
+          - 'null'
+          description: The recipient's full name.
+      description: An additional recipient to be added to the package.
+      additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
     DocPackageOrder:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -532,34 +508,66 @@ components:
             description: Timestamp of when the order was last modified.
         additionalProperties: false
       description: Doc package order model
-    ClosingDocToRemove:
+    RecipientRoleType:
+      type: string
+      enum:
+      - additional_contact
+      - Appointment of Designee
+      - Borrower
+      - Builder
+      - Buyer's Agent
+      - Buyer's Attorney
+      - Closer
+      - CoBorrower
+      - Doc Prep By
+      - Escrow Agent
+      - Escrow Company
+      - Loan Officer
+      - Loan Processor
+      - One off Doc Recipient
+      - Seller's Agent
+      - Seller's Attorney
+      - Settlement Agent
+      - Title Company
+      description: Recipient role type enum key.
+    DocPackageOrderPatchBody:
       type: object
       properties:
-        name:
+        order_group_id:
           type: string
-          description: The document name. Use 'ENOTE' to target the eNote.
-        guid:
-          type: string
-          description: The document GUID to remove from the package.
+          format: uuid
+          description: The order group ID returned by the create endpoint.
+        doc_package_order_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+          description: Optional subset of doc package order IDs to retry. When omitted, all failed orders in the group are retried.
       required:
-      - name
-      - guid
-      description: 'A document to remove from a closing package. The document is matched by `guid`;
-
-        `name` is used to detect the eNote. Only applicable when order type is ''closing''.'
+      - order_group_id
+      description: Available properties for retrying failed doc package orders
       additionalProperties: false
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
+    PackageType:
+      type: string
+      enum:
+      - initial
+      - closing
+      - pre_closing
+      - requested_docs
+      - sent_docs
+      - post_consummation
+      - hybrid
+      - hybrid_ron
+      description: Disclosure package type enum key.
+    OrderType:
+      type: string
+      enum:
+      - opening
+      - closing
+      - forms
+      description: Order type enum key.
     AbstractModel:
       type: object
       properties:
@@ -576,6 +584,44 @@ components:
       - _self
       - _type
       additionalProperties: false
+    ClosingDocToRemove:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The document name. Use 'ENOTE' to target the eNote.
+        guid:
+          type: string
+          description: The document GUID to remove from the package.
+      required:
+      - name
+      - guid
+      description: 'A document to remove from a closing package. The document is matched by `guid`;
+
+        `name` is used to detect the eNote. Only applicable when order type is ''closing''.'
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    DocVendor:
+      type: string
+      enum:
+      - encompass
+      description: Doc vendor type enum key.
     DocPackageOrderAuditFailure:
       type: object
       properties:
@@ -592,55 +638,63 @@ components:
           description: Severity of the rule, e.g. "Required" or "Recommended".
       description: A single field-level audit rule failure from the Encompass data audit.
       additionalProperties: false
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    DocPackageOrderAccepted:
-      type: object
-      properties:
-        order_group_id:
-          type: string
-          format: uuid
-          description: Shared identifier for all orders created by this request.
-        message:
-          type: string
-          description: Description of how to poll for status.
-      required:
-      - order_group_id
-      - message
-      description: 'Response returned when doc package orders have been accepted for async processing.
-
-        Poll GET /loans/{loan_id}/doc_package_orders?order_group_id={order_group_id} to track status.'
-      additionalProperties: false
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
   responses:
-    ForbiddenError:
-      description: Forbidden
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -672,8 +726,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -683,8 +737,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
+    UnauthorizedError:
+      description: Unauthorized
       content:
         application/json:
           schema:
@@ -703,60 +757,6 @@ components:
       description: API version.
       schema:
         type: string
-  parameters:
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    UpdatedBefore:
-      name: updated_before
-      description: The date which a resource must be updated before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
   securitySchemes:
     OAuth2:
       type: oauth2

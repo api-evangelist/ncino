@@ -61,31 +61,51 @@ paths:
         Retrieve all roles assigned to a user'
       summary: 🚧 Retrieve all roles assigned to a user (BETA)
 components:
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
+  parameters:
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
   responses:
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     UnauthorizedError:
       description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
       content:
         application/json:
           schema:
@@ -117,40 +137,99 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-  parameters:
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   schemas:
-    AbstractPagination:
+    UserRole:
       allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
+      - $ref: '#/components/schemas/AbstractResourceModel'
       - type: object
         properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
+          name:
+            type: string
+            description: The role's name.
+          description:
+            type: string
+            description: The role's description.
+        required:
+        - name
+        - description
+        additionalProperties: false
+      description: A role assigned to a user.
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    UserRolePagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserRole'
+        required:
+        - contents
+        additionalProperties: false
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
         additionalProperties: false
     ErrorSet:
       type: object
@@ -185,97 +264,18 @@ components:
       - _self
       - _type
       additionalProperties: false
-    UserRole:
+    AbstractPagination:
       allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
+      - $ref: '#/components/schemas/AbstractCollection'
       - type: object
         properties:
-          name:
-            type: string
-            description: The role's name.
-          description:
-            type: string
-            description: The role's description.
-        required:
-        - name
-        - description
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
         additionalProperties: false
-      description: A role assigned to a user.
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    UserRolePagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/UserRole'
-        required:
-        - contents
-        additionalProperties: false
-  headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
   securitySchemes:
     OAuth2:
       type: oauth2

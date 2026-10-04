@@ -253,93 +253,61 @@ paths:
       description: This endpoint will retrieve a >'s >s.
       summary: Retrieve a company's regions
 components:
-  responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
   schemas:
-    EmptyString:
-      type: string
-      enum:
-      - ''
-      description: An empty string.
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
     Address:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -372,23 +340,18 @@ components:
             description: Zip code.
         additionalProperties: false
       description: Address model
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
     StateCode:
       type: string
       enum:
@@ -455,102 +418,10 @@ components:
       - WV
       - WY
       description: State abbreviated code.
-    RegionUpdateBody:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Region's name.
-        address:
-          allOf:
-          - $ref: '#/components/schemas/InputAddress'
-          description: Region's address.
-        nmls:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 255
-          description: Region's NMLS ID.
-      description: Available properties for updating a region.
-      additionalProperties: false
-      minProperties: 1
-    RegionPostBody:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Region's name.
-        address:
-          allOf:
-          - $ref: '#/components/schemas/InputAddress'
-          description: Region's address.
-        nmls:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 255
-          description: Region's NMLS ID.
-      required:
-      - name
-      description: Available properties for creating a region.
-      additionalProperties: false
     NoContent:
       type: object
       properties: {}
       additionalProperties: false
-    InputAddress:
-      type: object
-      properties:
-        street1:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 255
-          description: Street line 1
-        street2:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          description: Street line 2
-        city:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 255
-          description: City
-        state:
-          allOf:
-          - $ref: '#/components/schemas/StateCode'
-          description: State
-        zip:
-          type:
-          - string
-          - 'null'
-          minLength: 5
-          maxLength: 10
-          description: Zip code
-      additionalProperties: false
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
     Region:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -640,26 +511,18 @@ components:
             description: Region's consumer access URL.
         additionalProperties: false
       description: Region model
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
-    ResourceCreated:
+    AbstractPagination:
       allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
     Error:
       type: object
       properties:
@@ -689,6 +552,124 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
+    RegionPostBody:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Region's name.
+        address:
+          allOf:
+          - $ref: '#/components/schemas/InputAddress'
+          description: Region's address.
+        nmls:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Region's NMLS ID.
+      required:
+      - name
+      description: Available properties for creating a region.
+      additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    InputAddress:
+      type: object
+      properties:
+        street1:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Street line 1
+        street2:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          description: Street line 2
+        city:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: City
+        state:
+          allOf:
+          - $ref: '#/components/schemas/StateCode'
+          description: State
+        zip:
+          type:
+          - string
+          - 'null'
+          minLength: 5
+          maxLength: 10
+          description: Zip code
+      additionalProperties: false
+    EmptyString:
+      type: string
+      enum:
+      - ''
+      description: An empty string.
+    RegionUpdateBody:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Region's name.
+        address:
+          allOf:
+          - $ref: '#/components/schemas/InputAddress'
+          description: Region's address.
+        nmls:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 255
+          description: Region's NMLS ID.
+      description: Available properties for updating a region.
+      additionalProperties: false
+      minProperties: 1
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
     RegionPagination:
       allOf:
       - $ref: '#/components/schemas/AbstractPagination'
@@ -700,6 +681,79 @@ components:
               $ref: '#/components/schemas/Region'
         required:
         - contents
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   headers:
     ApiSupportedVersionsResponseHeader:
       description: API supported versions for endpoint.
@@ -709,60 +763,6 @@ components:
       description: API version.
       schema:
         type: string
-  parameters:
-    UpdatedBefore:
-      name: updated_before
-      description: The date which a resource must be updated before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
   securitySchemes:
     OAuth2:
       type: oauth2

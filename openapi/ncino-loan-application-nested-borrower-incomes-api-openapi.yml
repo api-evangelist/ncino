@@ -317,9 +317,31 @@ paths:
         Deletes a specific income record by ID.'
       summary: 🚧 Delete a specific income record. (BETA)
 components:
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
   responses:
-    ForbiddenError:
-      description: Forbidden
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -351,6 +373,17 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
     UnauthorizedError:
       description: Unauthorized
       content:
@@ -362,45 +395,7 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
   schemas:
-    IncomeCollection:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollectionCreated'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Income'
-            description: Array of created income records.
-        required:
-        - contents
-        additionalProperties: false
-      description: Collection of income records. Returned when creating multiple records.
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
     IncomePagination:
       allOf:
       - $ref: '#/components/schemas/AbstractPagination'
@@ -412,23 +407,6 @@ components:
               $ref: '#/components/schemas/Income'
         required:
         - contents
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
     IncomeItemUpdateBody:
       allOf:
       - $ref: '#/components/schemas/IncomeUpdateBody'
@@ -441,6 +419,10 @@ components:
         - _id
       description: Body for updating a income record. Aside from the ID, pass only the fields to update.
       minProperties: 2
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
     IncomeCollectionUpdateBody:
       type: object
       properties:
@@ -452,28 +434,6 @@ components:
       required:
       - records
       description: Body for updating multiple income records.
-      additionalProperties: false
-    ResourceCollectionCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: Array of created resources.
-        required:
-        - contents
-        additionalProperties: false
-      description: 'Generic base class for returning multiple created resources with their full
-
-        representations. Extend this class and specify the item type via cattr_reader,
-
-        similar to AbstractPagination.'
-    NoContent:
-      type: object
-      properties: {}
       additionalProperties: false
     AbstractPagination:
       allOf:
@@ -487,81 +447,6 @@ components:
             type: integer
             description: The total number of items in the collection.
         additionalProperties: false
-    IncomeUpdateBody:
-      type: object
-      properties:
-        type:
-          type: string
-          description: This income source's type.
-        amount:
-          type: integer
-          description: The amount of income from this source.
-        frequency:
-          type: string
-          description: The frequency at which this income is earned.
-      description: Body for updating a income record. Pass only the fields to update.
-      minProperties: 1
-    IncomeCollectionCreateBody:
-      type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/IncomeCreateBody'
-          description: Array of records to create.
-      required:
-      - records
-      description: Body for creating multiple income records.
-      additionalProperties: false
-    Income:
-      allOf:
-      - $ref: '#/components/schemas/IncomeCreateBody'
-      - type: object
-        properties:
-          _id:
-            type: string
-            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
-          owner:
-            type: string
-            description: 'The borrower who receives this income source: "Borrower", or "Co-borrower". This cannot be updated.'
-        required:
-        - _id
-        - owner
-      description: A single income record.
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
-    IncomeCreateBody:
-      type: object
-      properties:
-        owner:
-          type: string
-          description: 'The borrower who receives this income source: "Borrower", or "Co-borrower". This cannot be updated.'
-        type:
-          type: string
-          description: This income source's type.
-        amount:
-          type: integer
-          description: The amount of income from this source.
-        frequency:
-          type: string
-          description: The frequency at which this income is earned.
-      required:
-      - owner
-      description: Body for creating a new income record.
     Error:
       type: object
       properties:
@@ -591,6 +476,143 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
+    ResourceCollectionCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: Array of created resources.
+        required:
+        - contents
+        additionalProperties: false
+      description: 'Generic base class for returning multiple created resources with their full
+
+        representations. Extend this class and specify the item type via cattr_reader,
+
+        similar to AbstractPagination.'
+    IncomeCollection:
+      allOf:
+      - $ref: '#/components/schemas/ResourceCollectionCreated'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Income'
+            description: Array of created income records.
+        required:
+        - contents
+        additionalProperties: false
+      description: Collection of income records. Returned when creating multiple records.
+    IncomeUpdateBody:
+      type: object
+      properties:
+        type:
+          type: string
+          description: This income source's type.
+        amount:
+          type: integer
+          description: The amount of income from this source.
+        frequency:
+          type: string
+          description: The frequency at which this income is earned.
+      description: Body for updating a income record. Pass only the fields to update.
+      minProperties: 1
+    IncomeCreateBody:
+      type: object
+      properties:
+        owner:
+          type: string
+          description: 'The borrower who receives this income source: "Borrower", or "Co-borrower". This cannot be updated.'
+        type:
+          type: string
+          description: This income source's type.
+        amount:
+          type: integer
+          description: The amount of income from this source.
+        frequency:
+          type: string
+          description: The frequency at which this income is earned.
+      required:
+      - owner
+      description: Body for creating a new income record.
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    IncomeCollectionCreateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncomeCreateBody'
+          description: Array of records to create.
+      required:
+      - records
+      description: Body for creating multiple income records.
+      additionalProperties: false
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    Income:
+      allOf:
+      - $ref: '#/components/schemas/IncomeCreateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+          owner:
+            type: string
+            description: 'The borrower who receives this income source: "Borrower", or "Co-borrower". This cannot be updated.'
+        required:
+        - _id
+        - owner
+      description: A single income record.
   headers:
     ApiSupportedVersionsResponseHeader:
       description: API supported versions for endpoint.
@@ -598,28 +620,6 @@ components:
         type: string
     ApiVersionResponseHeader:
       description: API version.
-      schema:
-        type: string
-  parameters:
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
       schema:
         type: string
   securitySchemes:

@@ -36,13 +36,6 @@ webhooks:
           description: OK
 components:
   schemas:
-    additional_info:
-      type: string
-      nullable: true
-      example: null
-    guid:
-      type: string
-      example: 459f521f-f2fa-4230-a704-46147ac8as7e
     webhook_event_type:
       type: string
       description: The event that fired, sent as the `event_type` field of the webhook payload. Values are the lowercased event keys. Subscribe to the events you want to receive via the `events` array when creating or editing a webhook configuration. A parent key (for example `change_data`, `change_status`, `connectivity`, `delivery`, `inquiry`, `registration`, `transfer`) can be subscribed to on its own to receive every event in that group.
@@ -134,6 +127,13 @@ components:
       - transfer_initiated_notification
       - transfer_rejected_notification
       example: upload_enote
+    guid:
+      type: string
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    additional_info:
+      type: string
+      nullable: true
+      example: null
     webhook_event_callback_message:
       type: object
       description: Payload eVault sends as a POST to the configured webhook URL when a subscribed event fires. `org_id` and `event_type` are always present; the remaining identifier fields are included only when they are relevant to the event that fired. The body is signed — verify it using the `ncino-evault-signature` header (see the parameter on this callback).

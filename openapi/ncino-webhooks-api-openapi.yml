@@ -568,28 +568,20 @@ paths:
       description: Production server
 components:
   schemas:
+    webhook_event_group:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Electronic records
+        settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/webhook_event_setting'
     is_test:
       type: boolean
       example: true
-    default_success_response:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        errors:
-          type: array
-          nullable: true
-          items:
-            type: string
-          example: null
-        warnings:
-          type: array
-          nullable: true
-          items:
-            type: string
-          example: null
-    500_get_error_response:
+    500_error_response:
       type: object
       properties:
         success:
@@ -597,8 +589,9 @@ components:
           example: false
         errors:
           type: array
-          nullable: true
-          example: null
+          items:
+            type: string
+            example: Error message
         warnings:
           type: array
           nullable: true
@@ -607,6 +600,14 @@ components:
           type: string
           nullable: true
           example: null
+    webhook_active_status_post:
+      type: object
+      required:
+      - enabled
+      properties:
+        enabled:
+          type: boolean
+          example: true
     edit_webhook_configuration_post:
       type: object
       description: All fields are optional; only the fields included in the request body are updated.
@@ -630,90 +631,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/webhook_event_group'
-    webhook_configuration_response:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/guid'
-        name:
-          type: string
-          example: My integration webhook
-        url:
-          type: string
-          example: https://example.com/webhooks/evault
-        enabled:
-          type: boolean
-          example: true
-        isTest:
-          $ref: '#/components/schemas/is_test'
-        sendEmailOnError:
-          type: boolean
-          example: false
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/webhook_event_group'
-    add_webhook_configuration_put:
-      type: object
-      required:
-      - name
-      - url
-      - signingKey
-      - sendEmailOnError
-      - isTest
-      properties:
-        name:
-          type: string
-          example: My integration webhook
-        url:
-          type: string
-          example: https://example.com/webhooks/evault
-        signingKey:
-          type: string
-          description: Secret key used to sign webhook payloads so receivers can verify their authenticity.
-          example: s3cr3t-signing-key
-        sendEmailOnError:
-          type: boolean
-          description: When true, an email is sent if the webhook fails to deliver.
-          example: false
-        isTest:
-          type: boolean
-          description: When true, the configuration targets the test (stage) environment.
-          example: false
-    webhook_event_group:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Electronic records
-        settings:
-          type: array
-          items:
-            $ref: '#/components/schemas/webhook_event_setting'
-    error_response:
-      type: object
-    guid:
-      type: string
-      example: 459f521f-f2fa-4230-a704-46147ac8as7e
-    500_error_response:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: false
-        errors:
-          type: array
-          items:
-            type: string
-            example: Error message
-        warnings:
-          type: array
-          nullable: true
-          example: null
-        data:
-          type: string
-          nullable: true
-          example: null
     webhook_event_setting:
       type: object
       properties:
@@ -820,597 +737,97 @@ components:
           items:
             type: object
           example: []
-    webhook_active_status_post:
+    error_response:
       type: object
-      required:
-      - enabled
+    guid:
+      type: string
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    default_success_response:
+      type: object
       properties:
-        enabled:
+        success:
           type: boolean
           example: true
-    StateLicenseEventInfo:
-      type: object
-      properties:
-        state:
-          oneOf:
-          - $ref: '#/components/schemas/StateCode'
-          - $ref: '#/components/schemas/NationwideCode'
-          description: State license's state.
-      required:
-      - state
-      description: The event info particular to the state license events.
-    UserDisabledEventInfo:
-      allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      description: The event info particular to the user_disabled event.
-    UserDisabledTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - user_disabled
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/UserDisabledEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'user_disabled' event.
-      additionalProperties: false
-    VerificationAvailableEventInfo:
-      type: object
-      properties:
-        report_type:
-          allOf:
-          - $ref: '#/components/schemas/VerificationReportType'
-          description: Type of the report that is available.
-      required:
-      - report_type
-      description: The event info particular to the verification_complete event.
-    Webhook.Detail:
-      allOf:
-      - $ref: '#/components/schemas/Webhook'
-      - type: object
-        properties:
-          secret:
+        errors:
+          type: array
+          nullable: true
+          items:
             type: string
-            description: Secret used to verify a request made to the webhook URL is from a valid source (nCino Mortgage).
-      description: Webhook record (Detail)
-    WebhookPostBody:
-      type: object
-      properties:
-        url:
-          type: string
-          format: http_uri
-          description: Webhook's callback URL.
-        name:
-          type: string
-          description: Webhook's name.
-        version:
-          type:
-          - string
-          - 'null'
-          description: API version to be used when webhook request is rendered.
-      required:
-      - url
-      - name
-      description: Available properties for creating a webhook.
-      additionalProperties: false
-    LoanAppAbandonedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_app_abandoned
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanApplicationEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_app_abandoned' event.
-      additionalProperties: false
-    DocumentUploadedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - document_uploaded
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/DocumentUploadedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'document_uploaded' event.
-      additionalProperties: false
-    LoanDeactivatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_deactivated
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_deactivated' event.
-      additionalProperties: false
-    MilestoneCreatedEventInfo:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the milestone.
-      required:
-      - name
-      description: The event info particular to the milestone_created event.
-    AccountAssignmentEventInfo:
-      type: object
-      properties:
-        assignee_type:
-          type: string
-          description: Type of the account that owns the assignment.
-        assignee_name:
-          type: string
-          description: Name of the account that owns the assignment.
-        assignor_type:
-          type: string
-          description: Type of entity the relevant account has access to.
-        assignor_name:
-          type: string
-          description: Name of the entity the relevant account has access to.
-      required:
-      - assignee_type
-      - assignee_name
-      - assignor_type
-      - assignor_name
-      description: The event info particular to the account assignment events.
-    LoanOfficerDemotedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_officer_demoted
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanOfficerAdminChangeEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_officer_demoted' event.
-      additionalProperties: false
-    DocumentUpdatedEventInfo:
-      type: object
-      properties:
-        document_name:
-          type: string
-          description: Name of the updated document.
-        doc_type:
-          type:
-          - string
-          - 'null'
-          description: Document type classification.
-        task_name:
-          type:
-          - string
-          - 'null'
-          description: Name of the associated task.
-        loan_number:
-          type:
-          - string
-          - 'null'
-          description: Loan number.
-      required:
-      - document_name
-      description: The event info for the document_updated event.
-    LoanCreatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_created
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_created' event.
-      additionalProperties: false
-    StateLicenseCreatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - state_license_created
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/StateLicenseEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'state_license_created' event.
-      additionalProperties: false
-    AccountAssignmentDeletedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - account_assignment_deleted
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/AccountAssignmentEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'account_assignment_deleted' event.
-      additionalProperties: false
-    Error:
+          example: null
+        warnings:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+    webhook_configuration_response:
       type: object
       properties:
         id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    MilestonesReorderedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - milestones_reordered
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/MilestonesReorderedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'milestones_reordered' event.
-      additionalProperties: false
-    LoanUpdatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_updated
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_updated' event.
-      additionalProperties: false
-    OrganizationCreatedEventInfo:
-      type: object
-      properties:
-        org_type:
-          type: string
-          enum:
-          - REGION
-          - BRANCH
-          description: Type of organization (REGION or BRANCH).
+          $ref: '#/components/schemas/guid'
         name:
           type: string
-          description: Name of the organization created.
+          example: My integration webhook
+        url:
+          type: string
+          example: https://example.com/webhooks/evault
+        enabled:
+          type: boolean
+          example: true
+        isTest:
+          $ref: '#/components/schemas/is_test'
+        sendEmailOnError:
+          type: boolean
+          example: false
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/webhook_event_group'
+    500_get_error_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        errors:
+          type: array
+          nullable: true
+          example: null
+        warnings:
+          type: array
+          nullable: true
+          example: null
+        data:
+          type: string
+          nullable: true
+          example: null
+    add_webhook_configuration_put:
+      type: object
       required:
-      - org_type
       - name
-      description: The event info particular to the organization_created event.
-    UserFirstLoginEventInfo:
-      allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      description: The event info particular to the user_first_login event.
-    LoanAppUpdatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_app_updated
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanApplicationEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_app_updated' event.
-      additionalProperties: false
-    LoanActivatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_activated
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_activated' event.
-      additionalProperties: false
-    DocumentCreatedEventInfo:
-      type: object
-      properties:
-        document_name:
-          type: string
-          description: Name of the created document.
-        doc_type:
-          type:
-          - string
-          - 'null'
-          description: Document type classification.
-        task_name:
-          type:
-          - string
-          - 'null'
-          description: Name of the associated task.
-        loan_number:
-          type:
-          - string
-          - 'null'
-          description: Loan number.
-      required:
-      - document_name
-      description: The event info for the document_created event.
-    DocumentUpdatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - document_updated
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/DocumentUpdatedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'document_updated' event.
-      additionalProperties: false
-    MilestonesReorderedEventInfo:
-      type: object
+      - url
+      - signingKey
+      - sendEmailOnError
+      - isTest
       properties:
         name:
           type: string
-          description: Name of the organization.
-      required:
-      - name
-      description: The event info particular to the milestones_reordered event.
-    VerificationAvailableTestEvent0:
-      type: object
-      properties:
-        event:
+          example: My integration webhook
+        url:
           type: string
-          enum:
-          - verification_available
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/VerificationAvailableEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'verification_available' event.
-      additionalProperties: false
-    UserCreatedEventInfo:
-      allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      - type: object
-        properties:
-          user_borrower:
-            type: string
-            description: Borrower's name.
-      description: The event info particular to the user_created event.
-    AbstractResourceModel:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          id:
-            type: string
-            format: uuid
-            description: Unique identifier for the record.
-        required:
-        - id
-        additionalProperties: false
-    JobStatusChangedTestEvent0:
-      type: object
-      properties:
-        event:
+          example: https://example.com/webhooks/evault
+        signingKey:
           type: string
-          enum:
-          - job_status_changed
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/JobStatusChangedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'job_status_changed' event.
-      additionalProperties: false
-    LoanMilestoneUpdatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_milestone_updated
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanMilestoneUpdatedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_milestone_updated' event.
-      additionalProperties: false
-    VerificationReportType:
-      type: string
-      enum:
-      - BOTH
-      - DOC_VOI_MORTGAGE
-      - DVOE
-      - VOA
-      - VOAI
-      - VOA_HISTORY
-      - VOE
-      - VOE_MORTGAGE
-      - VOE_PAYROLL
-      - VOE_TRANSACTIONS
-      - VOI
-      - VOIE
-      - VOIE_MORTGAGE
-      - VOIE_PAYROLL
-      - VOIE_TX_VERIFY
-      description: Types of verification reports.
-    LoanMilestoneUpdatedEventInfo:
-      type: object
-      properties:
-        milestone_name:
-          type: string
-          description: Name of the milestone.
-        status:
-          type: string
-          description: Current status of the milestone.
-        loan_number:
-          type: string
-          description: Loan number.
-      required:
-      - milestone_name
-      - status
-      - loan_number
-      description: The event info for the loan_milestone_updated event.
-    LoanAppSubmittedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_app_submitted
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanApplicationEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_app_submitted' event.
-      additionalProperties: false
-    OrganizationDeletedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - organization_deleted
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/OrganizationDeletedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'organization_deleted' event.
-      additionalProperties: false
-    LoanAppImportedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_app_imported
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanApplicationEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_app_imported' event.
-      additionalProperties: false
-    WebhookTestResponse:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          code:
-            type: integer
-            description: Webhook response's status code.
-          body:
-            type: string
-            description: Webhook response's body.
-        required:
-        - code
-        - body
-        additionalProperties: false
-      description: Webhook test response
-    LoanMilestoneCompletedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - loan_milestone_completed
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/LoanMilestoneCompletedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'loan_milestone_completed' event.
-      additionalProperties: false
+          description: Secret key used to sign webhook payloads so receivers can verify their authenticity.
+          example: s3cr3t-signing-key
+        sendEmailOnError:
+          type: boolean
+          description: When true, an email is sent if the webhook fails to deliver.
+          example: false
+        isTest:
+          type: boolean
+          description: When true, the configuration targets the test (stage) environment.
+          example: false
     AccountAssignmentCreatedTestEvent0:
       type: object
       properties:
@@ -1427,329 +844,15 @@ components:
       - event_info
       description: Available properties for testing a 'account_assignment_created' event.
       additionalProperties: false
-    UserUpdatedEventInfo:
+    Webhook.Detail:
       allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      description: The event info particular to the user_updated event.
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
-    OrganizationDeletedEventInfo:
-      type: object
-      properties:
-        org_type:
-          type: string
-          enum:
-          - REGION
-          - BRANCH
-          description: Type of organization (REGION or BRANCH).
-        name:
-          type: string
-          description: Name of the organization deleted.
-      required:
-      - org_type
-      - name
-      description: The event info particular to the organization_deleted event
-    DocumentUploadedEventInfo:
-      type: object
-      properties:
-        document_name:
-          type: string
-          description: Name of the uploaded document.
-        doc_type:
-          type:
-          - string
-          - 'null'
-          description: Document type classification.
-        task_name:
-          type:
-          - string
-          - 'null'
-          description: Name of the associated task.
-        loan_number:
-          type:
-          - string
-          - 'null'
-          description: Loan number.
-        uploaded_by:
-          type: string
-          description: Who uploaded the document (borrower or servicer).
-      required:
-      - document_name
-      - uploaded_by
-      description: The event info for the document_uploaded event.
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
-    UserDeletedEventInfo:
-      allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      description: The event info particular to the user_deleted event.
-    NullableJobStatus:
-      type:
-      - string
-      - 'null'
-      enum:
-      - QUEUED
-      - STARTED
-      - QUEUED_FOR_RETRY
-      - COMPLETED
-      - FAILED
-      - null
-    UserCreatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - user_created
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/UserCreatedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'user_created' event.
-      additionalProperties: false
-    DocumentCreatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - document_created
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/DocumentCreatedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'document_created' event.
-      additionalProperties: false
-    OrganizationCreatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - organization_created
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/OrganizationCreatedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'organization_created' event.
-      additionalProperties: false
-    UserUpdatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - user_updated
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/UserUpdatedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'user_updated' event.
-      additionalProperties: false
-    WebhookPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
+      - $ref: '#/components/schemas/Webhook'
       - type: object
         properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Webhook'
-        required:
-        - contents
-    UserEventInfo:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of user.
-        user_type:
-          type: string
-          enum:
-          - USER_BORROWER
-          - COMPANY_ADMIN
-          - REGION_ADMIN
-          - BRANCH_ADMIN
-          - LOAN_OFFICER
-          - TEAM_MEMBER
-          - PARTNER
-          description: Type of user.
-      description: The event info shared between user events.
-    StateLicenseDeletedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - state_license_deleted
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/StateLicenseEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'state_license_deleted' event.
-      additionalProperties: false
-    MilestoneCreatedTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - milestone_created
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/MilestoneCreatedEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'milestone_created' event.
-      additionalProperties: false
-    LoanOfficerAdminChangeEventInfo:
-      type: object
-      properties:
-        admin_type:
-          type: string
-          enum:
-          - COMPANY_ADMIN
-          - REGION_ADMIN
-          - BRANCH_ADMIN
-          description: Type of admin to which the loan officer was promoted or from which the loan officer was demoted.
-        name:
-          type: string
-          description: Name of the loan officer.
-      required:
-      - admin_type
-      - name
-      description: The event info particular to the loan_officer_promoted and loan_officer_demoted events.
-    UserEnabledTestEvent0:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - user_enabled
-          description: Event that triggered the webhook.
-        event_info:
-          allOf:
-          - $ref: '#/components/schemas/UserEnabledEventInfo'
-      required:
-      - event
-      - event_info
-      description: Available properties for testing a 'user_enabled' event.
-      additionalProperties: false
-    LoanMilestoneCompletedEventInfo:
-      type: object
-      properties:
-        milestone_name:
-          type: string
-          description: Name of the milestone.
-        loan_number:
-          type: string
-          description: Loan number.
-      required:
-      - milestone_name
-      - loan_number
-      description: The event info for the loan_milestone_completed event.
-    JobStatusChangedEventInfo:
-      type: object
-      properties:
-        job_type:
-          allOf:
-          - $ref: '#/components/schemas/JobType'
-          description: Type of job that was changed.
-        job_description:
-          type:
-          - string
-          - 'null'
-          description: Job's description.
-        from_status:
-          allOf:
-          - $ref: '#/components/schemas/NullableJobStatus'
-          description: Job's status prior to the change. If the job was just created, this will be nil.
-        to_status:
-          allOf:
-          - $ref: '#/components/schemas/JobStatus'
-          description: Job's status after the change.
-        changed_at:
-          type: string
-          format: date-time
-          description: When the job's status changed.
-      description: The event info particular to the job_status_changed event.
-    JobType:
-      type: string
-      enum:
-      - SYNC_LOAN_APPS
-      - VALIDATE_WEBHOOK_URL
-      - GENERATE_ORGANIZATION_REPORT
-      - DELETE_REGION_BRANCH
-      - ORDER_VERIFICATION_REPORT
-      - REFRESH_VERIFICATION_REPORTS
-      - DISCONNECT_BORROWER
-      - SEND_VERIFICATION_REMINDER
-      - DELETE_LOAN
-      - REASSIGN_BORROWERS_PARTNERS_LOAN_APPS
-    NationwideCode:
-      type: string
-      enum:
-      - US
-      description: Nationwide code.
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
+          secret:
+            type: string
+            description: Secret used to verify a request made to the webhook URL is from a valid source (nCino Mortgage).
+      description: Webhook record (Detail)
     Webhook:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -1775,50 +878,53 @@ components:
             description: Webhook's created at timestamp.
         additionalProperties: false
       description: Webhook record
-    MilestoneDeletedTestEvent0:
+    LoanUpdatedTestEvent0:
       type: object
       properties:
         event:
           type: string
           enum:
-          - milestone_deleted
+          - loan_updated
           description: Event that triggered the webhook.
         event_info:
           allOf:
-          - $ref: '#/components/schemas/MilestoneDeletedEventInfo'
+          - $ref: '#/components/schemas/LoanEventInfo'
       required:
       - event
       - event_info
-      description: Available properties for testing a 'milestone_deleted' event.
+      description: Available properties for testing a 'loan_updated' event.
       additionalProperties: false
-    UserEnabledEventInfo:
+    WebhookTestResponse:
       allOf:
-      - $ref: '#/components/schemas/UserEventInfo'
-      description: The event info particular to the user_enabled event.
-    MilestoneDeletedEventInfo:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the organization.
-      required:
-      - name
-      description: The event info particular to the milestone_deleted event.
-    StateLicenseUpdatedTestEvent0:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          code:
+            type: integer
+            description: Webhook response's status code.
+          body:
+            type: string
+            description: Webhook response's body.
+        required:
+        - code
+        - body
+        additionalProperties: false
+      description: Webhook test response
+    AccountAssignmentDeletedTestEvent0:
       type: object
       properties:
         event:
           type: string
           enum:
-          - state_license_updated
+          - account_assignment_deleted
           description: Event that triggered the webhook.
         event_info:
           allOf:
-          - $ref: '#/components/schemas/StateLicenseEventInfo'
+          - $ref: '#/components/schemas/AccountAssignmentEventInfo'
       required:
       - event
       - event_info
-      description: Available properties for testing a 'state_license_updated' event.
+      description: Available properties for testing a 'account_assignment_deleted' event.
       additionalProperties: false
     StateCode:
       type: string
@@ -1886,22 +992,746 @@ components:
       - WV
       - WY
       description: State abbreviated code.
-    UserDeletedTestEvent0:
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    UserDisabledTestEvent0:
       type: object
       properties:
         event:
           type: string
           enum:
-          - user_deleted
+          - user_disabled
           description: Event that triggered the webhook.
         event_info:
           allOf:
-          - $ref: '#/components/schemas/UserDeletedEventInfo'
+          - $ref: '#/components/schemas/UserDisabledEventInfo'
       required:
       - event
       - event_info
-      description: Available properties for testing a 'user_deleted' event.
+      description: Available properties for testing a 'user_disabled' event.
       additionalProperties: false
+    NullableJobStatus:
+      type:
+      - string
+      - 'null'
+      enum:
+      - QUEUED
+      - STARTED
+      - QUEUED_FOR_RETRY
+      - COMPLETED
+      - FAILED
+      - null
+    AccountAssignmentEventInfo:
+      type: object
+      properties:
+        assignee_type:
+          type: string
+          description: Type of the account that owns the assignment.
+        assignee_name:
+          type: string
+          description: Name of the account that owns the assignment.
+        assignor_type:
+          type: string
+          description: Type of entity the relevant account has access to.
+        assignor_name:
+          type: string
+          description: Name of the entity the relevant account has access to.
+      required:
+      - assignee_type
+      - assignee_name
+      - assignor_type
+      - assignor_name
+      description: The event info particular to the account assignment events.
+    UserUpdatedEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      description: The event info particular to the user_updated event.
+    LoanActivatedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - loan_activated
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/LoanEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'loan_activated' event.
+      additionalProperties: false
+    MilestoneDeletedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - milestone_deleted
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/MilestoneDeletedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'milestone_deleted' event.
+      additionalProperties: false
+    AbstractCollection:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
+        additionalProperties: false
+    StateLicenseCreatedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - state_license_created
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/StateLicenseEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'state_license_created' event.
+      additionalProperties: false
+    OrganizationCreatedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - organization_created
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/OrganizationCreatedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'organization_created' event.
+      additionalProperties: false
+    DocumentCreatedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - document_created
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/DocumentCreatedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'document_created' event.
+      additionalProperties: false
+    VerificationAvailableTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - verification_available
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/VerificationAvailableEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'verification_available' event.
+      additionalProperties: false
+    UserDisabledEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      description: The event info particular to the user_disabled event.
+    LoanAppSubmittedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - loan_app_submitted
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/LoanApplicationEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'loan_app_submitted' event.
+      additionalProperties: false
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    UserDeletedEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      description: The event info particular to the user_deleted event.
+    WebhookPatchBody:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Webhook's name.
+        version:
+          type:
+          - string
+          - 'null'
+          description: API version to be used when webhook request is rendered.
+      description: Available properties for updating a webhook.
+      additionalProperties: false
+      minProperties: 1
+    LoanOfficerAdminChangeEventInfo:
+      type: object
+      properties:
+        admin_type:
+          type: string
+          enum:
+          - COMPANY_ADMIN
+          - REGION_ADMIN
+          - BRANCH_ADMIN
+          description: Type of admin to which the loan officer was promoted or from which the loan officer was demoted.
+        name:
+          type: string
+          description: Name of the loan officer.
+      required:
+      - admin_type
+      - name
+      description: The event info particular to the loan_officer_promoted and loan_officer_demoted events.
+    LoanAppImportedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - loan_app_imported
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/LoanApplicationEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'loan_app_imported' event.
+      additionalProperties: false
+    LoanMilestoneUpdatedEventInfo:
+      type: object
+      properties:
+        milestone_name:
+          type: string
+          description: Name of the milestone.
+        status:
+          type: string
+          description: Current status of the milestone.
+        loan_number:
+          type: string
+          description: Loan number.
+      required:
+      - milestone_name
+      - status
+      - loan_number
+      description: The event info for the loan_milestone_updated event.
+    JobStatusChangedEventInfo:
+      type: object
+      properties:
+        job_type:
+          allOf:
+          - $ref: '#/components/schemas/JobType'
+          description: Type of job that was changed.
+        job_description:
+          type:
+          - string
+          - 'null'
+          description: Job's description.
+        from_status:
+          allOf:
+          - $ref: '#/components/schemas/NullableJobStatus'
+          description: Job's status prior to the change. If the job was just created, this will be nil.
+        to_status:
+          allOf:
+          - $ref: '#/components/schemas/JobStatus'
+          description: Job's status after the change.
+        changed_at:
+          type: string
+          format: date-time
+          description: When the job's status changed.
+      description: The event info particular to the job_status_changed event.
+    WebhookPostBody:
+      type: object
+      properties:
+        url:
+          type: string
+          format: http_uri
+          description: Webhook's callback URL.
+        name:
+          type: string
+          description: Webhook's name.
+        version:
+          type:
+          - string
+          - 'null'
+          description: API version to be used when webhook request is rendered.
+      required:
+      - url
+      - name
+      description: Available properties for creating a webhook.
+      additionalProperties: false
+    DocumentUploadedEventInfo:
+      type: object
+      properties:
+        document_name:
+          type: string
+          description: Name of the uploaded document.
+        doc_type:
+          type:
+          - string
+          - 'null'
+          description: Document type classification.
+        task_name:
+          type:
+          - string
+          - 'null'
+          description: Name of the associated task.
+        loan_number:
+          type:
+          - string
+          - 'null'
+          description: Loan number.
+        uploaded_by:
+          type: string
+          description: Who uploaded the document (borrower or servicer).
+      required:
+      - document_name
+      - uploaded_by
+      description: The event info for the document_uploaded event.
+    LoanAppStartedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - loan_app_started
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/LoanApplicationEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'loan_app_started' event.
+      additionalProperties: false
+    UserUpdatedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - user_updated
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/UserUpdatedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'user_updated' event.
+      additionalProperties: false
+    DocumentCreatedEventInfo:
+      type: object
+      properties:
+        document_name:
+          type: string
+          description: Name of the created document.
+        doc_type:
+          type:
+          - string
+          - 'null'
+          description: Document type classification.
+        task_name:
+          type:
+          - string
+          - 'null'
+          description: Name of the associated task.
+        loan_number:
+          type:
+          - string
+          - 'null'
+          description: Loan number.
+      required:
+      - document_name
+      description: The event info for the document_created event.
+    LoanAppAbandonedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - loan_app_abandoned
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/LoanApplicationEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'loan_app_abandoned' event.
+      additionalProperties: false
+    DocumentUploadedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - document_uploaded
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/DocumentUploadedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'document_uploaded' event.
+      additionalProperties: false
+    OrganizationCreatedEventInfo:
+      type: object
+      properties:
+        org_type:
+          type: string
+          enum:
+          - REGION
+          - BRANCH
+          description: Type of organization (REGION or BRANCH).
+        name:
+          type: string
+          description: Name of the organization created.
+      required:
+      - org_type
+      - name
+      description: The event info particular to the organization_created event.
+    UserCreatedEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      - type: object
+        properties:
+          user_borrower:
+            type: string
+            description: Borrower's name.
+      description: The event info particular to the user_created event.
+    UserEventInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of user.
+        user_type:
+          type: string
+          enum:
+          - USER_BORROWER
+          - COMPANY_ADMIN
+          - REGION_ADMIN
+          - BRANCH_ADMIN
+          - LOAN_OFFICER
+          - TEAM_MEMBER
+          - PARTNER
+          description: Type of user.
+      description: The event info shared between user events.
+    MilestoneCreatedEventInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the milestone.
+      required:
+      - name
+      description: The event info particular to the milestone_created event.
+    LoanOfficerPromotedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - loan_officer_promoted
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/LoanOfficerAdminChangeEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'loan_officer_promoted' event.
+      additionalProperties: false
+    LoanOfficerDemotedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - loan_officer_demoted
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/LoanOfficerAdminChangeEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'loan_officer_demoted' event.
+      additionalProperties: false
+    VerificationAvailableEventInfo:
+      type: object
+      properties:
+        report_type:
+          allOf:
+          - $ref: '#/components/schemas/VerificationReportType'
+          description: Type of the report that is available.
+      required:
+      - report_type
+      description: The event info particular to the verification_complete event.
+    MilestonesReorderedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - milestones_reordered
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/MilestonesReorderedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'milestones_reordered' event.
+      additionalProperties: false
+    UserEnabledEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      description: The event info particular to the user_enabled event.
+    UserEnabledTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - user_enabled
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/UserEnabledEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'user_enabled' event.
+      additionalProperties: false
+    UserFirstLoginEventInfo:
+      allOf:
+      - $ref: '#/components/schemas/UserEventInfo'
+      description: The event info particular to the user_first_login event.
+    StateLicenseUpdatedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - state_license_updated
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/StateLicenseEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'state_license_updated' event.
+      additionalProperties: false
+    VerificationReportType:
+      type: string
+      enum:
+      - BOTH
+      - DOC_VOI_MORTGAGE
+      - DVOE
+      - VOA
+      - VOAI
+      - VOA_HISTORY
+      - VOE
+      - VOE_MORTGAGE
+      - VOE_PAYROLL
+      - VOE_TRANSACTIONS
+      - VOI
+      - VOIE
+      - VOIE_MORTGAGE
+      - VOIE_PAYROLL
+      - VOIE_TX_VERIFY
+      description: Types of verification reports.
+    StateLicenseDeletedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - state_license_deleted
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/StateLicenseEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'state_license_deleted' event.
+      additionalProperties: false
+    MilestonesReorderedEventInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the organization.
+      required:
+      - name
+      description: The event info particular to the milestones_reordered event.
+    OrganizationDeletedEventInfo:
+      type: object
+      properties:
+        org_type:
+          type: string
+          enum:
+          - REGION
+          - BRANCH
+          description: Type of organization (REGION or BRANCH).
+        name:
+          type: string
+          description: Name of the organization deleted.
+      required:
+      - org_type
+      - name
+      description: The event info particular to the organization_deleted event
+    UserCreatedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - user_created
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/UserCreatedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'user_created' event.
+      additionalProperties: false
+    OrganizationDeletedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - organization_deleted
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/OrganizationDeletedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'organization_deleted' event.
+      additionalProperties: false
+    ResourceCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      description: Resource created model
+    LoanCreatedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - loan_created
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/LoanEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'loan_created' event.
+      additionalProperties: false
+    LoanApplicationEventInfo:
+      type: object
+      properties:
+        borrower_name:
+          type: string
+          description: Borrower name.
+      description: The event info particular to the loan application webhook group events.
     UserFirstLoginTestEvent0:
       type: object
       properties:
@@ -1927,25 +1757,86 @@ components:
       required:
       - loan_number
       description: The event info particular to the loan webhook group events.
-    LoanAppStartedTestEvent0:
+    JobType:
+      type: string
+      enum:
+      - SYNC_LOAN_APPS
+      - VALIDATE_WEBHOOK_URL
+      - GENERATE_ORGANIZATION_REPORT
+      - DELETE_REGION_BRANCH
+      - ORDER_VERIFICATION_REPORT
+      - REFRESH_VERIFICATION_REPORTS
+      - DISCONNECT_BORROWER
+      - SEND_VERIFICATION_REMINDER
+      - DELETE_LOAN
+      - REASSIGN_BORROWERS_PARTNERS_LOAN_APPS
+    MilestoneDeletedEventInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the organization.
+      required:
+      - name
+      description: The event info particular to the milestone_deleted event.
+    WebhookAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - ENABLE
+          - DISABLE
+          - TEST
+          - CHANGE_URL
+          description: Action to perform.
+      required:
+      - action
+      description: Available properties for a webhook action. Validation requests are performed against the URL when enabling.
+      additionalProperties: false
+    AbstractResourceModel:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+            description: Unique identifier for the record.
+        required:
+        - id
+        additionalProperties: false
+    LoanMilestoneUpdatedTestEvent0:
       type: object
       properties:
         event:
           type: string
           enum:
-          - loan_app_started
+          - loan_milestone_updated
           description: Event that triggered the webhook.
         event_info:
           allOf:
-          - $ref: '#/components/schemas/LoanApplicationEventInfo'
+          - $ref: '#/components/schemas/LoanMilestoneUpdatedEventInfo'
       required:
       - event
       - event_info
-      description: Available properties for testing a 'loan_app_started' event.
+      description: Available properties for testing a 'loan_milestone_updated' event.
       additionalProperties: false
-    NoContent:
+    MilestoneCreatedTestEvent0:
       type: object
-      properties: {}
+      properties:
+        event:
+          type: string
+          enum:
+          - milestone_created
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/MilestoneCreatedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'milestone_created' event.
       additionalProperties: false
     JobStatus:
       type: string
@@ -1955,59 +1846,183 @@ components:
       - QUEUED_FOR_RETRY
       - COMPLETED
       - FAILED
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    LoanOfficerPromotedTestEvent0:
+    LoanMilestoneCompletedTestEvent0:
       type: object
       properties:
         event:
           type: string
           enum:
-          - loan_officer_promoted
+          - loan_milestone_completed
           description: Event that triggered the webhook.
         event_info:
           allOf:
-          - $ref: '#/components/schemas/LoanOfficerAdminChangeEventInfo'
+          - $ref: '#/components/schemas/LoanMilestoneCompletedEventInfo'
       required:
       - event
       - event_info
-      description: Available properties for testing a 'loan_officer_promoted' event.
+      description: Available properties for testing a 'loan_milestone_completed' event.
       additionalProperties: false
-    WebhookPatchBody:
+    LoanAppUpdatedTestEvent0:
       type: object
       properties:
-        name:
+        event:
           type: string
-          description: Webhook's name.
-        version:
+          enum:
+          - loan_app_updated
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/LoanApplicationEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'loan_app_updated' event.
+      additionalProperties: false
+    UserDeletedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - user_deleted
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/UserDeletedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'user_deleted' event.
+      additionalProperties: false
+    NationwideCode:
+      type: string
+      enum:
+      - US
+      description: Nationwide code.
+    JobStatusChangedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - job_status_changed
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/JobStatusChangedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'job_status_changed' event.
+      additionalProperties: false
+    WebhookPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Webhook'
+        required:
+        - contents
+    StateLicenseEventInfo:
+      type: object
+      properties:
+        state:
+          oneOf:
+          - $ref: '#/components/schemas/StateCode'
+          - $ref: '#/components/schemas/NationwideCode'
+          description: State license's state.
+      required:
+      - state
+      description: The event info particular to the state license events.
+    LoanMilestoneCompletedEventInfo:
+      type: object
+      properties:
+        milestone_name:
+          type: string
+          description: Name of the milestone.
+        loan_number:
+          type: string
+          description: Loan number.
+      required:
+      - milestone_name
+      - loan_number
+      description: The event info for the loan_milestone_completed event.
+    LoanDeactivatedTestEvent0:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - loan_deactivated
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/LoanEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'loan_deactivated' event.
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+    DocumentUpdatedEventInfo:
+      type: object
+      properties:
+        document_name:
+          type: string
+          description: Name of the updated document.
+        doc_type:
           type:
           - string
           - 'null'
-          description: API version to be used when webhook request is rendered.
-      description: Available properties for updating a webhook.
-      additionalProperties: false
-      minProperties: 1
-    LoanApplicationEventInfo:
+          description: Document type classification.
+        task_name:
+          type:
+          - string
+          - 'null'
+          description: Name of the associated task.
+        loan_number:
+          type:
+          - string
+          - 'null'
+          description: Loan number.
+      required:
+      - document_name
+      description: The event info for the document_updated event.
+    DocumentUpdatedTestEvent0:
       type: object
       properties:
-        borrower_name:
+        event:
           type: string
-          description: Borrower name.
-      description: The event info particular to the loan application webhook group events.
-    ResourceCreated:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      description: Resource created model
+          enum:
+          - document_updated
+          description: Event that triggered the webhook.
+        event_info:
+          allOf:
+          - $ref: '#/components/schemas/DocumentUpdatedEventInfo'
+      required:
+      - event
+      - event_info
+      description: Available properties for testing a 'document_updated' event.
+      additionalProperties: false
     LoanDeletedTestEvent0:
       type: object
       properties:
@@ -2024,21 +2039,76 @@ components:
       - event_info
       description: Available properties for testing a 'loan_deleted' event.
       additionalProperties: false
-    WebhookAction:
+    Webhook_2:
+      allOf:
+      - $ref: '#/components/schemas/AbstractResourceModel'
+      - type: object
+        properties:
+          name:
+            type: string
+            description: Webhook's name.
+          url:
+            type: string
+            format: http_uri
+            description: URL called when a webhook event has occurred.
+          version:
+            type: string
+            description: API version to be used when webhook request is rendered.
+            nullable: true
+          created_at:
+            type: string
+            format: date-time
+            description: Webhook's created at timestamp.
+            nullable: true
+        additionalProperties: false
+      description: Webhook record
+    NullableJobStatus_2:
+      type: string
+      enum:
+      - QUEUED
+      - STARTED
+      - QUEUED_FOR_RETRY
+      - COMPLETED
+      - FAILED
+      - null
+      nullable: true
+    WebhookPatchBody_2:
       type: object
       properties:
-        action:
+        name:
           type: string
-          enum:
-          - ENABLE
-          - DISABLE
-          - TEST
-          - CHANGE_URL
-          description: Action to perform.
-      required:
-      - action
-      description: Available properties for a webhook action. Validation requests are performed against the URL when enabling.
+          description: Webhook's name.
+        version:
+          type: string
+          description: API version to be used when webhook request is rendered.
+          nullable: true
+      description: Available properties for updating a webhook.
       additionalProperties: false
+      minProperties: 1
+    JobStatusChangedEventInfo_2:
+      type: object
+      properties:
+        job_type:
+          allOf:
+          - $ref: '#/components/schemas/JobType'
+          description: Type of job that was changed.
+        job_description:
+          type: string
+          description: Job's description.
+          nullable: true
+        from_status:
+          allOf:
+          - $ref: '#/components/schemas/NullableJobStatus_2'
+          description: Job's status prior to the change. If the job was just created, this will be nil.
+        to_status:
+          allOf:
+          - $ref: '#/components/schemas/JobStatus'
+          description: Job's status after the change.
+        changed_at:
+          type: string
+          format: date-time
+          description: When the job's status changed.
+      description: The event info particular to the job_status_changed event.
     WebhookPostBody_2:
       type: object
       properties:
@@ -2058,48 +2128,6 @@ components:
       - name
       description: Available properties for creating a webhook.
       additionalProperties: false
-    DocumentUpdatedEventInfo_2:
-      type: object
-      properties:
-        document_name:
-          type: string
-          description: Name of the updated document.
-        doc_type:
-          type: string
-          description: Document type classification.
-          nullable: true
-        task_name:
-          type: string
-          description: Name of the associated task.
-          nullable: true
-        loan_number:
-          type: string
-          description: Loan number.
-          nullable: true
-      required:
-      - document_name
-      description: The event info for the document_updated event.
-    DocumentCreatedEventInfo_2:
-      type: object
-      properties:
-        document_name:
-          type: string
-          description: Name of the created document.
-        doc_type:
-          type: string
-          description: Document type classification.
-          nullable: true
-        task_name:
-          type: string
-          description: Name of the associated task.
-          nullable: true
-        loan_number:
-          type: string
-          description: Loan number.
-          nullable: true
-      required:
-      - document_name
-      description: The event info for the document_created event.
     DocumentUploadedEventInfo_2:
       type: object
       properties:
@@ -2125,90 +2153,114 @@ components:
       - document_name
       - uploaded_by
       description: The event info for the document_uploaded event.
-    NullableJobStatus_2:
-      type: string
-      enum:
-      - QUEUED
-      - STARTED
-      - QUEUED_FOR_RETRY
-      - COMPLETED
-      - FAILED
-      - null
-      nullable: true
-    JobStatusChangedEventInfo_2:
+    DocumentCreatedEventInfo_2:
       type: object
       properties:
-        job_type:
-          allOf:
-          - $ref: '#/components/schemas/JobType'
-          description: Type of job that was changed.
-        job_description:
+        document_name:
           type: string
-          description: Job's description.
+          description: Name of the created document.
+        doc_type:
+          type: string
+          description: Document type classification.
           nullable: true
-        from_status:
-          allOf:
-          - $ref: '#/components/schemas/NullableJobStatus_2'
-          description: Job's status prior to the change. If the job was just created, this will be nil.
-        to_status:
-          allOf:
-          - $ref: '#/components/schemas/JobStatus'
-          description: Job's status after the change.
-        changed_at:
+        task_name:
           type: string
-          format: date-time
-          description: When the job's status changed.
-      description: The event info particular to the job_status_changed event.
-    Webhook_2:
-      allOf:
-      - $ref: '#/components/schemas/AbstractResourceModel'
-      - type: object
-        properties:
-          name:
-            type: string
-            description: Webhook's name.
-          url:
-            type: string
-            format: http_uri
-            description: URL called when a webhook event has occurred.
-          version:
-            type: string
-            description: API version to be used when webhook request is rendered.
-            nullable: true
-          created_at:
-            type: string
-            format: date-time
-            description: Webhook's created at timestamp.
-            nullable: true
-        additionalProperties: false
-      description: Webhook record
-    WebhookPatchBody_2:
+          description: Name of the associated task.
+          nullable: true
+        loan_number:
+          type: string
+          description: Loan number.
+          nullable: true
+      required:
+      - document_name
+      description: The event info for the document_created event.
+    DocumentUpdatedEventInfo_2:
       type: object
       properties:
-        name:
+        document_name:
           type: string
-          description: Webhook's name.
-        version:
+          description: Name of the updated document.
+        doc_type:
           type: string
-          description: API version to be used when webhook request is rendered.
+          description: Document type classification.
           nullable: true
-      description: Available properties for updating a webhook.
-      additionalProperties: false
-      minProperties: 1
+        task_name:
+          type: string
+          description: Name of the associated task.
+          nullable: true
+        loan_number:
+          type: string
+          description: Loan number.
+          nullable: true
+      required:
+      - document_name
+      description: The event info for the document_updated event.
+  parameters:
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
+      schema:
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
+      schema:
+        type: string
   responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    NotFoundError:
-      description: Not found
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -2229,8 +2281,19 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
+    NotFoundError:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -2251,69 +2314,6 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-  headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
-      schema:
-        type: string
-    ApiVersionResponseHeader:
-      description: API version.
-      schema:
-        type: string
-  parameters:
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    UpdatedBefore:
-      name: updated_before
-      description: The date which a resource must be updated before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
   securitySchemes:
     bearerAuth:
       type: http

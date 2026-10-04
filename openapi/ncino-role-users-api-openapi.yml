@@ -216,74 +216,29 @@ paths:
             schema:
               $ref: '#/components/schemas/RoleUserDeleteBody'
 components:
-  responses:
-    ForbiddenError:
-      description: Forbidden
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    BadRequestError:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorSet'
-      headers:
-        X-Api-Version:
-          $ref: '#/components/headers/ApiVersionResponseHeader'
-        X-Api-Supported-Versions:
-          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-  headers:
-    ApiSupportedVersionsResponseHeader:
-      description: API supported versions for endpoint.
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
       schema:
-        type: string
-    ApiVersionResponseHeader:
-      description: API version.
+        type: integer
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
       schema:
         type: string
   schemas:
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
     AbstractResourceModel:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -296,35 +251,18 @@ components:
         required:
         - id
         additionalProperties: false
-    RoleUserAssignmentResult:
-      type: object
-      properties:
-        user_ids:
-          type: array
-          items:
-            type: string
-          description: Current user IDs assigned to the role.
-      required:
-      - user_ids
-      description: The updated set of user IDs assigned to the role after the operation.
-      additionalProperties: false
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
+    RoleUserPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/RoleUser'
+        required:
+        - contents
+        additionalProperties: false
     RoleUserDeleteBody:
       type: object
       properties:
@@ -338,19 +276,6 @@ components:
       - user_ids
       description: User IDs to remove from the role.
       additionalProperties: false
-    RoleUserPostBody:
-      type: object
-      properties:
-        user_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: GUIDs of users to assign.
-      required:
-      - user_ids
-      description: User IDs to assign to the role.
-      additionalProperties: false
     AbstractPagination:
       allOf:
       - $ref: '#/components/schemas/AbstractCollection'
@@ -363,22 +288,6 @@ components:
             type: integer
             description: The total number of items in the collection.
         additionalProperties: false
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
     Error:
       type: object
       properties:
@@ -408,6 +317,18 @@ components:
         detail: Detailed message for the error
         _links:
           resource: contextual resource if applicable
+    RoleUserAssignmentResult:
+      type: object
+      properties:
+        user_ids:
+          type: array
+          items:
+            type: string
+          description: Current user IDs assigned to the role.
+      required:
+      - user_ids
+      description: The updated set of user IDs assigned to the role after the operation.
+      additionalProperties: false
     RoleUser:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -424,38 +345,117 @@ components:
         - email
         additionalProperties: false
       description: A user assigned to a role.
-    RoleUserPagination:
+    AbstractCollection:
       allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
           contents:
             type: array
             items:
-              $ref: '#/components/schemas/RoleUser'
+              type: object
+            description: The contents for the collection.
         required:
         - contents
         additionalProperties: false
-  parameters:
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
+    RoleUserPostBody:
+      type: object
+      properties:
+        user_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: GUIDs of users to assign.
+      required:
+      - user_ids
+      description: User IDs to assign to the role.
+      additionalProperties: false
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
+      example:
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    ForbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorSet'
+      headers:
+        X-Api-Version:
+          $ref: '#/components/headers/ApiVersionResponseHeader'
+        X-Api-Supported-Versions:
+          $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
+  headers:
+    ApiSupportedVersionsResponseHeader:
+      description: API supported versions for endpoint.
       schema:
-        type: integer
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
+        type: string
+    ApiVersionResponseHeader:
+      description: API version.
       schema:
         type: string
   securitySchemes:

@@ -245,40 +245,61 @@ paths:
       description: This endpoint will delete a > from the given >.
       summary: Delete a company milestone
 components:
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    CreatedAfter:
+      name: created_after
+      description: The date which a resource must be created after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    UpdatedBefore:
+      name: updated_before
+      description: The date which a resource must be updated before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    CreatedBefore:
+      name: created_before
+      description: The date which a resource must be created before to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
+    UpdatedAfter:
+      name: updated_after
+      description: The date which a resource must be updated after to be returned.
+      required: false
+      in: query
+      schema:
+        type: string
+        format: date-time
   schemas:
-    MilestoneMessagesRequestBody:
-      type: object
-      properties:
-        partner:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Partner message template.
-        client:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Client message template.
-        originator:
-          type: string
-          minLength: 1
-          maxLength: 255
-          description: Originator message template.
-      description: Properties available for a milestone's messages.
-      additionalProperties: false
-    AbstractCollection:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: The contents for the collection.
-        required:
-        - contents
-        additionalProperties: false
     AbstractResourceModel:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -291,7 +312,52 @@ components:
         required:
         - id
         additionalProperties: false
-    MilestoneCreateBody:
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    MilestoneUpdateBody:
       type: object
       properties:
         name:
@@ -325,29 +391,31 @@ components:
         notify_borrower:
           type: boolean
           description: Whether the borrower is notified for loan changes in milestone (defaults to false).
-      required:
-      - name
-      - description
-      - remote_name
-      description: Available properties for creating a milestone
+      description: Available properties for updating a milestone
       additionalProperties: false
-    ErrorSet:
-      type: object
-      properties:
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Error'
-      required:
-      - errors
-      example:
-        errors:
-        - id: 123abc
-          status: 400
-          title: Generic title for the error
-          detail: Detailed message for the error
-          _links:
-            resource: contextual resource if applicable
+      minProperties: 1
+    MilestoneMessages:
+      allOf:
+      - $ref: '#/components/schemas/AbstractModel'
+      - type: object
+        properties:
+          partner:
+            type:
+            - string
+            - 'null'
+            description: Partner message template.
+          client:
+            type:
+            - string
+            - 'null'
+            description: Client message template.
+          originator:
+            type:
+            - string
+            - 'null'
+            description: Originator message template.
+        additionalProperties: false
+      description: Milestone message templates model
     Milestone:
       allOf:
       - $ref: '#/components/schemas/AbstractResourceModel'
@@ -393,33 +461,7 @@ components:
         - name
         additionalProperties: false
       description: Milestone model
-    MilestoneMessages:
-      allOf:
-      - $ref: '#/components/schemas/AbstractModel'
-      - type: object
-        properties:
-          partner:
-            type:
-            - string
-            - 'null'
-            description: Partner message template.
-          client:
-            type:
-            - string
-            - 'null'
-            description: Client message template.
-          originator:
-            type:
-            - string
-            - 'null'
-            description: Originator message template.
-        additionalProperties: false
-      description: Milestone message templates model
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    MilestoneUpdateBody:
+    MilestoneCreateBody:
       type: object
       properties:
         name:
@@ -453,36 +495,44 @@ components:
         notify_borrower:
           type: boolean
           description: Whether the borrower is notified for loan changes in milestone (defaults to false).
-      description: Available properties for updating a milestone
+      required:
+      - name
+      - description
+      - remote_name
+      description: Available properties for creating a milestone
       additionalProperties: false
-      minProperties: 1
-    AbstractPagination:
+    AbstractCollection:
       allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
+      - $ref: '#/components/schemas/AbstractModel'
       - type: object
         properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
+          contents:
+            type: array
+            items:
+              type: object
+            description: The contents for the collection.
+        required:
+        - contents
         additionalProperties: false
-    AbstractModel:
+    MilestoneMessagesRequestBody:
       type: object
       properties:
-        _self:
+        partner:
           type: string
-          description: The model's resource link to itself.
-        _type:
+          minLength: 1
+          maxLength: 255
+          description: Partner message template.
+        client:
           type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
+          minLength: 1
+          maxLength: 255
+          description: Client message template.
+        originator:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Originator message template.
+      description: Properties available for a milestone's messages.
       additionalProperties: false
     ResourceCreated:
       allOf:
@@ -499,38 +549,42 @@ components:
               $ref: '#/components/schemas/Milestone'
         required:
         - contents
-    Error:
+    AbstractModel:
       type: object
       properties:
-        id:
+        _self:
           type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
+          description: The model's resource link to itself.
+        _type:
           type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
+          description: The model's type.
         _links:
           type: object
-          description: A list of relevant links
+          description: A list of links for the model's associations.
       required:
-      - id
-      - status
-      - title
+      - _self
+      - _type
+      additionalProperties: false
+    ErrorSet:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+      - errors
       example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
+        errors:
+        - id: 123abc
+          status: 400
+          title: Generic title for the error
+          detail: Detailed message for the error
+          _links:
+            resource: contextual resource if applicable
   responses:
-    ForbiddenError:
-      description: Forbidden
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -562,8 +616,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -573,8 +627,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
+    UnauthorizedError:
+      description: Unauthorized
       content:
         application/json:
           schema:
@@ -593,60 +647,6 @@ components:
       description: API version.
       schema:
         type: string
-  parameters:
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    UpdatedBefore:
-      name: updated_before
-      description: The date which a resource must be updated before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    CreatedAfter:
-      name: created_after
-      description: The date which a resource must be created after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    CreatedBefore:
-      name: created_before
-      description: The date which a resource must be created before to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
-      schema:
-        type: string
-    UpdatedAfter:
-      name: updated_after
-      description: The date which a resource must be updated after to be returned.
-      required: false
-      in: query
-      schema:
-        type: string
-        format: date-time
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -368,7 +368,163 @@ paths:
         Deletes a specific asset record by ID.'
       summary: 🚧 Delete a specific asset record. (BETA)
 components:
+  parameters:
+    Page:
+      name: page
+      description: The page to retrieve.
+      required: false
+      in: query
+      schema:
+        type: integer
+    PageSize:
+      name: page_size
+      description: The number of records returned in each page.
+      required: false
+      in: query
+      schema:
+        type: integer
+    ApiVersionHeader:
+      name: X-Api-Version
+      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
+      required: false
+      in: header
+      schema:
+        type: string
   schemas:
+    AssetPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractPagination'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              $ref: '#/components/schemas/Asset'
+        required:
+        - contents
+        additionalProperties: false
+    NoContent:
+      type: object
+      properties: {}
+      additionalProperties: false
+    AbstractPagination:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          total_pages:
+            type: integer
+            description: The total number of pages in the collection.
+          total:
+            type: integer
+            description: The total number of items in the collection.
+        additionalProperties: false
+    AssetItemUpdateBody:
+      allOf:
+      - $ref: '#/components/schemas/AssetUpdateBody'
+      - type: object
+        properties:
+          _id:
+            type: string
+            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
+        required:
+        - _id
+      description: Body for updating an asset record. Aside from the ID, pass only the fields to update.
+      minProperties: 2
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique ID (useful as a reference when debugging an error with support)
+        status:
+          type: integer
+          description: The HTTP status code
+        title:
+          type: string
+          description: A generic title
+        detail:
+          type: string
+          description: A detailed message
+        _links:
+          type: object
+          description: A list of relevant links
+      required:
+      - id
+      - status
+      - title
+      example:
+        id: 123abc
+        status: 400
+        title: Generic title for the error
+        detail: Detailed message for the error
+        _links:
+          resource: contextual resource if applicable
+    ResourceCollectionCreated:
+      allOf:
+      - $ref: '#/components/schemas/AbstractCollection'
+      - type: object
+        properties:
+          contents:
+            type: array
+            items:
+              type: object
+            description: Array of created resources.
+        required:
+        - contents
+        additionalProperties: false
+      description: 'Generic base class for returning multiple created resources with their full
+
+        representations. Extend this class and specify the item type via cattr_reader,
+
+        similar to AbstractPagination.'
+    AssetCollectionCreateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetCreateBody'
+          description: Array of records to create.
+      required:
+      - records
+      description: Body for creating multiple asset records.
+      additionalProperties: false
+    AssetUpdateBody:
+      type: object
+      properties:
+        type:
+          type: string
+          description: This asset's type.
+        value:
+          type: integer
+          description: This asset's estimated value.
+        owner:
+          type: string
+          description: 'The owner(s) of this asset: "Borrower", "Co-borrower", or "Both".'
+      description: Body for updating an asset record. Pass only the fields to update.
+      minProperties: 1
+    AssetCreateBody:
+      type: object
+      properties:
+        type:
+          type: string
+          description: This asset's type.
+        value:
+          type: integer
+          description: This asset's estimated value.
+        owner:
+          type: string
+          description: 'The owner(s) of this asset: "Borrower", "Co-borrower", or "Both".'
+      description: 'Body for creating a new asset record. Beyond the standard fields, a
+
+        company''s form may declare FI-custom asset fields (each a form
+
+        `category_key`); pass those as additional properties. Every key is
+
+        validated against the form when the request is processed, so an unknown
+
+        key is rejected.'
     Asset:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -409,32 +565,6 @@ components:
         meta fields (alongside `_self`/`_type`/`_links`), so a data field can
 
         never overwrite it.'
-    AssetCollection:
-      allOf:
-      - $ref: '#/components/schemas/ResourceCollectionCreated'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              $ref: '#/components/schemas/Asset'
-            description: Array of created asset records.
-        required:
-        - contents
-        additionalProperties: false
-      description: Collection of asset records. Returned when creating multiple records.
-    AssetCollectionUpdateBody:
-      type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/AssetItemUpdateBody'
-          description: Array of records to update.
-      required:
-      - records
-      description: Body for updating multiple asset records.
-      additionalProperties: false
     AbstractCollection:
       allOf:
       - $ref: '#/components/schemas/AbstractModel'
@@ -448,6 +578,34 @@ components:
         required:
         - contents
         additionalProperties: false
+    AssetCollectionUpdateBody:
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetItemUpdateBody'
+          description: Array of records to update.
+      required:
+      - records
+      description: Body for updating multiple asset records.
+      additionalProperties: false
+    AbstractModel:
+      type: object
+      properties:
+        _self:
+          type: string
+          description: The model's resource link to itself.
+        _type:
+          type: string
+          description: The model's type.
+        _links:
+          type: object
+          description: A list of links for the model's associations.
+      required:
+      - _self
+      - _type
+      additionalProperties: false
     ErrorSet:
       type: object
       properties:
@@ -465,159 +623,23 @@ components:
           detail: Detailed message for the error
           _links:
             resource: contextual resource if applicable
-    ResourceCollectionCreated:
+    AssetCollection:
       allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          contents:
-            type: array
-            items:
-              type: object
-            description: Array of created resources.
-        required:
-        - contents
-        additionalProperties: false
-      description: 'Generic base class for returning multiple created resources with their full
-
-        representations. Extend this class and specify the item type via cattr_reader,
-
-        similar to AbstractPagination.'
-    NoContent:
-      type: object
-      properties: {}
-      additionalProperties: false
-    AssetItemUpdateBody:
-      allOf:
-      - $ref: '#/components/schemas/AssetUpdateBody'
-      - type: object
-        properties:
-          _id:
-            type: string
-            description: Opaque string identifier, stable only for the lifetime of the loan application's current field ordering.
-        required:
-        - _id
-      description: Body for updating an asset record. Aside from the ID, pass only the fields to update.
-      minProperties: 2
-    AssetUpdateBody:
-      type: object
-      properties:
-        type:
-          type: string
-          description: This asset's type.
-        value:
-          type: integer
-          description: This asset's estimated value.
-        owner:
-          type: string
-          description: 'The owner(s) of this asset: "Borrower", "Co-borrower", or "Both".'
-      description: Body for updating an asset record. Pass only the fields to update.
-      minProperties: 1
-    AbstractPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractCollection'
-      - type: object
-        properties:
-          total_pages:
-            type: integer
-            description: The total number of pages in the collection.
-          total:
-            type: integer
-            description: The total number of items in the collection.
-        additionalProperties: false
-    AssetCollectionCreateBody:
-      type: object
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/AssetCreateBody'
-          description: Array of records to create.
-      required:
-      - records
-      description: Body for creating multiple asset records.
-      additionalProperties: false
-    AssetCreateBody:
-      type: object
-      properties:
-        type:
-          type: string
-          description: This asset's type.
-        value:
-          type: integer
-          description: This asset's estimated value.
-        owner:
-          type: string
-          description: 'The owner(s) of this asset: "Borrower", "Co-borrower", or "Both".'
-      description: 'Body for creating a new asset record. Beyond the standard fields, a
-
-        company''s form may declare FI-custom asset fields (each a form
-
-        `category_key`); pass those as additional properties. Every key is
-
-        validated against the form when the request is processed, so an unknown
-
-        key is rejected.'
-    AbstractModel:
-      type: object
-      properties:
-        _self:
-          type: string
-          description: The model's resource link to itself.
-        _type:
-          type: string
-          description: The model's type.
-        _links:
-          type: object
-          description: A list of links for the model's associations.
-      required:
-      - _self
-      - _type
-      additionalProperties: false
-    Error:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique ID (useful as a reference when debugging an error with support)
-        status:
-          type: integer
-          description: The HTTP status code
-        title:
-          type: string
-          description: A generic title
-        detail:
-          type: string
-          description: A detailed message
-        _links:
-          type: object
-          description: A list of relevant links
-      required:
-      - id
-      - status
-      - title
-      example:
-        id: 123abc
-        status: 400
-        title: Generic title for the error
-        detail: Detailed message for the error
-        _links:
-          resource: contextual resource if applicable
-    AssetPagination:
-      allOf:
-      - $ref: '#/components/schemas/AbstractPagination'
+      - $ref: '#/components/schemas/ResourceCollectionCreated'
       - type: object
         properties:
           contents:
             type: array
             items:
               $ref: '#/components/schemas/Asset'
+            description: Array of created asset records.
         required:
         - contents
         additionalProperties: false
+      description: Collection of asset records. Returned when creating multiple records.
   responses:
-    ForbiddenError:
-      description: Forbidden
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
@@ -649,8 +671,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    UnauthorizedError:
-      description: Unauthorized
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
@@ -660,8 +682,8 @@ components:
           $ref: '#/components/headers/ApiVersionResponseHeader'
         X-Api-Supported-Versions:
           $ref: '#/components/headers/ApiSupportedVersionsResponseHeader'
-    InternalServerError:
-      description: Internal server error
+    UnauthorizedError:
+      description: Unauthorized
       content:
         application/json:
           schema:
@@ -678,28 +700,6 @@ components:
         type: string
     ApiVersionResponseHeader:
       description: API version.
-      schema:
-        type: string
-  parameters:
-    Page:
-      name: page
-      description: The page to retrieve.
-      required: false
-      in: query
-      schema:
-        type: integer
-    PageSize:
-      name: page_size
-      description: The number of records returned in each page.
-      required: false
-      in: query
-      schema:
-        type: integer
-    ApiVersionHeader:
-      name: X-Api-Version
-      description: Specify API version, for example '1.0'. By default, the version configured in the company settings is used.
-      required: false
-      in: header
       schema:
         type: string
   securitySchemes:

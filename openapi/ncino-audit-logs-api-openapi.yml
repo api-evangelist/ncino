@@ -88,66 +88,21 @@ paths:
           $ref: '#/paths/~1webhooks~1%7Bwebhook_id%7D/get/responses/500'
 components:
   schemas:
-    incoming:
-      type: boolean
-      example: false
-    ip_address:
-      type: string
-      nullable: true
-      example: null
-    base64:
-      type: string
-      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
-    is_test:
-      type: boolean
-      example: true
     mers_org_id:
       type: string
       example: 1234567
+    is_test:
+      type: boolean
+      example: true
     min:
       type: string
       example: 123456789012345680
-    user:
-      type: object
-      nullable: true
-      example: null
-    default_success_response:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        errors:
-          type: array
-          nullable: true
-          items:
-            type: string
-          example: null
-        warnings:
-          type: array
-          nullable: true
-          items:
-            type: string
-          example: null
-    additional_info:
-      type: string
-      nullable: true
-      example: null
-    general_iso8601:
-      type: string
-      example: '2019-02-28T00:00:00Z'
-    status:
-      type: string
-      nullable: true
-      example: unregistered
+    incoming:
+      type: boolean
+      example: false
     is_system:
       type: boolean
       example: false
-    error_response:
-      type: object
-    guid:
-      type: string
-      example: 459f521f-f2fa-4230-a704-46147ac8as7e
     event_type:
       type: string
       enum:
@@ -259,6 +214,51 @@ components:
       - edit_org_api_client_permissions
       example: delivery_initiated
     user_agent:
+      type: string
+      nullable: true
+      example: null
+    base64:
+      type: string
+      example: iVBORw0KGgoAAAANSUhEUgAAAWIAAAFiCAYAAADMXNJ6AAADx0lEQVR42u3UQQ0AAAgDMeZfNOCChLRzsMelegfAmQgxgBADCLEbAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQYQYiEGEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBhFiIAYQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGAAhBhBiAIQYQIgBEGIAIQZAiAGEGECIhRhAiAGE2A0AQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMIMRCDCDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgwgxAAIMYAQAyDEAEIMgBADCDEAQgzwwQDP0cK9V+cyWQAAAABJRU5ErkJggg==
+    user:
+      type: object
+      nullable: true
+      example: null
+    guid:
+      type: string
+      example: 459f521f-f2fa-4230-a704-46147ac8as7e
+    status:
+      type: string
+      nullable: true
+      example: unregistered
+    default_success_response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        errors:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+        warnings:
+          type: array
+          nullable: true
+          items:
+            type: string
+          example: null
+    general_iso8601:
+      type: string
+      example: '2019-02-28T00:00:00Z'
+    ip_address:
+      type: string
+      nullable: true
+      example: null
+    error_response:
+      type: object
+    additional_info:
       type: string
       nullable: true
       example: null
